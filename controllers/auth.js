@@ -4,7 +4,7 @@ import TokenBlacklistService from '../services/TokenBlacklistService.js';
 import {
     USER_LOGGED_IN, 
     USER_LOGGED_OUT 
-} from '../utils/messages.js';
+} from '../constants/messages.js';
 
 import { authCookieName } from '../config/index.js';
 

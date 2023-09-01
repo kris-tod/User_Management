@@ -26,34 +26,4 @@ export const SYNC_WITH_DB = 'Successfully synced with database!';
 export const FILE_TOO_BIG = 'Uploaded avatar image is too big!';
 export const AVATAR_ADDED = 'Successfully added avatar!';
 export const FILE_NOT_PROVIDED = 'File is not passed as parameter!';
-
-export default {
-    PAGE_NOT_PASSED,
-    USER_CREATED,
-    PASSWORD_UPDATED,
-    USER_NOT_FOUND,
-    PASSWORD_INCORRECT,
-    USER_LOGGED_IN,
-    USER_LOGGED_OUT,
-    USER_NOT_LOGGED,
-    USER_NOT_ADMIN,
-    USER_NOT_END_USER,
-    USER_DELETED,
-    FRIENDS_LIMIT_REACHED,
-    ALREADY_FRIENDS,
-    ADDED_FRIEND,
-    EMAIL_UPDATED,
-    USERNAME_UPDATED,
-    USERS_NOT_FRIENDS,
-    REMOVED_FRIEND,
-    URL_NOT_FOUND,
-    EMAIL_NOT_VALID,
-    USERNAME_NOT_VALID,
-    PASSWORD_TOO_SHORT,
-    PASSWORD_INVALID_CONTENT,
-    CONNECTED_TO_DB,
-    SYNC_WITH_DB,
-    FILE_TOO_BIG,
-    AVATAR_ADDED,
-    FILE_NOT_PROVIDED
-};
+export const INVALID_ROLE = 'Role is invalid!'

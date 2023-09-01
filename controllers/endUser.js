@@ -1,8 +1,7 @@
 import UserService from '../services/UserService.js';
 import fs from 'fs'
 
-import { genSalt, hash as _hash } from 'bcrypt';
-import { saltRounds, domain, staticDirname } from '../config/index.js';
+import { staticDirname } from '../config/index.js';
 
 import {
     ADDED_FRIEND,
@@ -11,7 +10,7 @@ import {
     EMAIL_UPDATED,
     REMOVED_FRIEND,
     AVATAR_ADDED
-} from '../utils/messages.js';
+} from '../constants/messages.js';
 
 export const get = {
     myInfo: async (req, res) => {
@@ -91,32 +90,14 @@ export const patch = {
             res.status(err.status || 500).send(err);
         }
     },
-    password: (req, res) => {
+    password: async (req, res) => {
         const id = req.userId;
         const { password } = req.body;
 
-        genSalt(saltRounds, (err, salt) => {
-            if (err) {
-                res.status(500).send(err);
-                return;
-            }
-            _hash(password, salt, async (err, hash) => {
-                if (err) {
-                    res.status(500).send(err);
-                }
-                else {
-                    try {
-                        await UserService.updatePasswordById(id, hash);
+        await UserService.updatePasswordById(id, password);
 
-                        res.status(200).json({
-                            message: PASSWORD_UPDATED
-                        });
-                    }
-                    catch(err) {
-                        res.status(500).json(err);
-                    }
-                }
-            });
+        res.status(200).json({
+            message: PASSWORD_UPDATED
         });
     }
 };

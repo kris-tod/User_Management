@@ -8,8 +8,8 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-import { port } from './config/index.js';
-import { URL_NOT_FOUND } from './utils/messages.js';
+import { port, staticDirname } from './config/index.js';
+import { URL_NOT_FOUND } from './constants/messages.js';
 
 import adminRouter from './routes/admin.js';
 import authRouter from './routes/auth.js';
@@ -19,7 +19,7 @@ const app = express();
 
 app.use(json());
 app.use(cookieParser());
-app.use(express.static(join(__dirname, './uploads')));
+app.use(express.static(join(__dirname, `./${staticDirname}`)));
 
 app.use('/api/users', adminRouter);
 app.use('/api/auth', authRouter);

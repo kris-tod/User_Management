@@ -1,6 +1,6 @@
 import { verifyToken } from '../utils/jwt.js';
 import { authCookieName } from '../config/index.js';
-import { USER_NOT_LOGGED } from '../utils/messages.js';
+import { USER_NOT_LOGGED } from '../constants/messages.js';
 
 export default (req, res, next) => {
     const token = req.cookies[authCookieName];

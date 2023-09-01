@@ -1,23 +1,30 @@
 import { User, Friendship } from '../models/db.js';
+import PasswordService from './passwordService.js'
 import FriendshipService from './FriendshipService.js';
 import { Op } from 'sequelize';
-import { compare } from 'bcrypt';
 import { createToken } from '../utils/jwt.js';
 
 import { USER_NOT_END_USER,
-         FRIENDS_LIMIT_REACHED, 
-         ALREADY_FRIENDS,
-         PASSWORD_INCORRECT,
-         USER_NOT_FOUND,
-         USERS_NOT_FRIENDS
-} from '../utils/messages.js';
+    FRIENDS_LIMIT_REACHED, 
+    ALREADY_FRIENDS,
+    PASSWORD_INCORRECT,
+    USER_NOT_FOUND,
+    USERS_NOT_FRIENDS,
+    INVALID_ROLE
+} from '../constants/messages.js';
+
+import roles from '../utils/roles.js'
 
 const MAX_FRIENDS_COUNT = 1000;
 
 const MAX_PER_PAGE = 5;
 
 class UserService {
-    static async getAll(page) {
+    static async getAll(page = 1) {
+        if(page <= 0) {
+            page = 1;
+        }
+
         const data = await User.findAll({
             order: [['username']],
             limit: MAX_PER_PAGE, offset: MAX_PER_PAGE * (page - 1)
@@ -30,6 +37,7 @@ class UserService {
         const friendships = friendshipsData.map(friendship => friendship.toJSON());
 
         users.forEach(user => {
+            user.role = roles[user.role];
             user.list_of_friends = friendships.filter(friendship => friendship.username == user.username)
                 .map(friendship => friendship.friend_username);
         });
@@ -37,18 +45,23 @@ class UserService {
         return users;
     }
 
-    static getById(id) {
-        return User.findOne({ where: { id } });
+    static async getById(id) {
+        const user = await User.findOne({ where: { id } });
+
+        return user;
     }
 
     static getByUsername(username) {
         return User.findOne({ where: { username } });
+
+        return user;
     }
 
     static async getWholeInfoById(id) {
         const userData = await UserService.getById(id);
         const user = userData.toJSON();
 
+        user.role = roles[user.role];
         const data = await FriendshipService.findAllFriendshipsByUsername(user.username);
 
         const friends = data.map(el => el.toJSON().friend_username);
@@ -65,7 +78,7 @@ class UserService {
                 status: 404,
                 message: USER_NOT_FOUND
             };
-        if (friendData.toJSON().role == 0)
+        if (friendData.toJSON().role != roles.endUser)
             throw {
                 status: 401,
                 message: USER_NOT_END_USER
@@ -103,42 +116,52 @@ class UserService {
     static async removeFriend(id, friendUsername) {
         const friendData = await UserService.getByUsername(friendUsername);
 
-            if (!friendData)
-                throw {
-                    status: 404,
-                    message: USER_NOT_FOUND
-                };
-            if (friendData.toJSON().role == 0)
-                throw {
-                    status: 401,
-                    message: USER_NOT_END_USER
-                };
+        if (!friendData)
+            throw {
+                status: 404,
+                message: USER_NOT_FOUND
+            };
+        if (friendData.toJSON().role != roles.endUser)
+            throw {
+                status: 401,
+                message: USER_NOT_END_USER
+            };
 
-            const userData = await UserService.getById(id);
+        const userData = await UserService.getById(id);
 
-            if (!userData)
-                throw {
-                    status: 404,
-                    message: USER_NOT_FOUND
-                };
+        if (!userData)
+            throw {
+                status: 404,
+                message: USER_NOT_FOUND
+            };
 
-            const user = userData.toJSON();
+        const user = userData.toJSON();
 
-            const friendship = await FriendshipService.find(user.username, friendUsername);
-            if (!friendship)
-                throw {
-                    status: 422,
-                    message: USERS_NOT_FRIENDS
-                };
-            
-            await FriendshipService.deleteOne(user.username, friendUsername);
+        const friendship = await FriendshipService.find(user.username, friendUsername);
+        if (!friendship)
+            throw {
+                status: 422,
+                message: USERS_NOT_FRIENDS
+            };
+
+        await FriendshipService.deleteOne(user.username, friendUsername);
     }
 
-    static createUser(username, password, role, email) {
+    static async createUser(username, password, role, email) {
+        role = roles[role];
+
+        if(!role)
+            throw {
+                status: 400,
+                message: INVALID_ROLE
+            }
+
+        const hash = await PasswordService.hashPassword(password);
+
         return User.create({
             username,
             email,
-            password,
+            password: hash,
             role
         });
     }
@@ -153,7 +176,7 @@ class UserService {
 
         const user = userData.toJSON();
 
-        const match = await compare(password, user.password);
+        const match = await PasswordService.comparePasswords(password, user.password);
 
         if (!match) throw {
             status: 400,
@@ -171,9 +194,11 @@ class UserService {
         };
     }
 
-    static updatePasswordById(id, password) {
+    static async updatePasswordById(id, password) {
+        const hash = await PasswordService.hashPassword(password);
+
         return User.update({
-            password
+            password: hash
         }, {
             where: { id }
         });

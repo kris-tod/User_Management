@@ -3,7 +3,7 @@ import { domain, staticDirname } from "../config/index.js";
 import { 
     FILE_NOT_PROVIDED, 
     FILE_TOO_BIG 
-} from "../utils/messages.js";
+} from "../constants/messages.js";
 
 const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
 

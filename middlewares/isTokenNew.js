@@ -1,4 +1,4 @@
-import { USER_NOT_LOGGED } from '../utils/messages.js';
+import { USER_NOT_LOGGED } from '../constants/messages.js';
 import { authCookieName } from '../config/index.js';
 import TokenBlacklistService from '../services/TokenBlacklistService.js';
 

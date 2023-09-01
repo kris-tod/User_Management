@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import { domain } from '../config/index.js';
+import Roles from '../utils/roles.js'
 
 export default (sequelize) => {
     const User = sequelize.define("user", {
@@ -24,7 +25,7 @@ export default (sequelize) => {
         role: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            defaultValue: 1
+            defaultValue: Roles.endUser
         },
         avatar: {
             type: DataTypes.STRING,
