@@ -29,6 +29,16 @@ app.use('*', (req, res) => {
     res.status(404).send({
         message: URL_NOT_FOUND
     });
+});
+
+app.use((err, req, res, next) => {
+    const response = err.message ? {
+        message: err.message
+    } : {
+        message: 'Something broke!'
+    }
+
+    res.status(err.status || 500).send(response);
 })
 
 app.listen(port, () => {

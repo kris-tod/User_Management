@@ -9,7 +9,7 @@ import {
 import { saltRounds } from '../config/index.js';
 
 export const get = {
-    users: async (req, res) => {
+    users: async (req, res, next) => {
         const { page } = req.query;
 
         try {
@@ -18,13 +18,13 @@ export const get = {
             res.status(200).json(data);
         }
         catch (err) {
-            res.status(500).send(err);
+            next(err);
         }
     }
 };
 
 export const post = {
-    user: async (req, res) => {
+    user: async (req, res, next) => {
         const { username, email, password, role } = req.body;
 
         try {
@@ -35,26 +35,30 @@ export const post = {
             });
         }
         catch(err) {
-            console.log(err);
-            res.status(500).send(err);
+            next(err);
         }
     }
 };
 export const patch = {
-    password: async (req, res) => {
+    password: async (req, res, next) => {
         const { id } = req.params;
         const { password } = req.body;
 
-        await UserService.updatePasswordById(id, password);
+        try {
+            await UserService.updatePasswordById(id, password);
 
-        res.status(200).json({
-            message: PASSWORD_UPDATED
-        });
+            res.status(200).json({
+                message: PASSWORD_UPDATED
+            });
+        }
+        catch(err) {
+            next(err);
+        }
     }
 };
 
 export const deleteRequests = {
-    user: async (req, res) => {
+    user: async (req, res, next) => {
         const { id } = req.params;
 
         try {
@@ -65,7 +69,7 @@ export const deleteRequests = {
             });
         }
         catch (err) {
-            res.status(err.status || 500).send(err);
+            next(err);
         }
     }
 };

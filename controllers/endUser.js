@@ -13,7 +13,7 @@ import {
 } from '../constants/messages.js';
 
 export const get = {
-    myInfo: async (req, res) => {
+    myInfo: async (req, res, next) => {
         const id = req.userId;
 
         try {
@@ -22,12 +22,12 @@ export const get = {
             res.status(200).json(user);
         }
         catch (err) {
-            res.status(500).send(err);
+            next(err);
         }
     }
 };
 export const post = {
-    addFriend: async (req, res) => {
+    addFriend: async (req, res, next) => {
         const id = req.userId;
         const { friendUsername } = req.body;
 
@@ -38,11 +38,11 @@ export const post = {
                 message: ADDED_FRIEND
             });
         }
-        catch (err) {
-            res.status(err.status || 500).send(err);
+        catch(err) {
+            next(err); 
         }
     },
-    avatar: async (req, res) => {
+    avatar: async (req, res, next) => {
         const id = req.userId;
         const filePath = req.filePath;
 
@@ -55,12 +55,12 @@ export const post = {
         }
         catch(err) {
             fs.unlinkSync(`${staticDirname}/${file.filename}`);
-            res.status(500).send(err);
+            next(err);
         }
     }
 };
 export const patch = {
-    username: async (req, res) => {
+    username: async (req, res, next) => {
         const id = req.userId;
         const { username } = req.body;
 
@@ -72,10 +72,10 @@ export const patch = {
             });
         }
         catch(err) {
-            res.status(500).send(err);
+            next(err);
         }
     },
-    email: async (req, res) => {
+    email: async (req, res, next) => {
         const id = req.userId;
         const { email } = req.body;
 
@@ -87,22 +87,27 @@ export const patch = {
             });
         }
         catch(err) {
-            res.status(err.status || 500).send(err);
+            next(err);
         }
     },
-    password: async (req, res) => {
+    password: async (req, res, next) => {
         const id = req.userId;
         const { password } = req.body;
 
-        await UserService.updatePasswordById(id, password);
+        try {
+            await UserService.updatePasswordById(id, password);
 
-        res.status(200).json({
-            message: PASSWORD_UPDATED
-        });
+            res.status(200).json({
+                message: PASSWORD_UPDATED
+            });
+        }
+        catch(err) {
+            next(err);
+        }
     }
 };
 export const deleteRequests = {
-    removeFriend: async (req, res) => {
+    removeFriend: async (req, res, next) => {
         const id = req.userId;
         const { friendUsername } = req.body;
 
@@ -114,7 +119,7 @@ export const deleteRequests = {
             });
         }
         catch (err) {
-            res.status(err.status || 500).send(err);
+            next(err);
         }
     }
 };

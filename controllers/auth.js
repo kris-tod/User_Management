@@ -9,7 +9,7 @@ import {
 import { authCookieName } from '../config/index.js';
 
 export const post = {
-    login: async (req, res) => {
+    login: async (req, res, next) => {
         const { username, password } = req.body;
 
         try {
@@ -20,10 +20,10 @@ export const post = {
             });
         }
         catch(err) {
-            res.status(err.status || 401).send(err);
+            next(err);
         }
     },
-    logout: async (req, res) => {
+    logout: async (req, res, next) => {
         const token = req.cookies[authCookieName];
 
         try {
@@ -34,7 +34,7 @@ export const post = {
             });
         }
         catch(err) {
-            res.status(500).send(err);
+            next(err);
         }
     }
 };
