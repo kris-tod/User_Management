@@ -36,6 +36,7 @@ router.post('/avatar',
     middlewares.isAuth,
     middlewares.isTokenNew,
     middlewares.uploader.single('avatar'),
+    middlewares.isFileValid,
     post.avatar);
 
 router.delete('/friends',
