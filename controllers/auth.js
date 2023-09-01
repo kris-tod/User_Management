@@ -1,14 +1,10 @@
-import { compare } from 'bcrypt';
-import { createToken } from '../utils/jwt.js';
-
 import UserService from '../services/UserService.js';
 import TokenBlacklistService from '../services/TokenBlacklistService.js';
 
-import { 
-    USER_NOT_FOUND,
-    PASSWORD_INCORRECT, 
+import {
     USER_LOGGED_IN, 
-    USER_LOGGED_OUT } from '../utils/messages.js';
+    USER_LOGGED_OUT 
+} from '../utils/messages.js';
 
 import { authCookieName } from '../config/index.js';
 
@@ -17,26 +13,7 @@ export const post = {
         const { username, password } = req.body;
 
         try {
-            const userData = await UserService.getByUsername(username);
-
-            if(!userData) throw {
-                status: 404,
-                message: USER_NOT_FOUND
-            };
-
-            const user = userData.toJSON();
-
-            const match = await compare(password, user.password);
-
-            if(!match) throw {
-                status: 400,
-                message: PASSWORD_INCORRECT
-            };
-
-            const token = createToken({
-                id: user.id,
-                role: user.role
-            });
+            const { user, token } = await UserService.loginUser(username, password);
 
             res.cookie(authCookieName, token).status(200).json({
                 message: USER_LOGGED_IN
