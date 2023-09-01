@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
 import { domain } from '../config/index.js';
-import Roles from '../utils/roles.js'
+import Roles from '../constants/roles.js'
 
 export default (sequelize) => {
     const User = sequelize.define("user", {

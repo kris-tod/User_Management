@@ -13,7 +13,7 @@ import { USER_NOT_END_USER,
     INVALID_ROLE
 } from '../constants/messages.js';
 
-import roles from '../utils/roles.js'
+import roles from '../constants/roles.js'
 
 const MAX_FRIENDS_COUNT = 1000;
 

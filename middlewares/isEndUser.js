@@ -1,5 +1,5 @@
 import { USER_NOT_END_USER } from '../constants/messages.js';
-import roles from '../utils/roles.js'
+import roles from '../constants/roles.js'
 
 export default (req, res, next) => {
     const role = req.userRole;
