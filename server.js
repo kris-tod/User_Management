@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 import { port, staticDirname } from './config/index.js';
-import { URL_NOT_FOUND } from './constants/messages.js';
+import { URL_NOT_FOUND, DEFAULT_ERROR_MESSAGE} from './constants/messages.js';
 
 import adminRouter from './routes/admin.js';
 import authRouter from './routes/auth.js';
@@ -35,7 +35,7 @@ app.use((err, req, res, next) => {
     const response = err.message ? {
         message: err.message
     } : {
-        message: 'Something broke!'
+        message: DEFAULT_ERROR_MESSAGE
     }
 
     res.status(err.status || 500).send(response);

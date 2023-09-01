@@ -27,3 +27,4 @@ export const FILE_TOO_BIG = 'Uploaded avatar image is too big!';
 export const AVATAR_ADDED = 'Successfully added avatar!';
 export const FILE_NOT_PROVIDED = 'File is not passed as parameter!';
 export const INVALID_ROLE = 'Role is invalid!'
+export const DEFAULT_ERROR_MESSAGE = 'Something broke!';
