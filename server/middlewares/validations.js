@@ -1,6 +1,6 @@
 import validator from 'validator';
 
-import { EMAIL_NOT_VALID, PASSWORD_TOO_SHORT, USERNAME_NOT_VALID } from '../constants/messages.js';
+import { EMAIL_NOT_VALID, PASSWORD_TOO_SHORT, USERNAME_NOT_VALID } from '../../constants/messages.js';
 
 export const isEmailValid = (req, res, next) => {
     const { email } = req.body;
@@ -43,10 +43,4 @@ export const isPasswordValid = (req, res, next) => {
     }
 
     next();
-}
-
-export default {
-    isEmailValid,
-    isPasswordValid,
-    isUsernameValid
 }

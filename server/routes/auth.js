@@ -1,5 +1,5 @@
 import { post } from '../controllers/auth.js';
-import middlewares from '../middlewares/index.js';
+import { isAuth, isTokenNew } from '../middlewares/index.js';
 import express from 'express'
 
 const router = express.Router();
@@ -7,8 +7,8 @@ const router = express.Router();
 router.post('/login', post.login);
 
 router.post('/logout', 
-    middlewares.isAuth, 
-    middlewares.isTokenNew, 
+    isAuth, 
+    isTokenNew,
     post.logout);
 
-export default router;
+export const authRouter = router;

@@ -1,13 +1,13 @@
-import { domain, staticDirname } from "../config/index.js";
+import { domain, staticDirname } from "../../config/index.js";
 
 import { 
     FILE_NOT_PROVIDED, 
     FILE_TOO_BIG 
-} from "../constants/messages.js";
+} from "../../constants/messages.js";
 
-const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
+import { MAX_AVATAR_SIZE } from "../../constants/files.js";
 
-export default (req, res, next) => {
+export const isFileValid = (req, res, next) => {
     const file = req.file;
 
     if (!file) {

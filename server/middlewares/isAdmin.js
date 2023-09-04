@@ -1,7 +1,7 @@
-import { USER_NOT_ADMIN } from '../constants/messages.js';
-import roles from '../constants/roles.js'
+import { USER_NOT_ADMIN } from '../../constants/messages.js';
+import roles from '../../constants/roles.js'
 
-export default (req, res, next) => {
+export const isAdmin = (req, res, next) => {
     const role = req.userRole;
     
     if(role != roles.admin) {

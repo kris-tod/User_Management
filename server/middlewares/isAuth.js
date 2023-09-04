@@ -1,8 +1,8 @@
-import { verifyToken } from '../utils/jwt.js';
-import { authCookieName } from '../config/index.js';
-import { USER_NOT_LOGGED } from '../constants/messages.js';
+import { verifyToken } from '../../utils/jwt.js';
+import { authCookieName } from '../../config/index.js';
+import { USER_NOT_LOGGED } from '../../constants/messages.js';
 
-export default (req, res, next) => {
+export const isAuth = (req, res, next) => {
     const token = req.cookies[authCookieName];
 
     if(!token) {

@@ -1,7 +1,7 @@
-import { USER_NOT_END_USER } from '../constants/messages.js';
-import roles from '../constants/roles.js'
+import { USER_NOT_END_USER } from '../../constants/messages.js';
+import roles from '../../constants/roles.js'
 
-export default (req, res, next) => {
+export const isEndUser = (req, res, next) => {
     const role = req.userRole;
 
     if(role != roles.endUser) {

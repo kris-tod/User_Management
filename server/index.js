@@ -8,18 +8,16 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-import { port, staticDirname } from './config/index.js';
-import { URL_NOT_FOUND, DEFAULT_ERROR_MESSAGE} from './constants/messages.js';
+import { port, staticDirname } from '../config/index.js';
+import { errorHandler, urlNotFoundHandler } from './middlewares/index.js';
 
-import adminRouter from './routes/admin.js';
-import authRouter from './routes/auth.js';
-import endUserRouter from './routes/endUser.js';
+import { adminRouter, authRouter, endUserRouter } from './routes/index.js'
 
 const app = express();
 
 app.use(json());
 app.use(cookieParser());
-app.use(express.static(join(__dirname, `./${staticDirname}`)));
+app.use(express.static(join(__dirname, `../${staticDirname}`)));
 
 app.use('/api/users', adminRouter);
 app.use('/api/auth', authRouter);
@@ -31,15 +29,9 @@ app.use('*', (req, res) => {
     });
 });
 
-app.use((err, req, res, next) => {
-    const response = err.message ? {
-        message: err.message
-    } : {
-        message: DEFAULT_ERROR_MESSAGE
-    }
+app.use(urlNotFoundHandler);
 
-    res.status(err.status || 500).send(response);
-})
+app.use(errorHandler);
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
