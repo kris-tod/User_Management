@@ -169,19 +169,23 @@ class UserService {
     static async loginUser(username, password) {
         const userData = await UserService.getByUsername(username);
 
-        if (!userData) throw {
-            status: 404,
-            message: USER_NOT_FOUND
-        };
+        if (!userData) {
+            throw {
+                status: 404,
+                message: USER_NOT_FOUND
+            };
+        }
 
         const user = userData.toJSON();
 
         const match = await PasswordService.comparePasswords(password, user.password);
 
-        if (!match) throw {
-            status: 400,
-            message: PASSWORD_INCORRECT
-        };
+        if (!match) {
+            throw {
+                status: 400,
+                message: PASSWORD_INCORRECT
+            };
+        }
 
         const token = createToken({
             id: user.id,
@@ -224,20 +228,23 @@ class UserService {
     static async updateEmailById(id, email) {
         const data = await User.update({ email }, { where: { id } });
 
-        if (!data)
+        if (!data) {
             throw {
                 status: 404,
                 message: USER_NOT_FOUND
             };
+        }
     }
 
     static async deleteById(id) {
         const data = await UserService.getById(id);
 
-        if (!data) throw {
-            status: 404,
-            message: USER_NOT_FOUND
-        };
+        if (!data) {
+            throw {
+                status: 404,
+                message: USER_NOT_FOUND
+            };
+        }
 
         await User.findOne({ where: { id } })
             .then(data => {
