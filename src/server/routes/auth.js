@@ -1,16 +1,17 @@
 import express from 'express';
-import { post } from '../controllers/auth.js';
 import { isAuth, isTokenNew } from '../middlewares/index.js';
+import { AuthController } from '../controllers/AuthController.js';
 
 const router = express.Router();
+const authController = new AuthController();
 
-router.post('/login', post.login);
+router.post('/login', authController.login.bind(authController));
 
 router.post(
   '/logout',
   isAuth,
   isTokenNew,
-  post.logout
+  authController.logout.bind(authController)
 );
 
 export const authRouter = router;

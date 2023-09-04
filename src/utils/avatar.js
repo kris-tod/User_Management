@@ -7,4 +7,4 @@ export const getAvatarName = (fileName) => {
   return `img-${Date.now()}${fileExtension}`;
 };
 
-export const getDestination = () => `${dirname}/${staticDirname}`;
+export const getDestination = () => `${dirname}/src/${staticDirname}`;

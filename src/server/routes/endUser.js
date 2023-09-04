@@ -1,7 +1,7 @@
 import express from 'express';
-import {
-  get, patch, post, destroy
-} from '../controllers/endUser.js';
+import FileService from '../../services/FileService.js';
+import { EndUserController } from '../controllers/EndUserController.js';
+
 import {
   isAuth,
   isTokenNew,
@@ -14,12 +14,13 @@ import {
 } from '../middlewares/index.js';
 
 const router = express.Router();
+const endUserController = new EndUserController();
 
 router.get(
   '/',
   isAuth,
   isTokenNew,
-  get.myInfo
+  endUserController.getOne.bind(endUserController)
 );
 
 router.patch(
@@ -27,7 +28,7 @@ router.patch(
   isUsernameValid,
   isAuth,
   isTokenNew,
-  patch.username
+  endUserController.update.bind(endUserController)
 );
 
 router.patch(
@@ -35,7 +36,7 @@ router.patch(
   isEmailValid,
   isAuth,
   isTokenNew,
-  patch.email
+  endUserController.update.bind(endUserController)
 );
 
 router.patch(
@@ -43,7 +44,7 @@ router.patch(
   isPasswordValid,
   isAuth,
   isTokenNew,
-  patch.password
+  endUserController.update.bind(endUserController)
 );
 
 router.post(
@@ -51,7 +52,7 @@ router.post(
   isAuth,
   isTokenNew,
   isEndUser,
-  post.addFriend
+  endUserController.addFriend.bind(endUserController)
 );
 
 router.post(
@@ -59,8 +60,8 @@ router.post(
   isAuth,
   isTokenNew,
   uploader.single('avatar'),
-  isFileValid,
-  post.avatar
+  isFileValid(FileService),
+  endUserController.updateAvatar.bind(endUserController)
 );
 
 router.delete(
@@ -68,7 +69,7 @@ router.delete(
   isAuth,
   isTokenNew,
   isEndUser,
-  destroy.removeFriend
+  endUserController.removeFriend.bind(endUserController)
 );
 
 export const endUserRouter = router;

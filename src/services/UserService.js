@@ -17,12 +17,13 @@ import {
 } from '../constants/messages.js';
 
 import roles from '../constants/roles.js';
+import TokenBlacklistService from './TokenBlacklistService.js';
 
 const MAX_FRIENDS_COUNT = 1000;
 
 const MAX_PER_PAGE = 5;
 
-class UserService {
+export class UserService {
   static async getAll(pageParam = 1) {
     let page = pageParam;
     if (page <= 0) {
@@ -54,7 +55,7 @@ class UserService {
     return users;
   }
 
-  static async getById(id) {
+  static async findOne(id) {
     const user = await User.findOne({ where: { id } });
 
     return user;
@@ -64,8 +65,8 @@ class UserService {
     return User.findOne({ where: { username } });
   }
 
-  static async getWholeInfoById(id) {
-    const userData = await UserService.getById(id);
+  static async getOne(id) {
+    const userData = await UserService.findOne(id);
     const user = userData.toJSON();
 
     user.role = roles[user.role];
@@ -89,7 +90,7 @@ class UserService {
       throw new ServerError(401, USER_NOT_END_USER);
     }
 
-    const userData = await UserService.getById(id);
+    const userData = await UserService.findOne(id);
 
     if (!userData) {
       throw new ServerError(404, USER_NOT_FOUND);
@@ -127,7 +128,7 @@ class UserService {
       throw new ServerError(401, USER_NOT_END_USER);
     }
 
-    const userData = await UserService.getById(id);
+    const userData = await UserService.findOne(id);
 
     if (!userData) {
       throw new ServerError(404, USER_NOT_FOUND);
@@ -146,9 +147,11 @@ class UserService {
     await FriendshipService.deleteOne(user.username, friendUsername);
   }
 
-  static async createUser(username, password, roleParam, email) {
-    let role = roleParam;
-    role = roles[role];
+  static async create({
+    username, password, role, email
+  }) {
+    let roleParam = role;
+    roleParam = roles[role];
 
     if (!role) {
       throw new ServerError(400, INVALID_ROLE);
@@ -160,7 +163,7 @@ class UserService {
       username,
       email,
       password: hash,
-      role
+      role: roleParam
     });
   }
 
@@ -191,6 +194,24 @@ class UserService {
       user,
       token
     };
+  }
+
+  static async logout(token) {
+    return TokenBlacklistService.addToken(token);
+  }
+
+  static async update(id, data) {
+    const { username, password, email } = data;
+    if (email) {
+      await UserService.updateEmailById(id, email);
+    }
+    if (username) {
+      await UserService.updateUsernameById(id, username);
+    }
+    if (password) {
+      await UserService.updatePasswordById(id, password);
+    }
+    return User.findOne({ attributes: Object.keys(data) }, { where: { id } });
   }
 
   static async updatePasswordById(id, password) {
@@ -233,8 +254,8 @@ class UserService {
     }
   }
 
-  static async deleteById(id) {
-    const data = await UserService.getById(id);
+  static async destroy(id) {
+    const data = await UserService.findOne(id);
 
     if (!data) {
       throw new ServerError(404, USER_NOT_FOUND);
@@ -255,4 +276,4 @@ class UserService {
   }
 }
 
-export default UserService;
+// export default UserService;

@@ -1,7 +1,5 @@
 import express from 'express';
-import {
-  get, post, patch, destroy
-} from '../controllers/admin.js';
+import { AdminController } from '../controllers/AdminController.js';
 import {
   isAuth,
   isTokenNew,
@@ -12,13 +10,14 @@ import {
 } from '../middlewares/index.js';
 
 const router = express.Router();
+const adminController = new AdminController();
 
 router.get(
   '/',
   isAuth,
   isTokenNew,
   isAdmin,
-  get.users
+  adminController.getAll.bind(adminController)
 );
 
 router.post(
@@ -29,7 +28,7 @@ router.post(
   isAuth,
   isTokenNew,
   isAdmin,
-  post.user
+  adminController.create.bind(adminController)
 );
 
 router.patch(
@@ -38,7 +37,7 @@ router.patch(
   isAuth,
   isTokenNew,
   isAdmin,
-  patch.password
+  adminController.update.bind(adminController)
 );
 
 router.delete(
@@ -46,7 +45,7 @@ router.delete(
   isAuth,
   isTokenNew,
   isAdmin,
-  destroy.user
+  adminController.destroy.bind(adminController)
 );
 
 export const adminRouter = router;
