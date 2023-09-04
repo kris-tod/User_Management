@@ -12,8 +12,8 @@
     "validator": "^13.9.0"
   },
   "scripts": {
-    "start": "node server/index.js",
-    "lint": "eslint -r *.js"
+    "start": "node src/server/index.js",
+    "lint": "eslint -c *.js"
   },
   "devDependencies": {
     "eslint": "^8.48.0",
@@ -43,6 +43,12 @@
         ],
         "one-var": [
             "off"
+        ],
+        "import/prefer-default-export": [
+          "off"
+        ],
+        "import/extensions": [
+          "off"
         ]
     }
   }
