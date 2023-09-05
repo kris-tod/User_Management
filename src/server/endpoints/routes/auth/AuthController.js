@@ -1,7 +1,7 @@
-import { USER_LOGGED_IN, USER_LOGGED_OUT } from '../../constants/messages.js';
+import { USER_LOGGED_IN, USER_LOGGED_OUT } from '../../../../constants/messages.js';
 
-import { authCookieName } from '../../config/index.js';
-import { UserService } from '../../services/UserService.js';
+import { authCookieName } from '../../../../config/index.js';
+import { UserService } from '../../../../services/UserService.js';
 
 export class AuthController {
   constructor() {
@@ -25,5 +25,18 @@ export class AuthController {
     res.clearCookie(authCookieName).status(200).json({
       message: USER_LOGGED_OUT
     });
+  }
+
+  createRouterHandlers(methods) {
+    const handlers = {};
+
+    if (methods.includes('login')) {
+      handlers.login = this.login.bind(this);
+    }
+    if (methods.includes('logout')) {
+      handlers.logout = this.logout.bind(this);
+    }
+
+    return handlers;
   }
 }

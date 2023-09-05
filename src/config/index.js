@@ -1,5 +1,6 @@
 export const port = process.env.PORT;
 export const domain = `http://localhost:${process.env.PORT}`;
+export const staticDirPath = '/Users/appstreams/Documents/User_Management/src/uploads';
 export const staticDirname = 'uploads';
 export const dirname = '/Users/appstreams/Documents/User_Management';
 export const dbConfig = {

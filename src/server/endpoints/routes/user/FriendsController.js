@@ -1,4 +1,4 @@
-import { ADDED_FRIEND, REMOVED_FRIEND } from '../../constants/messages.js';
+import { ADDED_FRIEND, REMOVED_FRIEND } from '../../../../constants/messages.js';
 
 export class FriendsController {
   constructor(service) {
@@ -23,5 +23,17 @@ export class FriendsController {
     res.status(200).json({
       message: REMOVED_FRIEND
     });
+  }
+
+  createRouterHandlers(methods) {
+    const handlers = {};
+    if (methods.includes('addFriend')) {
+      handlers.addFriend = this.addFriend.bind(this);
+    }
+    if (methods.includes('removeFriend')) {
+      handlers.removeFriend = this.removeFriend.bind(this);
+    }
+
+    return handlers;
   }
 }

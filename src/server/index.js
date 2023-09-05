@@ -2,18 +2,19 @@ import 'dotenv/config';
 
 import cookieParser from 'cookie-parser';
 import express, { json } from 'express';
-import { join } from 'path';
 
-import { port, staticDirname, dirname } from '../config/index.js';
+import {
+  port, staticDirPath
+} from '../config/index.js';
 import { errorHandler, urlNotFoundHandler } from './middlewares/index.js';
 
-import { router } from './routes/index.js';
+import { router } from './endpoints/routes/index.js';
 
 const app = express();
 
 app.use(json());
 app.use(cookieParser());
-app.use(express.static(join(dirname, 'src', `${staticDirname}`)));
+app.use(express.static(staticDirPath));
 
 app.use('/api', router);
 

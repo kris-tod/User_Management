@@ -1,6 +1,5 @@
 import express from 'express';
-import { UsersController } from '../controllers/UsersController.js';
-import { createUsersControllerFunctions } from '../controllers/usersControllerFactory.js';
+import { UsersController } from './UsersController.js';
 import {
   isAuth,
   isTokenNew,
@@ -8,13 +7,13 @@ import {
   isPasswordValid,
   isEmailValid,
   isUsernameValid
-} from '../middlewares/index.js';
+} from '../../../middlewares/index.js';
 
 const router = express.Router();
 const usersController = new UsersController();
 const {
   getMany, create, update, destroy
-} = createUsersControllerFunctions(usersController);
+} = usersController.createRouterHandlers(['getMany', 'create', 'update', 'destroy']);
 
 router.get(
   '/',

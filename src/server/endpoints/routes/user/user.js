@@ -1,9 +1,8 @@
 import express from 'express';
-import FileService from '../../services/FileService.js';
-import { UserController } from '../controllers/UserController.js';
-import { createUserControllerFunctions } from '../controllers/userControllerFactory.js';
-import { FriendsController } from '../controllers/FriendsController.js';
-import { createFriendsControllerFunctions } from '../controllers/friendsControllerFactory.js';
+import FileService from '../../../../services/FileService.js';
+import { UserController } from './UserController.js';
+import { FriendsController } from './FriendsController.js';
+
 import {
   isAuth,
   isTokenNew,
@@ -13,8 +12,8 @@ import {
   isEndUser,
   uploader,
   isFileValid
-} from '../middlewares/index.js';
-import { UserService } from '../../services/UserService.js';
+} from '../../../middlewares/index.js';
+import { UserService } from '../../../../services/UserService.js';
 
 const router = express.Router();
 
@@ -23,9 +22,12 @@ const friendsController = new FriendsController(UserService);
 
 const {
   getOne, update, updateAvatar
-} = createUserControllerFunctions(userController);
+} = userController.createRouterHandlers(['getOne', 'update', 'updateAvatar']);
 
-const { addFriend, removeFriend } = createFriendsControllerFunctions(friendsController);
+const {
+  addFriend,
+  removeFriend
+} = friendsController.createRouterHandlers(['addFriend', 'removeFriend']);
 
 router.get(
   '/',
