@@ -12,6 +12,8 @@ export const dbConfig = {
     dialect: 'postgres'
   }
 };
+export const errorLogPath = '/Users/appstreams/Documents/User_Management/src/logs/error.log';
+export const infoLogPath = '/Users/appstreams/Documents/User_Management/src/logs/info.log';
 export const secret = process.env.SECRET;
 export const authCookieName = 'x-auth-token';
 export const saltRounds = 10;
