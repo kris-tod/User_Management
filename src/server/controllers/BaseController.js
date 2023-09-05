@@ -39,6 +39,6 @@ export class BaseController {
 
     await this.service.destroy(id);
 
-    res.status(204);
+    res.status(204).send('');
   }
 }
