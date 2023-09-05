@@ -1,13 +1,8 @@
 import FileService from '../../../services/FileService.js';
 
 import { BaseController } from '../../../utils/BaseController.js';
-import { UserService } from '../../../services/UserService.js';
 
 export class UserController extends BaseController {
-  constructor() {
-    super(UserService);
-  }
-
   async getOne(req, res) {
     const { id } = req.user;
 
@@ -37,5 +32,9 @@ export class UserController extends BaseController {
 
     const updatedData = await this.service.update(id, req.body);
     res.status(201).json(updatedData);
+  }
+
+  createRouterHandlers() {
+    return super.createRouterHandlers(['getOne', 'update', 'updateAvatar']);
   }
 }

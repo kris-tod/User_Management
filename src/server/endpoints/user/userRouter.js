@@ -15,75 +15,36 @@ import {
 } from '../../middlewares/index.js';
 import { UserService } from '../../../services/UserService.js';
 
-const router = express.Router();
+export const createUserRouter = (logger) => {
+  const router = express.Router();
+  const userService = new UserService(logger);
+  const userController = new UserController(userService);
+  const friendsController = new FriendsController(userService);
 
-const userController = new UserController();
-const friendsController = new FriendsController(UserService);
+  const { getOne, update, updateAvatar } = userController.createRouterHandlers();
 
-const {
-  getOne, update, updateAvatar
-} = userController.createRouterHandlers(['getOne', 'update', 'updateAvatar']);
+  const { addFriend, removeFriend } = friendsController.createRouterHandlers();
 
-const {
-  addFriend,
-  removeFriend
-} = userController.createRouterHandlers
-  .call(friendsController, ['addFriend', 'removeFriend']);
+  router.get('/', isAuth, isTokenNew, getOne);
 
-router.get(
-  '/',
-  isAuth,
-  isTokenNew,
-  getOne
-);
+  router.patch('/username', isUsernameValid, isAuth, isTokenNew, update);
 
-router.patch(
-  '/username',
-  isUsernameValid,
-  isAuth,
-  isTokenNew,
-  update
-);
+  router.patch('/email', isEmailValid, isAuth, isTokenNew, update);
 
-router.patch(
-  '/email',
-  isEmailValid,
-  isAuth,
-  isTokenNew,
-  update
-);
+  router.patch('/password', isPasswordValid, isAuth, isTokenNew, update);
 
-router.patch(
-  '/password',
-  isPasswordValid,
-  isAuth,
-  isTokenNew,
-  update
-);
+  router.post('/friends', isAuth, isTokenNew, isEndUser, addFriend);
 
-router.post(
-  '/friends',
-  isAuth,
-  isTokenNew,
-  isEndUser,
-  addFriend
-);
+  router.post(
+    '/avatar',
+    isAuth,
+    isTokenNew,
+    uploader.single('avatar'),
+    isFileValid(FileService),
+    updateAvatar
+  );
 
-router.post(
-  '/avatar',
-  isAuth,
-  isTokenNew,
-  uploader.single('avatar'),
-  isFileValid(FileService),
-  updateAvatar
-);
+  router.delete('/friends', isAuth, isTokenNew, isEndUser, removeFriend);
 
-router.delete(
-  '/friends',
-  isAuth,
-  isTokenNew,
-  isEndUser,
-  removeFriend
-);
-
-export const userRouter = router;
+  return router;
+};

@@ -2,10 +2,11 @@ import { USER_LOGGED_IN, USER_LOGGED_OUT } from '../../../constants/messages.js'
 
 import { authCookieName } from '../../../config/index.js';
 import { UserService } from '../../../services/UserService.js';
+import { BaseController } from '../../../utils/BaseController.js';
 
 export class AuthController {
-  constructor() {
-    this.authService = UserService;
+  constructor(authService) {
+    this.authService = authService;
   }
 
   async login(req, res) {
@@ -25,5 +26,9 @@ export class AuthController {
     res.clearCookie(authCookieName).status(200).json({
       message: USER_LOGGED_OUT
     });
+  }
+
+  createRouterHandlers() {
+    return BaseController.prototype.createRouterHandlers.call(this, ['login', 'logout']);
   }
 }

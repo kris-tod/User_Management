@@ -1,4 +1,5 @@
 import { ADDED_FRIEND, REMOVED_FRIEND } from '../../../constants/messages.js';
+import { BaseController } from '../../../utils/BaseController.js';
 
 export class FriendsController {
   constructor(service) {
@@ -23,5 +24,9 @@ export class FriendsController {
     res.status(200).json({
       message: REMOVED_FRIEND
     });
+  }
+
+  createRouterHandlers() {
+    return BaseController.prototype.createRouterHandlers.call(this, ['addFriend', 'removeFriend']);
   }
 }

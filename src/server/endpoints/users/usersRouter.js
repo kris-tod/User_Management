@@ -8,47 +8,39 @@ import {
   isEmailValid,
   isUsernameValid
 } from '../../middlewares/index.js';
+import { UserService } from '../../../services/UserService.js';
 
-const router = express.Router();
-const usersController = new UsersController();
-const {
-  getMany, create, update, destroy
-} = usersController.createRouterHandlers(['getMany', 'create', 'update', 'destroy']);
+export const createUsersRouter = (logger) => {
+  const router = express.Router();
+  const userService = new UserService(logger);
+  const usersController = new UsersController(userService);
+  const {
+    getMany, create, update, destroy
+  } = usersController.createRouterHandlers();
 
-router.get(
-  '/',
-  isAuth,
-  isTokenNew,
-  isAdmin,
-  getMany
-);
+  router.get('/', isAuth, isTokenNew, isAdmin, getMany);
 
-router.post(
-  '/',
-  isUsernameValid,
-  isPasswordValid,
-  isEmailValid,
-  isAuth,
-  isTokenNew,
-  isAdmin,
-  create
-);
+  router.post(
+    '/',
+    isUsernameValid,
+    isPasswordValid,
+    isEmailValid,
+    isAuth,
+    isTokenNew,
+    isAdmin,
+    create
+  );
 
-router.patch(
-  '/:id/password',
-  isPasswordValid,
-  isAuth,
-  isTokenNew,
-  isAdmin,
-  update
-);
+  router.patch(
+    '/:id/password',
+    isPasswordValid,
+    isAuth,
+    isTokenNew,
+    isAdmin,
+    update
+  );
 
-router.delete(
-  '/:id',
-  isAuth,
-  isTokenNew,
-  isAdmin,
-  destroy
-);
+  router.delete('/:id', isAuth, isTokenNew, isAdmin, destroy);
 
-export const usersRouter = router;
+  return router;
+};

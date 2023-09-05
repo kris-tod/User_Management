@@ -24,7 +24,11 @@ const MAX_FRIENDS_COUNT = 1000;
 const MAX_PER_PAGE = 5;
 
 export class UserService {
-  static async getAll(pageParam, userDataObj) {
+  constructor(logger) {
+    this.logger = logger;
+  }
+
+  async getAll(pageParam, userDataObj) {
     let page = pageParam || 1;
     if (page <= 0) {
       page = 1;
@@ -52,6 +56,7 @@ export class UserService {
         .map((friendship) => friendship.friend_username);
     });
 
+    this.logger.log('info', 'getall users');
     return users;
   }
 
@@ -65,7 +70,7 @@ export class UserService {
     return User.findOne({ where: { username } });
   }
 
-  static async getOne(id, userDataObj) {
+  async getOne(id, userDataObj) {
     const userData = await UserService.findOne(id);
     const user = userData.toJSON();
 
@@ -77,10 +82,11 @@ export class UserService {
     const friends = data.map((el) => el.toJSON().friend_username);
     user.list_of_friends = friends;
 
+    this.logger.log('info', 'getone user');
     return user;
   }
 
-  static async addFriend(id, friendUsername, userDataObj) {
+  async addFriend(id, friendUsername, userDataObj) {
     const friendData = await UserService.getByUsername(friendUsername);
 
     if (!friendData) {
@@ -116,9 +122,10 @@ export class UserService {
     }
 
     await FriendshipService.create(user.username, friendUsername);
+    this.logger.log('info', 'addfriend');
   }
 
-  static async removeFriend(id, friendUsername, userDataObj) {
+  async removeFriend(id, friendUsername, userDataObj) {
     const friendData = await UserService.getByUsername(friendUsername);
 
     if (!friendData) {
@@ -145,9 +152,10 @@ export class UserService {
     }
 
     await FriendshipService.deleteOne(user.username, friendUsername);
+    this.logger.log('info', 'removefriend');
   }
 
-  static async create({
+  async create({
     username, password, role, email
   }) {
     let roleParam = role;
@@ -159,6 +167,8 @@ export class UserService {
 
     const hash = await PasswordService.hashPassword(password);
 
+    this.logger.log('info', 'create user');
+
     return User.create({
       username,
       email,
@@ -167,7 +177,7 @@ export class UserService {
     });
   }
 
-  static async loginUser(username, password) {
+  async loginUser(username, password) {
     const userData = await UserService.getByUsername(username);
 
     if (!userData) {
@@ -190,17 +200,19 @@ export class UserService {
       role: user.role
     });
 
+    this.logger.log('info', 'login user');
     return {
       user,
       token
     };
   }
 
-  static async logout(token) {
+  async logout(token) {
+    this.logger.log('info', 'logout');
     return TokenBlacklistService.addToken(token);
   }
 
-  static async update(id, data, userDataObj) {
+  async update(id, data, userDataObj) {
     const { username, password, email } = data;
     if (email) {
       await UserService.updateEmailById(id, email);
@@ -211,7 +223,7 @@ export class UserService {
     if (password) {
       await UserService.updatePasswordById(id, password);
     }
-
+    this.logger.log('info', 'update');
     return User.findOne({ attributes: Object.keys(data), where: { id } });
   }
 
@@ -255,7 +267,7 @@ export class UserService {
     }
   }
 
-  static async destroy(id, userDataObj) {
+  async destroy(id, userDataObj) {
     const data = await UserService.findOne(id);
 
     if (!data) {
@@ -264,6 +276,7 @@ export class UserService {
 
     await User.findOne({ where: { id } }).then((user) => {
       const { username } = user.toJSON();
+      this.logger.log('info', 'delete user');
 
       return Promise.all([
         User.destroy({ where: { id } }),
