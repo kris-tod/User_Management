@@ -2,16 +2,16 @@ import { UserService } from '../../services/UserService.js';
 
 import { BaseController } from './BaseController.js';
 
-export class AdminController extends BaseController {
+export class UsersController extends BaseController {
   constructor() {
     super(UserService);
   }
 
   async update(req, res) {
     const { password } = req.body;
-    const id = req.params[this.propertyName];
+    const id = req.params[this.identityName];
 
-    const result = await this.service.update(id, { password });
-    res.status(200).json(result);
+    const updatedData = await this.service.update(id, { password });
+    res.status(200).json(updatedData);
   }
 }

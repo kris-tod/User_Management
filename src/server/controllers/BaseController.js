@@ -1,44 +1,42 @@
 export class BaseController {
-  constructor(service, propertyName = 'id') {
+  constructor(service, identityName = 'id') {
     this.service = service;
-    this.propertyName = propertyName;
+    this.identityName = identityName;
   }
 
-  async getAll(req, res) {
+  async getMany(req, res) {
     const { page } = req.query;
-    const result = await this.service.getAll(page);
 
-    res.status(200).json(result);
+    const collection = await this.service.getAll(page);
+    res.status(200).json(collection);
   }
 
   async getOne(req, res) {
-    const id = req.params[this.propertyName];
-    const result = await this.service.getOne(id);
+    const id = req.params[this.identityName];
 
-    res.status(200).json(result);
+    const entity = await this.service.getOne(id);
+    res.status(200).json(entity);
   }
 
   async update(req, res) {
     const data = req.body;
-    const id = req.params[this.propertyName];
+    const id = req.params[this.identityName];
 
-    const result = await this.service.update(id, data);
-
-    res.status(200).json(result);
+    const updatedData = await this.service.update(id, data);
+    res.status(200).json(updatedData);
   }
 
   async create(req, res) {
     const data = req.body;
 
-    const result = await this.service.create(data);
-    res.status(201).json(result);
+    const entity = await this.service.create(data);
+    res.status(201).json(entity);
   }
 
   async destroy(req, res) {
-    const id = req.params[this.propertyName];
+    const id = req.params[this.identityName];
 
     await this.service.destroy(id);
-
     res.status(204).send('');
   }
 }
