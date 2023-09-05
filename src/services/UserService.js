@@ -211,7 +211,8 @@ export class UserService {
     if (password) {
       await UserService.updatePasswordById(id, password);
     }
-    return User.findOne({ attributes: Object.keys(data) }, { where: { id } });
+
+    return User.findOne({ attributes: Object.keys(data), where: { id } });
   }
 
   static async updatePasswordById(id, password) {
