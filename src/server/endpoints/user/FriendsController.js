@@ -24,16 +24,4 @@ export class FriendsController {
       message: REMOVED_FRIEND
     });
   }
-
-  createRouterHandlers(methods) {
-    const handlers = {};
-    if (methods.includes('addFriend')) {
-      handlers.addFriend = this.addFriend.bind(this);
-    }
-    if (methods.includes('removeFriend')) {
-      handlers.removeFriend = this.removeFriend.bind(this);
-    }
-
-    return handlers;
-  }
 }

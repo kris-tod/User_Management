@@ -41,11 +41,10 @@ export class BaseController {
   }
 
   createRouterHandlers(methods) {
-    const handlers = {};
-    methods.forEach((method) => {
-      handlers[method] = this[method].bind(this);
-    });
-
-    return handlers;
+    const that = this;
+    return methods.reduce((acc, curr) => {
+      acc[curr] = that[curr].bind(that);
+      return acc;
+    }, {});
   }
 }

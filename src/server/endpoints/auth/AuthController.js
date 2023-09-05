@@ -26,13 +26,4 @@ export class AuthController {
       message: USER_LOGGED_OUT
     });
   }
-
-  createRouterHandlers(methods) {
-    const handlers = {};
-    methods.forEach((method) => {
-      handlers[method] = this[method].bind(this);
-    });
-
-    return handlers;
-  }
 }

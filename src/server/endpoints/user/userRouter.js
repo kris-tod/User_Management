@@ -27,7 +27,8 @@ const {
 const {
   addFriend,
   removeFriend
-} = friendsController.createRouterHandlers(['addFriend', 'removeFriend']);
+} = userController.createRouterHandlers
+  .call(friendsController, ['addFriend', 'removeFriend']);
 
 router.get(
   '/',
