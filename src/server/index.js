@@ -8,7 +8,7 @@ import {
 } from '../config/index.js';
 import { errorHandler, urlNotFoundHandler } from './middlewares/index.js';
 
-import { router } from './endpoints/routes/index.js';
+import { router } from './routes/index.js';
 
 const app = express();
 

@@ -1,6 +1,6 @@
-import { UserService } from '../../../../services/UserService.js';
+import { UserService } from '../../../services/UserService.js';
 
-import { BaseController } from '../../../../utils/BaseController.js';
+import { BaseController } from '../../../utils/BaseController.js';
 
 export class UsersController extends BaseController {
   constructor() {

@@ -1,4 +1,4 @@
-import { ADDED_FRIEND, REMOVED_FRIEND } from '../../../../constants/messages.js';
+import { ADDED_FRIEND, REMOVED_FRIEND } from '../../../constants/messages.js';
 
 export class FriendsController {
   constructor(service) {

@@ -1,7 +1,7 @@
-import FileService from '../../../../services/FileService.js';
+import FileService from '../../../services/FileService.js';
 
-import { BaseController } from '../../../../utils/BaseController.js';
-import { UserService } from '../../../../services/UserService.js';
+import { BaseController } from '../../../utils/BaseController.js';
+import { UserService } from '../../../services/UserService.js';
 
 export class UserController extends BaseController {
   constructor() {
@@ -37,15 +37,5 @@ export class UserController extends BaseController {
 
     const updatedData = await this.service.update(id, req.body);
     res.status(201).json(updatedData);
-  }
-
-  createRouterHandlers(methods) {
-    const handlers = super.createRouterHandlers(methods);
-
-    if (methods.includes('updateAvatar')) {
-      handlers.updateAvatar = this.updateAvatar.bind(this);
-    }
-
-    return handlers;
   }
 }

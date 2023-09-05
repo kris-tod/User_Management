@@ -1,5 +1,5 @@
 import express from 'express';
-import { isAuth, isTokenNew } from '../../../middlewares/index.js';
+import { isAuth, isTokenNew } from '../../middlewares/index.js';
 import { AuthController } from './AuthController.js';
 
 const router = express.Router();

@@ -24,8 +24,8 @@ const MAX_FRIENDS_COUNT = 1000;
 const MAX_PER_PAGE = 5;
 
 export class UserService {
-  static async getAll(pageParam = 1) {
-    let page = pageParam;
+  static async getAll(pageParam, userDataObj) {
+    let page = pageParam || 1;
     if (page <= 0) {
       page = 1;
     }
@@ -65,7 +65,7 @@ export class UserService {
     return User.findOne({ where: { username } });
   }
 
-  static async getOne(id) {
+  static async getOne(id, userDataObj) {
     const userData = await UserService.findOne(id);
     const user = userData.toJSON();
 
@@ -80,7 +80,7 @@ export class UserService {
     return user;
   }
 
-  static async addFriend(id, friendUsername) {
+  static async addFriend(id, friendUsername, userDataObj) {
     const friendData = await UserService.getByUsername(friendUsername);
 
     if (!friendData) {
@@ -118,7 +118,7 @@ export class UserService {
     await FriendshipService.create(user.username, friendUsername);
   }
 
-  static async removeFriend(id, friendUsername) {
+  static async removeFriend(id, friendUsername, userDataObj) {
     const friendData = await UserService.getByUsername(friendUsername);
 
     if (!friendData) {
@@ -200,7 +200,7 @@ export class UserService {
     return TokenBlacklistService.addToken(token);
   }
 
-  static async update(id, data) {
+  static async update(id, data, userDataObj) {
     const { username, password, email } = data;
     if (email) {
       await UserService.updateEmailById(id, email);
@@ -255,7 +255,7 @@ export class UserService {
     }
   }
 
-  static async destroy(id) {
+  static async destroy(id, userDataObj) {
     const data = await UserService.findOne(id);
 
     if (!data) {
@@ -276,5 +276,3 @@ export class UserService {
     });
   }
 }
-
-// export default UserService;

@@ -42,21 +42,9 @@ export class BaseController {
 
   createRouterHandlers(methods) {
     const handlers = {};
-    if (methods.includes('getMany')) {
-      handlers.getMany = this.getMany.bind(this);
-    }
-    if (methods.includes('getOne')) {
-      handlers.getOne = this.getOne.bind(this);
-    }
-    if (methods.includes('update')) {
-      handlers.update = this.update.bind(this);
-    }
-    if (methods.includes('create')) {
-      handlers.create = this.create.bind(this);
-    }
-    if (methods.includes('destroy')) {
-      handlers.destroy = this.destroy.bind(this);
-    }
+    methods.forEach((method) => {
+      handlers[method] = this[method].bind(this);
+    });
 
     return handlers;
   }

@@ -1,5 +1,5 @@
 import express from 'express';
-import FileService from '../../../../services/FileService.js';
+import FileService from '../../../services/FileService.js';
 import { UserController } from './UserController.js';
 import { FriendsController } from './FriendsController.js';
 
@@ -12,8 +12,8 @@ import {
   isEndUser,
   uploader,
   isFileValid
-} from '../../../middlewares/index.js';
-import { UserService } from '../../../../services/UserService.js';
+} from '../../middlewares/index.js';
+import { UserService } from '../../../services/UserService.js';
 
 const router = express.Router();
 

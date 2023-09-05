@@ -7,7 +7,7 @@ import {
   isPasswordValid,
   isEmailValid,
   isUsernameValid
-} from '../../../middlewares/index.js';
+} from '../../middlewares/index.js';
 
 const router = express.Router();
 const usersController = new UsersController();

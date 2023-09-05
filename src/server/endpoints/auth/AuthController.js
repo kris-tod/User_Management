@@ -1,7 +1,7 @@
-import { USER_LOGGED_IN, USER_LOGGED_OUT } from '../../../../constants/messages.js';
+import { USER_LOGGED_IN, USER_LOGGED_OUT } from '../../../constants/messages.js';
 
-import { authCookieName } from '../../../../config/index.js';
-import { UserService } from '../../../../services/UserService.js';
+import { authCookieName } from '../../../config/index.js';
+import { UserService } from '../../../services/UserService.js';
 
 export class AuthController {
   constructor() {
@@ -29,13 +29,9 @@ export class AuthController {
 
   createRouterHandlers(methods) {
     const handlers = {};
-
-    if (methods.includes('login')) {
-      handlers.login = this.login.bind(this);
-    }
-    if (methods.includes('logout')) {
-      handlers.logout = this.logout.bind(this);
-    }
+    methods.forEach((method) => {
+      handlers[method] = this[method].bind(this);
+    });
 
     return handlers;
   }
