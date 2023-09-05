@@ -15,8 +15,9 @@ export const isAuth = (req, res, next) => {
   try {
     const data = verifyToken(token);
 
-    req.userId = data.id;
-    req.userRole = data.role;
+    req.user = {};
+    req.user.id = data.id;
+    req.user.role = data.role;
 
     next();
   }
