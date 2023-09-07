@@ -29,7 +29,7 @@ export class UserService {
     this.logger = logger;
   }
 
-  async getAll(pageParam, userDataObj) {
+  async getAll(pageParam) {
     let page = pageParam || 1;
     if (page <= 0) {
       page = 1;
@@ -56,7 +56,7 @@ export class UserService {
     return users;
   }
 
-  async getOne(id, userDataObj) {
+  async getOne(id) {
     const user = await this.userRepo.getOne(id);
 
     user.setRole(roles[user.role]);
@@ -71,7 +71,7 @@ export class UserService {
     return user;
   }
 
-  async addFriend(id, friendUsername, userDataObj) {
+  async addFriend(id, friendUsername) {
     const friendData = await this.userRepo.getOneByUsername(friendUsername);
 
     if (!friendData) {
@@ -113,7 +113,7 @@ export class UserService {
     this.logger.log('info', 'addfriend');
   }
 
-  async removeFriend(id, friendUsername, userDataObj) {
+  async removeFriend(id, friendUsername) {
     const friendData = await this.userRepo.getOneByUsername(friendUsername);
 
     if (!friendData) {
@@ -202,7 +202,7 @@ export class UserService {
     await this.tokenBlacklistRepo.create({ token });
   }
 
-  async update(id, data, userDataObj) {
+  async update(id, data) {
     const { username, password, email } = data;
 
     if (email) {
@@ -235,8 +235,6 @@ export class UserService {
       throw new ServerError(404, USER_NOT_FOUND);
     }
 
-    console.log(user.username, username);
-
     await this.friendsRepo.updateUsername(user.username, username);
     await this.userRepo.update(id, { username });
   }
@@ -245,7 +243,7 @@ export class UserService {
     await this.userRepo.update(id, { email });
   }
 
-  async destroy(id, userDataObj) {
+  async destroy(id) {
     const user = await this.userRepo.getOne(id);
 
     if (!user) {

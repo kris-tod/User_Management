@@ -13,7 +13,7 @@ export class AuthController {
   async login(req, res) {
     const { username, password } = req.body;
 
-    const { user, token } = await this.authService.loginUser(username, password);
+    const { token } = await this.authService.loginUser(username, password);
 
     res.cookie(authCookieName, token).status(200).json({
       message: USER_LOGGED_IN

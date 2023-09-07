@@ -1,9 +1,8 @@
 import validator from 'validator';
 
 import { BaseEntity } from '../../utils/BaseEntity.js';
-import rolesMap, { rolesList } from '../../constants/roles.js';
 import {
-  EMAIL_NOT_VALID, FRIENDS_LIMIT_REACHED, INVALID_ROLE, USERNAME_NOT_VALID, USERS_NOT_FRIENDS
+  EMAIL_NOT_VALID, FRIENDS_LIMIT_REACHED, USERNAME_NOT_VALID, USERS_NOT_FRIENDS
 } from '../../constants/messages.js';
 
 const MAX_FRIENDS_COUNT = 1000;

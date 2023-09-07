@@ -1,7 +1,7 @@
 import { createLogger, transports } from 'winston';
 
 export class Logger {
-  constructor(errorPath, infoPath) {
+  constructor(errorPath) {
     this.logger = createLogger({
       transports: [
         new transports.Console({

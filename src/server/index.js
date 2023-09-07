@@ -5,14 +5,13 @@ import express, { json } from 'express';
 
 import {
   errorLogPath,
-  infoLogPath,
   port, staticDirPath
 } from '../config/index.js';
 import { errorHandler, urlNotFoundHandler } from './middlewares/index.js';
 import { Logger } from '../utils/Logger.js';
 import { createRouter } from './endpoints/index.js';
 
-const logger = new Logger(errorLogPath, infoLogPath);
+const logger = new Logger(errorLogPath);
 
 const app = express();
 
@@ -27,5 +26,5 @@ app.use('*', urlNotFoundHandler);
 app.use(errorHandler);
 
 app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+  // console.log(`Listening on port ${port}`);
 });
