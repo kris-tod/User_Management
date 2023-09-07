@@ -1,3 +1,5 @@
+export const rolesList = ['admin', 'endUser'];
+
 export default {
   admin: 0,
   endUser: 1,

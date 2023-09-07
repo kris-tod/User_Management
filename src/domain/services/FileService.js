@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { domain, staticDirname, dirname } from '../config/index.js';
+import { domain, staticDirname, dirname } from '../../config/index.js';
 
 export default class FileService {
   static getAvatarMaxSize() {

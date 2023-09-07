@@ -15,7 +15,7 @@ export class Logger {
     });
   }
 
-  log(type, message) {
-    this.logger[type](message);
+  log(type, message, data) {
+    this.logger[type](message, data);
   }
 }

@@ -1,12 +1,12 @@
 import { genSalt, hash as _hash } from 'bcrypt';
 import { Sequelize } from 'sequelize';
-import { dbConfig, saltRounds } from '../config/index.js';
+import { dbConfig, saltRounds } from '../../config/index.js';
 
 import UserModel from './user.js';
 import FriendshipModel from './friendships.js';
 import TokenBlacklistModel from './tokenBlacklist.js';
 
-import { CONNECTED_TO_DB, SYNC_WITH_DB } from '../constants/messages.js';
+import { CONNECTED_TO_DB, SYNC_WITH_DB } from '../../constants/messages.js';
 
 const sequelize = new Sequelize(
   dbConfig.database,

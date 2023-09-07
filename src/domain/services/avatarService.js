@@ -1,4 +1,4 @@
-import { staticDirname, dirname } from '../config/index.js';
+import { staticDirname, dirname } from '../../config/index.js';
 
 export const getAvatarName = (fileName) => {
   const lastDotIndex = fileName.lastIndexOf('.');

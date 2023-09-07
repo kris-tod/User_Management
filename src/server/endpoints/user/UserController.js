@@ -1,5 +1,5 @@
-import FileService from '../../../services/FileService.js';
-import { UserService } from '../../../services/UserService.js';
+import FileService from '../../../domain/services/FileService.js';
+import { UserService } from '../../../domain/user/UserService.js';
 
 import { BaseController } from '../../../utils/BaseController.js';
 

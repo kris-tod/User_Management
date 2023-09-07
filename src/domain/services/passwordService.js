@@ -1,6 +1,6 @@
 import { hash, compare } from 'bcrypt';
 
-import { saltRounds } from '../config/index.js';
+import { saltRounds } from '../../config/index.js';
 
 export default class PasswordService {
   static async hashPassword(password) {

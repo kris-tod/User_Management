@@ -1,5 +1,5 @@
 import { ADDED_FRIEND, REMOVED_FRIEND } from '../../../constants/messages.js';
-import { UserService } from '../../../services/UserService.js';
+import { UserService } from '../../../domain/user/UserService.js';
 import { BaseController } from '../../../utils/BaseController.js';
 
 export class FriendsController {

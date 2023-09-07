@@ -1,5 +1,5 @@
 import express from 'express';
-import FileService from '../../../services/FileService.js';
+import FileService from '../../../domain/services/FileService.js';
 import { UserController } from './UserController.js';
 import { FriendsController } from './FriendsController.js';
 
