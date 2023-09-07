@@ -13,13 +13,11 @@ import {
   uploader,
   isFileValid
 } from '../../middlewares/index.js';
-import { UserService } from '../../../services/UserService.js';
 
 export const createUserRouter = (logger) => {
   const router = express.Router();
-  const userService = new UserService(logger);
-  const userController = new UserController(userService);
-  const friendsController = new FriendsController(userService);
+  const userController = new UserController(logger);
+  const friendsController = new FriendsController(logger);
 
   const { getOne, update, updateAvatar } = userController.createRouterHandlers();
 

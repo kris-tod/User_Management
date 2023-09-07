@@ -10,7 +10,7 @@ import {
 } from '../config/index.js';
 import { errorHandler, urlNotFoundHandler } from './middlewares/index.js';
 import { Logger } from '../utils/Logger.js';
-import { createRouter } from './routes/index.js';
+import { createRouter } from './endpoints/index.js';
 
 const logger = new Logger(errorLogPath, infoLogPath);
 

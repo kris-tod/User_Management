@@ -1,6 +1,12 @@
+import { UserService } from '../../../services/UserService.js';
 import { BaseController } from '../../../utils/BaseController.js';
 
 export class UsersController extends BaseController {
+  constructor(logger) {
+    super(new UserService(logger));
+    this.logger = logger;
+  }
+
   async update(req, res) {
     const { password } = req.body;
     const id = req.params[this.identityName];

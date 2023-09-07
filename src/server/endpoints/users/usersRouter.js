@@ -8,12 +8,10 @@ import {
   isEmailValid,
   isUsernameValid
 } from '../../middlewares/index.js';
-import { UserService } from '../../../services/UserService.js';
 
 export const createUsersRouter = (logger) => {
   const router = express.Router();
-  const userService = new UserService(logger);
-  const usersController = new UsersController(userService);
+  const usersController = new UsersController(logger);
   const {
     getMany, create, update, destroy
   } = usersController.createRouterHandlers();

@@ -1,12 +1,13 @@
 import { USER_LOGGED_IN, USER_LOGGED_OUT } from '../../../constants/messages.js';
 
 import { authCookieName } from '../../../config/index.js';
-import { UserService } from '../../../services/UserService.js';
 import { BaseController } from '../../../utils/BaseController.js';
+import { UserService } from '../../../services/UserService.js';
 
 export class AuthController {
-  constructor(authService) {
-    this.authService = authService;
+  constructor(logger) {
+    this.authService = new UserService(logger);
+    this.logger = logger;
   }
 
   async login(req, res) {

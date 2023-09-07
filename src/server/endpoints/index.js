@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { createUsersRouter } from '../endpoints/users/usersRouter.js';
-import { createAuthRouter } from '../endpoints/auth/authRouter.js';
-import { createUserRouter } from '../endpoints/user/userRouter.js';
+import { createUsersRouter } from './users/usersRouter.js';
+import { createAuthRouter } from './auth/authRouter.js';
+import { createUserRouter } from './user/userRouter.js';
 
 export const createRouter = (logger) => {
   const router = Router();

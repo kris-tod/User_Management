@@ -1,9 +1,11 @@
 import { ADDED_FRIEND, REMOVED_FRIEND } from '../../../constants/messages.js';
+import { UserService } from '../../../services/UserService.js';
 import { BaseController } from '../../../utils/BaseController.js';
 
 export class FriendsController {
-  constructor(service) {
-    this.service = service;
+  constructor(logger) {
+    this.service = new UserService(logger);
+    this.logger = logger;
   }
 
   async addFriend(req, res) {

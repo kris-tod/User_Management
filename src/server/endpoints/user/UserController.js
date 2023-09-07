@@ -1,8 +1,14 @@
 import FileService from '../../../services/FileService.js';
+import { UserService } from '../../../services/UserService.js';
 
 import { BaseController } from '../../../utils/BaseController.js';
 
 export class UserController extends BaseController {
+  constructor(logger) {
+    super(new UserService(logger));
+    this.logger = logger;
+  }
+
   async getOne(req, res) {
     const { id } = req.user;
 
