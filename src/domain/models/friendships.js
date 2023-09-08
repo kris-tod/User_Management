@@ -9,6 +9,9 @@ export default (sequelize) => {
         primaryKey: true,
         autoIncrement: true
       },
+      user_id: {
+        type: DataTypes.BIGINT
+      },
       username: {
         type: DataTypes.STRING,
         allowNull: false
@@ -16,6 +19,9 @@ export default (sequelize) => {
       friend_username: {
         type: DataTypes.STRING,
         allowNull: false
+      },
+      friend_id: {
+        type: DataTypes.BIGINT
       }
     },
     {

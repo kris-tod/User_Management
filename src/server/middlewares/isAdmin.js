@@ -1,5 +1,5 @@
 import { USER_NOT_ADMIN } from '../../constants/messages.js';
-import roles from '../../constants/roles.js';
+import { roles } from '../../domain/user/User.js';
 
 export const isAdmin = (req, res, next) => {
   const { role } = req.user;

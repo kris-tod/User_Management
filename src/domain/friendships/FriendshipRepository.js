@@ -17,10 +17,28 @@ export class FriendshipRepository extends BaseRepo {
     return collection;
   }
 
+  async findAllFriendshipsById(userId) {
+    const collection = await this.dbClient.findAll({
+      where: {
+        user_id: userId
+      }
+    });
+
+    return collection;
+  }
+
   async deleteAllUserFriendships(username) {
     await this.dbClient.destroy({
       where: {
         [Op.or]: [{ username }, { friend_username: username }]
+      }
+    });
+  }
+
+  async deleteAllUserFriendshipsById(id) {
+    await this.dbClient.destroy({
+      where: {
+        [Op.or]: [{ user_id: id }, { friend_id: id }]
       }
     });
   }
@@ -37,6 +55,18 @@ export class FriendshipRepository extends BaseRepo {
     return collection;
   }
 
+  async findAllFriendshipsForUsersById(listOfIds) {
+    const collection = await this.dbClient.findAll({
+      where: {
+        user_id: {
+          [Op.in]: listOfIds
+        }
+      }
+    });
+
+    return collection;
+  }
+
   async destroyByUsernames(username, friendUsername) {
     await this.dbClient.destroy({
       where: {
@@ -46,11 +76,31 @@ export class FriendshipRepository extends BaseRepo {
     });
   }
 
+  async destroyByIds(userId, friendId) {
+    await this.dbClient.destroy({
+      where: {
+        user_id: userId,
+        friend_id: friendId
+      }
+    });
+  }
+
   async getByUsernames(username, friendUsername) {
     const entity = await this.dbClient.findOne({
       where: {
         username,
         friend_username: friendUsername
+      }
+    });
+
+    return entity;
+  }
+
+  async getByIds(userId, friendId) {
+    const entity = await this.dbClient.findOne({
+      where: {
+        user_id: userId,
+        friend_id: friendId
       }
     });
 
@@ -69,6 +119,14 @@ export class FriendshipRepository extends BaseRepo {
     await this.dbClient.destroy({
       where: {
         [Op.or]: [{ username }, { friend_username: username }]
+      }
+    });
+  }
+
+  async destroyFriendshipsWithId(id) {
+    await this.dbClient.destroy({
+      where: {
+        [Op.or]: [{ user_id: id }, { friend_id: id }]
       }
     });
   }

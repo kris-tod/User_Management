@@ -9,19 +9,19 @@ export class FriendsController {
 
   async addFriend(req, res) {
     const { id } = req.user;
-    const { friendUsername } = req.body;
+    const { friendId } = req.body;
 
-    await this.service.addFriend(id, friendUsername);
+    await this.service.addFriend(id, friendId);
     res.status(200).json({
-      friendUsername
+      friendId
     });
   }
 
   async removeFriend(req, res) {
     const { id } = req.user;
-    const { friendUsername } = req.body;
+    const { friendId } = req.body;
 
-    await this.service.removeFriend(id, friendUsername);
+    await this.service.removeFriend(id, friendId);
     res.status(200).json({});
   }
 

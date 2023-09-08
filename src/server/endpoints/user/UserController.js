@@ -1,5 +1,6 @@
 import FileService from '../../../domain/services/FileService.js';
 import { UserService } from '../../../domain/user/UserService.js';
+import { serializeUser } from '../serialize.js';
 
 import { BaseController } from '../../../utils/BaseController.js';
 
@@ -12,7 +13,7 @@ export class UserController extends BaseController {
     const { id } = req.user;
 
     const entity = await this.service.getOne(id);
-    res.status(200).json(entity);
+    res.status(200).json(serializeUser(entity));
   }
 
   async updateAvatar(req, res, next) {

@@ -6,7 +6,7 @@ import UserModel from './user.js';
 import FriendshipModel from './friendships.js';
 import TokenBlacklistModel from './tokenBlacklist.js';
 
-const sequelize = new Sequelize(
+export const sequelize = new Sequelize(
   dbConfig.database,
   dbConfig.username,
   dbConfig.password,
@@ -26,7 +26,7 @@ const db = {
 };
 
 sequelize
-  .sync({ force: false })
+  .sync({ force: false, alter: true })
   .then(() => db.User.findOne({ where: { username: 'admin' } }))
   .then((data) => {
     if (!data) {
@@ -43,7 +43,7 @@ sequelize
             username: 'admin',
             password: hash,
             email: 'admin@admin.com',
-            role: 0
+            role: 'admin'
           });
         });
       });

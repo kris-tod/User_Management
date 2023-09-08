@@ -1,12 +1,18 @@
 import validator from 'validator';
 
 import { BaseEntity } from '../../utils/BaseEntity.js';
-import roles from '../../constants/roles.js';
 import {
   EMAIL_NOT_VALID, FRIENDS_LIMIT_REACHED, USERNAME_NOT_VALID, USERS_NOT_FRIENDS
 } from '../../constants/messages.js';
 
 export const MAX_FRIENDS_COUNT = 1000;
+
+export const rolesList = ['admin', 'endUser'];
+
+export const roles = {
+  admin: 'admin',
+  endUser: 'endUser'
+};
 
 export class User extends BaseEntity {
   constructor(id, username, password, role, email = 'default@gmail.com', avatar = '') {
@@ -17,6 +23,12 @@ export class User extends BaseEntity {
     this.friendsList = [];
     this.email = email;
     this.avatar = avatar;
+  }
+
+  static createUser({
+    id, username, password, role, email, avatar
+  }) {
+    return new User(id, username, password, role, email || '', avatar || '');
   }
 
   setUsername(username) {
@@ -59,15 +71,15 @@ export class User extends BaseEntity {
     this.friendsList = this.friendsList.filter((friendUsername) => friendUsername !== username);
   }
 
-  static isEndUser(friend) {
-    return friend.role === roles.endUser;
+  isEndUser() {
+    return this.role === roles.endUser;
   }
 
-  static isAdmin(friend) {
-    return friend.role === roles.admin;
+  isAdmin() {
+    return this.role === roles.admin;
   }
 
-  static hasReachedFriendsLimit(user) {
-    return user.friendsList.length >= MAX_FRIENDS_COUNT;
+  hasReachedFriendsLimit() {
+    return this.friendsList.length >= MAX_FRIENDS_COUNT;
   }
 }

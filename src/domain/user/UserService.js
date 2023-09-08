@@ -14,12 +14,10 @@ import {
   DEFAULT_ERROR_MESSAGE
 } from '../../constants/messages.js';
 
-import roles from '../../constants/roles.js';
-
 import { UserRepository } from './UserRepository.js';
 import { FriendshipRepository } from '../friendships/FriendshipRepository.js';
 import { TokenBlacklistRepository } from '../tokenBlacklist/TokenBlacklistRepository.js';
-import { User } from './User.js';
+import { roles } from './User.js';
 
 export class UserService {
   constructor(logger) {
@@ -35,106 +33,71 @@ export class UserService {
       page = 1;
     }
 
-    const users = await this.userRepo.getAll(page, ['username']);
-    const listOfUsernames = users.map((user) => user.toJSON().username);
-
-    const friendshipsData = await this.friendsRepo.findAllFriendshipsForUsers(listOfUsernames);
-    const friendships = friendshipsData.map((friendship) => friendship.toJSON());
-
-    const collection = users.map((userData) => {
-      const user = userData.toJSON();
-      user.role = roles[user.role];
-
-      user.friendsList = friendships
-        .filter((friendship) => friendship.username === user.username)
-        .map((friendship) => friendship.friend_username);
-
-      return user;
-    });
+    const collection = await this.userRepo.getAll(page);
 
     this.logger.log('info', 'getall users');
     return collection;
   }
 
-  async getUserFriendsList(user) {
-    const data = await this.friendsRepo.findAllFriendshipsByUsername(user.username);
-
-    return data.map((el) => el.toJSON().friend_username);
-  }
-
   async getOne(id) {
-    const userData = await this.userRepo.getOne(id);
+    const user = await this.userRepo.getOne(id);
 
-    if (!userData) {
+    if (!user) {
       throw new ServerError(404, USER_NOT_FOUND);
     }
-
-    const user = userData.toJSON();
-
-    user.role = roles[user.role];
-
-    user.friendsList = await this.getUserFriendsList(user);
 
     this.logger.log('info', 'getone user');
     return user;
   }
 
-  async addFriend(id, friendUsername) {
-    const friendData = await this.userRepo.getOneByUsername(friendUsername);
+  async addFriend(id, friendId) {
+    const friend = await this.userRepo.getOne(friendId);
 
-    if (!friendData) {
+    if (!friend) {
       throw new ServerError(404, USER_NOT_FOUND);
     }
 
-    const friend = friendData.toJSON();
-
-    if (!User.isEndUser(friend)) {
+    if (!friend.isEndUser()) {
       throw new ServerError(401, USER_NOT_END_USER);
     }
 
-    const userData = await this.userRepo.getOne(id);
+    const user = await this.userRepo.getOne(id);
 
-    if (!userData) {
+    if (!user) {
       throw new ServerError(404, USER_NOT_FOUND);
     }
 
-    const user = userData.toJSON();
-
-    const { username } = user;
-
-    const friendship = await this.friendsRepo.getByUsernames(
-      username,
-      friendUsername
+    const friendship = await this.friendsRepo.getByIds(
+      id,
+      friendId
     );
 
     if (friendship) {
       throw new ServerError(422, ALREADY_FRIENDS);
     }
 
-    user.friendsList = await this.getUserFriendsList(user);
-
-    if (User.hasReachedFriendsLimit(user)) {
+    if (user.hasReachedFriendsLimit()) {
       throw new ServerError(422, FRIENDS_LIMIT_REACHED);
     }
 
     await this.friendsRepo.create({
-      username,
-      friend_username: friendUsername
+      user_id: id,
+      username: user.username,
+      friend_username: friend.username,
+      friend_id: friend.id
     });
 
     this.logger.log('info', 'addfriend');
   }
 
-  async removeFriend(id, friendUsername) {
-    const friendData = await this.userRepo.getOneByUsername(friendUsername);
+  async removeFriend(id, friendId) {
+    const friend = await this.userRepo.getOne(friendId);
 
-    if (!friendData) {
+    if (!friend) {
       throw new ServerError(404, USER_NOT_FOUND);
     }
 
-    const friend = friendData.toJSON();
-
-    if (!User.isEndUser(friend)) {
+    if (!friend.isEndUser) {
       throw new ServerError(401, USER_NOT_END_USER);
     }
 
@@ -144,18 +107,16 @@ export class UserService {
       throw new ServerError(404, USER_NOT_FOUND);
     }
 
-    const { username } = userData.toJSON();
-
-    const friendship = await this.friendsRepo.getByUsernames(
-      username,
-      friendUsername
+    const friendship = await this.friendsRepo.getByIds(
+      id,
+      friendId
     );
 
     if (!friendship) {
       throw new ServerError(422, USERS_NOT_FRIENDS);
     }
 
-    await this.friendsRepo.destroyByUsernames(username, friendUsername);
+    await this.friendsRepo.destroyByIds(id, friendId);
     this.logger.log('info', 'removefriend');
   }
 
@@ -186,17 +147,15 @@ export class UserService {
       throw new ServerError(500, DEFAULT_ERROR_MESSAGE);
     }
 
-    return entity.toJSON();
+    return entity;
   }
 
   async loginUser(username, password) {
-    const userData = await this.userRepo.getOneByUsername(username);
+    const user = await this.userRepo.getOneByUsername(username);
 
-    if (!userData) {
+    if (!user) {
       throw new ServerError(404, USER_NOT_FOUND);
     }
-
-    const user = userData.toJSON();
 
     const match = await PasswordService.comparePasswords(
       password,
@@ -268,13 +227,11 @@ export class UserService {
   }
 
   async destroy(id) {
-    const userData = await this.userRepo.getOne(id);
+    const user = await this.userRepo.getOne(id);
 
-    if (!userData) {
+    if (!user) {
       throw new ServerError(404, USER_NOT_FOUND);
     }
-
-    const user = userData.toJSON();
 
     const { username } = user;
 
