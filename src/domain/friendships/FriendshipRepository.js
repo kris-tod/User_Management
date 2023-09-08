@@ -1,8 +1,8 @@
 import { Op } from 'sequelize';
-import { BaseEntityRepository } from '../../utils/BaseEntityRepository.js';
+import { BaseRepo } from '../../utils/BaseRepo.js';
 import { Friendship } from '../models/db.js';
 
-export class FriendshipRepository extends BaseEntityRepository {
+export class FriendshipRepository extends BaseRepo {
   constructor() {
     super(Friendship);
   }
@@ -14,7 +14,7 @@ export class FriendshipRepository extends BaseEntityRepository {
       }
     });
 
-    return collection.map((entity) => entity.toJSON());
+    return collection;
   }
 
   async deleteAllUserFriendships(username) {
@@ -34,7 +34,7 @@ export class FriendshipRepository extends BaseEntityRepository {
       }
     });
 
-    return collection.map((entity) => entity.toJSON());
+    return collection;
   }
 
   async destroyByUsernames(username, friendUsername) {
@@ -54,7 +54,7 @@ export class FriendshipRepository extends BaseEntityRepository {
       }
     });
 
-    return entity && entity.toJSON();
+    return entity;
   }
 
   async updateUsername(oldUsername, username) {

@@ -1,18 +1,18 @@
-import { MAX_PER_PAGE } from '../constants/domain.js';
+const MAX_PER_PAGE = 5;
 
-export class BaseEntityRepository {
+export class BaseRepo {
   constructor(dbClient) {
     this.dbClient = dbClient;
   }
 
-  async getAll(page = 1) {
+  async getAll(page = 1, order = ['id'], entitiesPerPage = MAX_PER_PAGE) {
     const collection = await this.dbClient.findAll({
-      order: ['id'],
-      limit: MAX_PER_PAGE,
-      offset: MAX_PER_PAGE * (page - 1)
+      order,
+      limit: entitiesPerPage,
+      offset: entitiesPerPage * (page - 1)
     });
 
-    return collection.map((entity) => entity.toJSON());
+    return collection;
   }
 
   async getOne(id) {
@@ -20,7 +20,7 @@ export class BaseEntityRepository {
       where: { id }
     });
 
-    return entity && entity.toJSON();
+    return entity;
   }
 
   async create(entity) {
