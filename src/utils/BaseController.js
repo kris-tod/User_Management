@@ -1,7 +1,8 @@
 export class BaseController {
-  constructor(service, identityName = 'id') {
+  constructor(service, logger, identityName = 'id') {
     this.service = service;
     this.identityName = identityName;
+    this.logger = logger;
   }
 
   async getMany(req, res) {

@@ -1,8 +1,8 @@
 import { USER_NOT_LOGGED } from '../../constants/messages.js';
 import { authCookieName } from '../../config/index.js';
-import { TokenBlacklistRepository } from '../../domain/tokenBlacklist/TokenBlacklistRepository.js';
+import TokenBlacklistService from '../../domain/tokenBlacklist/TokenBlacklistService.js';
 
-export const isTokenNew = async (req, res, next) => {
+export const createIsTokenNew = (logger) => async (req, res, next) => {
   const token = req.cookies[authCookieName];
 
   if (!token) {
@@ -12,9 +12,9 @@ export const isTokenNew = async (req, res, next) => {
     return;
   }
 
-  const tokenRepo = new TokenBlacklistRepository();
+  const tokenService = new TokenBlacklistService(logger);
 
-  const data = await tokenRepo.getOne(token);
+  const data = await tokenService.find(token);
 
   if (!data) {
     next();

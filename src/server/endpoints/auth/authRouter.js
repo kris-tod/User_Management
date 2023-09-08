@@ -1,5 +1,5 @@
 import express from 'express';
-import { isAuth, isTokenNew } from '../../middlewares/index.js';
+import { isAuth, createIsTokenNew } from '../../middlewares/index.js';
 import { AuthController } from './AuthController.js';
 
 export const createAuthRouter = (logger) => {
@@ -9,7 +9,7 @@ export const createAuthRouter = (logger) => {
 
   router.post('/login', login);
 
-  router.post('/logout', isAuth, isTokenNew, logout);
+  router.post('/logout', isAuth, createIsTokenNew(logger), logout);
 
   return router;
 };

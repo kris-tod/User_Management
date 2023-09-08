@@ -5,7 +5,7 @@ import { FriendsController } from './FriendsController.js';
 
 import {
   isAuth,
-  isTokenNew,
+  createIsTokenNew,
   isUsernameValid,
   isEmailValid,
   isPasswordValid,
@@ -23,26 +23,26 @@ export const createUserRouter = (logger) => {
 
   const { addFriend, removeFriend } = friendsController.createRouterHandlers();
 
-  router.get('/', isAuth, isTokenNew, getOne);
+  router.get('/', isAuth, createIsTokenNew(logger), getOne);
 
-  router.patch('/username', isUsernameValid, isAuth, isTokenNew, update);
+  router.patch('/username', isUsernameValid, isAuth, createIsTokenNew(logger), update);
 
-  router.patch('/email', isEmailValid, isAuth, isTokenNew, update);
+  router.patch('/email', isEmailValid, isAuth, createIsTokenNew(logger), update);
 
-  router.patch('/password', isPasswordValid, isAuth, isTokenNew, update);
+  router.patch('/password', isPasswordValid, isAuth, createIsTokenNew(logger), update);
 
-  router.post('/friends', isAuth, isTokenNew, isEndUser, addFriend);
+  router.post('/friends', isAuth, createIsTokenNew(logger), isEndUser, addFriend);
 
   router.post(
     '/avatar',
     isAuth,
-    isTokenNew,
+    createIsTokenNew(logger),
     uploader.single('avatar'),
     isFileValid(FileService),
     updateAvatar
   );
 
-  router.delete('/friends', isAuth, isTokenNew, isEndUser, removeFriend);
+  router.delete('/friends', isAuth, createIsTokenNew(logger), isEndUser, removeFriend);
 
   return router;
 };

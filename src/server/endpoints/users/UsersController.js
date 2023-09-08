@@ -3,8 +3,7 @@ import { BaseController } from '../../../utils/BaseController.js';
 
 export class UsersController extends BaseController {
   constructor(logger) {
-    super(new UserService(logger));
-    this.logger = logger;
+    super(new UserService(logger), logger);
   }
 
   async update(req, res) {

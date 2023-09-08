@@ -2,7 +2,7 @@ import express from 'express';
 import { UsersController } from './UsersController.js';
 import {
   isAuth,
-  isTokenNew,
+  createIsTokenNew,
   isAdmin,
   isPasswordValid,
   isEmailValid,
@@ -16,7 +16,7 @@ export const createUsersRouter = (logger) => {
     getMany, create, update, destroy
   } = usersController.createRouterHandlers();
 
-  router.get('/', isAuth, isTokenNew, isAdmin, getMany);
+  router.get('/', isAuth, createIsTokenNew(logger), isAdmin, getMany);
 
   router.post(
     '/',
@@ -24,7 +24,7 @@ export const createUsersRouter = (logger) => {
     isPasswordValid,
     isEmailValid,
     isAuth,
-    isTokenNew,
+    createIsTokenNew(logger),
     isAdmin,
     create
   );
@@ -33,12 +33,12 @@ export const createUsersRouter = (logger) => {
     '/:id/password',
     isPasswordValid,
     isAuth,
-    isTokenNew,
+    createIsTokenNew(logger),
     isAdmin,
     update
   );
 
-  router.delete('/:id', isAuth, isTokenNew, isAdmin, destroy);
+  router.delete('/:id', isAuth, createIsTokenNew(logger), isAdmin, destroy);
 
   return router;
 };
