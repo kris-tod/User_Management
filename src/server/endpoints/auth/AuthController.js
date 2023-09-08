@@ -1,4 +1,4 @@
-import { USER_LOGGED_IN, USER_LOGGED_OUT } from '../../../constants/messages.js';
+import { USER_LOGGED_OUT } from '../../../constants/messages.js';
 
 import { authCookieName } from '../../../config/index.js';
 import { BaseController } from '../../../utils/BaseController.js';
@@ -16,7 +16,7 @@ export class AuthController {
     const { token } = await this.authService.loginUser(username, password);
 
     res.cookie(authCookieName, token).status(200).json({
-      message: USER_LOGGED_IN
+      token
     });
   }
 
@@ -24,9 +24,7 @@ export class AuthController {
     const token = req.cookies[authCookieName];
 
     await this.authService.logout(token);
-    res.clearCookie(authCookieName).status(200).json({
-      message: USER_LOGGED_OUT
-    });
+    res.clearCookie(authCookieName).status(200).json(USER_LOGGED_OUT);
   }
 
   createRouterHandlers() {

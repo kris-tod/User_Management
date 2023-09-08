@@ -1,6 +1,7 @@
 import { FILE_NOT_PROVIDED, FILE_TOO_BIG } from '../../constants/messages.js';
+import FileService from '../../domain/services/FileService.js';
 
-export const isFileValid = (fileService) => (req, res, next) => {
+export const isFileValid = (req, res, next) => {
   const { file } = req;
 
   if (!file) {
@@ -10,14 +11,14 @@ export const isFileValid = (fileService) => (req, res, next) => {
     return;
   }
 
-  if (file.size > fileService.getAvatarMaxSize()) {
+  if (file.size > FileService.getAvatarMaxSize()) {
     res.status(400).send({
       message: FILE_TOO_BIG
     });
     return;
   }
 
-  req.filePath = fileService.getFilePath(file);
+  req.filePath = FileService.getFilePath(file);
 
   next();
 };

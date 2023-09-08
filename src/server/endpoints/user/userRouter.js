@@ -1,11 +1,10 @@
 import express from 'express';
-import FileService from '../../../domain/services/FileService.js';
 import { UserController } from './UserController.js';
 import { FriendsController } from './FriendsController.js';
 
 import {
   isAuth,
-  createIsTokenNew,
+  isTokenNew,
   isUsernameValid,
   isEmailValid,
   isPasswordValid,
@@ -23,26 +22,26 @@ export const createUserRouter = (logger) => {
 
   const { addFriend, removeFriend } = friendsController.createRouterHandlers();
 
-  router.get('/', isAuth, createIsTokenNew(logger), getOne);
+  router.get('/', isAuth, isTokenNew(logger), getOne);
 
-  router.patch('/username', isUsernameValid, isAuth, createIsTokenNew(logger), update);
+  router.patch('/username', isUsernameValid, isAuth, isTokenNew(logger), update);
 
-  router.patch('/email', isEmailValid, isAuth, createIsTokenNew(logger), update);
+  router.patch('/email', isEmailValid, isAuth, isTokenNew(logger), update);
 
-  router.patch('/password', isPasswordValid, isAuth, createIsTokenNew(logger), update);
+  router.patch('/password', isPasswordValid, isAuth, isTokenNew(logger), update);
 
-  router.post('/friends', isAuth, createIsTokenNew(logger), isEndUser, addFriend);
+  router.post('/friends', isAuth, isTokenNew(logger), isEndUser, addFriend);
 
   router.post(
     '/avatar',
     isAuth,
-    createIsTokenNew(logger),
+    isTokenNew(logger),
     uploader.single('avatar'),
-    isFileValid(FileService),
+    isFileValid,
     updateAvatar
   );
 
-  router.delete('/friends', isAuth, createIsTokenNew(logger), isEndUser, removeFriend);
+  router.delete('/friends', isAuth, isTokenNew(logger), isEndUser, removeFriend);
 
   return router;
 };

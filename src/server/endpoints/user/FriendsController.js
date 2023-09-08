@@ -1,4 +1,3 @@
-import { ADDED_FRIEND, REMOVED_FRIEND } from '../../../constants/messages.js';
 import { UserService } from '../../../domain/user/UserService.js';
 import { BaseController } from '../../../utils/BaseController.js';
 
@@ -14,7 +13,7 @@ export class FriendsController {
 
     await this.service.addFriend(id, friendUsername);
     res.status(200).json({
-      message: ADDED_FRIEND
+      friendUsername
     });
   }
 
@@ -23,9 +22,7 @@ export class FriendsController {
     const { friendUsername } = req.body;
 
     await this.service.removeFriend(id, friendUsername);
-    res.status(200).json({
-      message: REMOVED_FRIEND
-    });
+    res.status(200).json({});
   }
 
   createRouterHandlers() {

@@ -19,8 +19,7 @@ import roles from '../../constants/roles.js';
 import { UserRepository } from './UserRepository.js';
 import { FriendshipRepository } from '../friendships/FriendshipRepository.js';
 import { TokenBlacklistRepository } from '../tokenBlacklist/TokenBlacklistRepository.js';
-
-const MAX_FRIENDS_COUNT = 1000;
+import { User } from './User.js';
 
 export class UserService {
   constructor(logger) {
@@ -57,6 +56,12 @@ export class UserService {
     return collection;
   }
 
+  async getUserFriendsList(user) {
+    const data = await this.friendsRepo.findAllFriendshipsByUsername(user.username);
+
+    return data.map((el) => el.toJSON().friend_username);
+  }
+
   async getOne(id) {
     const userData = await this.userRepo.getOne(id);
 
@@ -67,9 +72,8 @@ export class UserService {
     const user = userData.toJSON();
 
     user.role = roles[user.role];
-    const data = await this.friendsRepo.findAllFriendshipsByUsername(user.username);
 
-    user.friendsList = data.map((el) => el.toJSON().friend_username);
+    user.friendsList = await this.getUserFriendsList(user);
 
     this.logger.log('info', 'getone user');
     return user;
@@ -84,7 +88,7 @@ export class UserService {
 
     const friend = friendData.toJSON();
 
-    if (friend.role !== roles.endUser) {
+    if (!User.isEndUser(friend)) {
       throw new ServerError(401, USER_NOT_END_USER);
     }
 
@@ -107,9 +111,9 @@ export class UserService {
       throw new ServerError(422, ALREADY_FRIENDS);
     }
 
-    const friendships = await this.friendsRepo.findAllFriendshipsByUsername(username);
+    user.friendsList = await this.getUserFriendsList(user);
 
-    if (friendships.length >= MAX_FRIENDS_COUNT) {
+    if (User.hasReachedFriendsLimit(user)) {
       throw new ServerError(422, FRIENDS_LIMIT_REACHED);
     }
 
@@ -130,7 +134,7 @@ export class UserService {
 
     const friend = friendData.toJSON();
 
-    if (friend.role !== roles.endUser) {
+    if (!User.isEndUser(friend)) {
       throw new ServerError(401, USER_NOT_END_USER);
     }
 
