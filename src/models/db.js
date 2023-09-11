@@ -1,5 +1,5 @@
 import { genSalt, hash as _hash } from 'bcrypt';
-import { Sequelize } from 'sequelize';
+import { DataTypes, Sequelize } from 'sequelize';
 import { dbConfig, saltRounds } from '../config/index.js';
 
 import UserModel from './user.js';
@@ -24,6 +24,22 @@ const db = {
   User: UserModel(sequelize),
   Friendship: FriendshipModel(sequelize)
 };
+
+db.Friendship.hasOne(db.User, {
+  foreinKey: {
+    name: 'user_id',
+    type: DataTypes.BIGINT,
+    allowNull: false
+  }
+});
+db.Friendship.hasOne(db.User, {
+  foreinKey: {
+    name: 'friend_id',
+    type: DataTypes.BIGINT,
+    allowNull: false
+  }
+});
+db.User.belongsTo(db.Friendship);
 
 sequelize
   .sync({ force: false, alter: true })
