@@ -16,3 +16,9 @@ export const urlNotFoundHandler = (req, res) => {
     message: URL_NOT_FOUND
   });
 };
+
+export const FORBIDDEN_STATUS_CODE = 403;
+export const BAD_REQUEST_STATUS_CODE = 400;
+export const UNAUTHORIZED_STATUS_CODE = 403;
+export const INTERNAL_ERROR_STATUS_CODE = 403;
+export const NOT_FOUND_STATUS_CODE = 404;

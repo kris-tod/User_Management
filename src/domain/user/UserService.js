@@ -15,7 +15,7 @@ import { UserRepository } from './UserRepository.js';
 import { TokenBlacklistRepository } from './tokenBlacklist/TokenBlacklistRepository.js';
 import {
   ApiError, ForbiddenError, InternalError, NotFoundError
-} from '../../utils/errors/index.js';
+} from '../../utils/errors.js';
 
 export class UserService {
   constructor(logger) {

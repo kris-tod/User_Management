@@ -53,6 +53,9 @@
       ],
       "import/no-extraneous-dependencies": [
         "off"
+      ],
+      "max-classes-per-file": [
+        "off"
       ]
     }
   }
