@@ -30,16 +30,22 @@ export class UserRepository extends BaseRepo {
     return collection;
   }
 
-  async getAllByIds(usersIds) {
-    const users = await this.dbClient.findAll({
+  async getAllByIds(usersIds, t) {
+    const propObject = {
       where: {
         id: {
           [Op.in]: usersIds
         }
       }
-    });
+    };
 
-    const friendshipsData = await this.friendshipRepo.findAllFriendshipsForUsersById(usersIds);
+    if (t) {
+      propObject.transaction = t;
+    }
+
+    const users = await this.dbClient.findAll(propObject);
+
+    const friendshipsData = await this.friendshipRepo.findAllFriendshipsForUsersById(usersIds, t);
     const friendships = friendshipsData.map((friendship) => friendship.toJSON());
 
     const collection = users.map((userData) => {
@@ -90,16 +96,35 @@ export class UserRepository extends BaseRepo {
   }
 
   async getOneWithAttributes(id, attributes) {
-    const user = await this.dbClient.findOne({ attributes, where: { id } });
+    if (!attributes.length) {
+      return {};
+    }
 
-    return user;
+    const userData = await this.dbClient.findOne({ attributes, where: { id } });
+    const user = User.createUser(userData.toJSON());
+    const result = {};
+
+    attributes.forEach((attr) => {
+      result[attr] = user[attr];
+    });
+
+    return result;
   }
 
-  async updateFriends(id, friendsIds) {
-    this.friendshipRepo.deleteUserFriendshipsById(id);
+  async updateFriends(id, friendsIdsData, t) {
+    const friendsIds = friendsIdsData.map((friendId) => `${friendId}`);
+    const userFriendsIds = (await this.friendshipRepo.findAllFriendshipsById(id, t))
+      .map((f) => f.toJSON().friend_id);
 
-    friendsIds.forEach(async (friendId) => {
-      await this.friendshipRepo.create({ user_id: id, friend_id: friendId });
+    const idsToAdd = friendsIds.filter((friendId) => !userFriendsIds.includes(friendId));
+    const idsToRemove = userFriendsIds.filter((friendId) => !friendsIds.includes(friendId));
+
+    idsToAdd.forEach(async (friendId) => {
+      await this.friendshipRepo.create({ user_id: id, friend_id: friendId }, t);
+    });
+
+    idsToRemove.forEach(async (friendId) => {
+      await this.friendshipRepo.destroyByIds(id, friendId, t);
     });
   }
 

@@ -26,7 +26,7 @@ export default (sequelize) => {
     },
     {
       tableName: 'friendships',
-      timestamps: false
+      timestamps: true
     }
   );
 

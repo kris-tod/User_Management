@@ -17,12 +17,16 @@ export class FriendshipRepository extends BaseRepo {
     return collection;
   }
 
-  async findAllFriendshipsById(userId) {
-    const collection = await this.dbClient.findAll({
+  async findAllFriendshipsById(userId, t) {
+    const propObject = {
       where: {
         user_id: userId
       }
-    });
+    };
+    if (t) {
+      propObject.transaction = t;
+    }
+    const collection = await this.dbClient.findAll(propObject);
 
     return collection;
   }
@@ -61,15 +65,19 @@ export class FriendshipRepository extends BaseRepo {
     return collection;
   }
 
-  async findAllFriendshipsForUsersById(listOfIds) {
-    const collection = await this.dbClient.findAll({
+  async findAllFriendshipsForUsersById(listOfIds, t) {
+    const propObject = {
       where: {
         user_id: {
           [Op.in]: listOfIds
         }
       }
-    });
+    };
+    if (t) {
+      propObject.transaction = t;
+    }
 
+    const collection = await this.dbClient.findAll(propObject);
     return collection;
   }
 

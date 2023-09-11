@@ -8,7 +8,8 @@ import {
   INVALID_FRIENDS_IDS,
   PASSWORD_INCORRECT,
   USER_NOT_FOUND,
-  DEFAULT_ERROR_MESSAGE
+  DEFAULT_ERROR_MESSAGE,
+  USER_NOT_END_USER
 } from '../../constants/messages.js';
 
 import { UserRepository } from './UserRepository.js';
@@ -44,14 +45,20 @@ export class UserService {
     return user;
   }
 
-  async addFriends(id, friendsIds) {
-    const users = await this.userRepo.getAllByIds(friendsIds);
+  async updateFriends(id, friendsIds, t) {
+    const user = await this.userRepo.getOne(id);
+
+    if (!user.isEndUser()) {
+      throw new ServerError(401, USER_NOT_END_USER);
+    }
+
+    const users = await this.userRepo.getAllByIds(friendsIds, t);
 
     if (friendsIds.length !== users.length) {
       throw new ServerError(404, INVALID_FRIENDS_IDS);
     }
 
-    await this.userRepo.updateFriends(id, friendsIds);
+    await this.userRepo.updateFriends(id, friendsIds, t);
     this.logger.log('info', 'addfriend');
   }
 
@@ -111,7 +118,9 @@ export class UserService {
   }
 
   async update(id, data) {
-    const { username, password, email } = data;
+    const {
+      username, password, email, friendsList
+    } = data;
 
     await sequelize.transaction(async (t) => {
       if (email) {
@@ -123,10 +132,20 @@ export class UserService {
       if (password) {
         await this.updatePasswordById(id, password, t);
       }
+      if (friendsList) {
+        await this.updateFriends(id, friendsList, t);
+      }
     });
 
+    const attributes = Object.keys(data).filter((attr) => attr !== 'friendsList');
+    const result = await this.userRepo.getOneWithAttributes(id, attributes);
+
+    if (friendsList) {
+      result.friendsList = friendsList;
+    }
+
     this.logger.log('info', 'update');
-    return this.userRepo.getOneWithAttributes(id, Object.keys(data));
+    return result;
   }
 
   async updatePasswordById(id, password, t) {

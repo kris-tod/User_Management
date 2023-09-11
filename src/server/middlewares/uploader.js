@@ -1,6 +1,6 @@
 import multer, { diskStorage } from 'multer';
 
-import { getAvatarName, getDestination } from '../../domain/services/avatarService.js';
+import { getAvatarName, getDestination } from '../../domain/user/avatarService.js';
 
 const filename = (req, file, next) => {
   next(null, getAvatarName(file.originalname));
