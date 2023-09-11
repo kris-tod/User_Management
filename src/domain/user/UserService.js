@@ -125,19 +125,19 @@ export class UserService {
     } = data;
 
     await sequelize.transaction(async (t) => {
-      const propObj = { transaction: t };
+      const options = { transaction: t };
 
       if (email) {
-        await this.updateEmailById(id, email, propObj);
+        await this.updateEmailById(id, email, options);
       }
       if (username) {
-        await this.updateUsernameById(id, username, propObj);
+        await this.updateUsernameById(id, username, options);
       }
       if (password) {
-        await this.updatePasswordById(id, password, propObj);
+        await this.updatePasswordById(id, password, options);
       }
       if (friendsList) {
-        await this.updateFriends(id, friendsList, propObj);
+        await this.updateFriends(id, friendsList, options);
       }
     });
 
@@ -151,28 +151,28 @@ export class UserService {
     return result;
   }
 
-  async updatePasswordById(id, password, propObj) {
+  async updatePasswordById(id, password, options) {
     const hash = await PasswordService.hashPassword(password);
 
-    await this.userRepo.update(id, { password: hash }, propObj);
+    await this.userRepo.update(id, { password: hash }, options);
   }
 
   async updateAvatarById(id, avatar) {
     return this.userRepo.update(id, { avatar });
   }
 
-  async updateUsernameById(id, username, propObj) {
+  async updateUsernameById(id, username, options) {
     const userData = await this.userRepo.getOne(id);
 
     if (!userData) {
       throw new NotFoundError(USER_NOT_FOUND);
     }
 
-    await this.userRepo.update(id, { username }, propObj);
+    await this.userRepo.update(id, { username }, options);
   }
 
-  async updateEmailById(id, email, propObj) {
-    await this.userRepo.update(id, { email }, propObj);
+  async updateEmailById(id, email, options) {
+    await this.userRepo.update(id, { email }, options);
   }
 
   async destroy(id) {

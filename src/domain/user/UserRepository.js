@@ -30,18 +30,18 @@ export class UserRepository extends BaseRepo {
     return collection;
   }
 
-  async getAllByIds(usersIds, propObj = {}) {
+  async getAllByIds(usersIds, options = {}) {
     const users = await this.dbClient.findAll({
       where: {
         id: {
           [Op.in]: usersIds
         }
       },
-      ...propObj
+      ...options
     });
 
     const friendshipsData = await this.friendshipRepo
-      .findAllFriendshipsForUsersById(usersIds, propObj);
+      .findAllFriendshipsForUsersById(usersIds, options);
     const friendships = friendshipsData.map((friendship) => friendship.toJSON());
 
     const collection = users.map((userData) => {
@@ -107,20 +107,20 @@ export class UserRepository extends BaseRepo {
     return result;
   }
 
-  async updateFriends(id, friendsIdsData, propObj = {}) {
+  async updateFriends(id, friendsIdsData, options = {}) {
     const friendsIds = friendsIdsData.map((friendId) => `${friendId}`);
-    const userFriendsIds = (await this.friendshipRepo.findAllFriendshipsById(id, propObj))
+    const userFriendsIds = (await this.friendshipRepo.findAllFriendshipsById(id, options))
       .map((f) => f.toJSON().friend_id);
 
     const idsToAdd = friendsIds.filter((friendId) => !userFriendsIds.includes(friendId));
     const idsToRemove = userFriendsIds.filter((friendId) => !friendsIds.includes(friendId));
 
     idsToAdd.forEach(async (friendId) => {
-      await this.friendshipRepo.create({ user_id: id, friend_id: friendId }, propObj);
+      await this.friendshipRepo.create({ user_id: id, friend_id: friendId }, options);
     });
 
     idsToRemove.forEach(async (friendId) => {
-      await this.friendshipRepo.destroyByIds(id, friendId, propObj);
+      await this.friendshipRepo.destroyByIds(id, friendId, options);
     });
   }
 
