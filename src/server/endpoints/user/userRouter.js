@@ -24,11 +24,7 @@ export const createUserRouter = (logger) => {
 
   router.get('/', isAuth, isTokenNew(logger), getOne);
 
-  router.patch('/username', isUsernameValid, isAuth, isTokenNew(logger), update);
-
-  router.patch('/email', isEmailValid, isAuth, isTokenNew(logger), update);
-
-  router.patch('/password', isPasswordValid, isAuth, isTokenNew(logger), update);
+  router.patch('/', isUsernameValid, isAuth, isTokenNew(logger), update);
 
   router.post('/friends', isAuth, isTokenNew(logger), isEndUser, addFriend);
 
