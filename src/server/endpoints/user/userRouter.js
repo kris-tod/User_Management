@@ -20,13 +20,21 @@ export const createUserRouter = (logger) => {
 
   const { getOne, update, updateAvatar } = userController.createRouterHandlers();
 
-  const { addFriend, removeFriend } = friendsController.createRouterHandlers();
+  const { addFriends } = friendsController.createRouterHandlers();
 
   router.get('/', isAuth, isTokenNew(logger), getOne);
 
-  router.patch('/', isUsernameValid, isAuth, isTokenNew(logger), update);
+  router.patch(
+    '/',
+    isUsernameValid,
+    isPasswordValid,
+    isEmailValid,
+    isAuth,
+    isTokenNew(logger),
+    update
+  );
 
-  router.post('/friends', isAuth, isTokenNew(logger), isEndUser, addFriend);
+  router.post('/friends', isAuth, isTokenNew(logger), isEndUser, addFriends);
 
   router.post(
     '/avatar',
@@ -36,8 +44,6 @@ export const createUserRouter = (logger) => {
     isFileValid,
     updateAvatar
   );
-
-  router.delete('/friends', isAuth, isTokenNew(logger), isEndUser, removeFriend);
 
   return router;
 };

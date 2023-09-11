@@ -4,25 +4,18 @@ import ServerError from '../../utils/ServerError.js';
 import { createToken } from '../../utils/jwt.js';
 
 import {
-  USER_NOT_END_USER,
-  FRIENDS_LIMIT_REACHED,
-  ALREADY_FRIENDS,
+  INVALID_FRIENDS_IDS,
   PASSWORD_INCORRECT,
   USER_NOT_FOUND,
-  USERS_NOT_FRIENDS,
-  INVALID_ROLE,
   DEFAULT_ERROR_MESSAGE
 } from '../../constants/messages.js';
 
 import { UserRepository } from './UserRepository.js';
-import { FriendshipRepository } from '../friendships/FriendshipRepository.js';
 import { TokenBlacklistRepository } from '../tokenBlacklist/TokenBlacklistRepository.js';
-import { roles } from './User.js';
 
 export class UserService {
   constructor(logger) {
     this.userRepo = new UserRepository();
-    this.friendsRepo = new FriendshipRepository();
     this.tokenBlacklistRepo = new TokenBlacklistRepository();
     this.logger = logger;
   }
@@ -50,96 +43,28 @@ export class UserService {
     return user;
   }
 
-  async addFriend(id, friendId) {
-    const friend = await this.userRepo.getOne(friendId);
+  async addFriends(id, friendsIds) {
+    const users = await this.userRepo.getAllByIds(friendsIds);
 
-    if (!friend) {
-      throw new ServerError(404, USER_NOT_FOUND);
+    if (friendsIds.length !== users.length) {
+      throw new ServerError(404, INVALID_FRIENDS_IDS);
     }
 
-    if (!friend.isEndUser()) {
-      throw new ServerError(401, USER_NOT_END_USER);
-    }
-
-    const user = await this.userRepo.getOne(id);
-
-    if (!user) {
-      throw new ServerError(404, USER_NOT_FOUND);
-    }
-
-    const friendship = await this.friendsRepo.getByIds(
-      id,
-      friendId
-    );
-
-    if (friendship) {
-      throw new ServerError(422, ALREADY_FRIENDS);
-    }
-
-    if (user.hasReachedFriendsLimit()) {
-      throw new ServerError(422, FRIENDS_LIMIT_REACHED);
-    }
-
-    await this.friendsRepo.create({
-      user_id: id,
-      username: user.username,
-      friend_username: friend.username,
-      friend_id: friend.id
-    });
-
+    await this.userRepo.updateFriends(id, friendsIds);
     this.logger.log('info', 'addfriend');
-  }
-
-  async removeFriend(id, friendId) {
-    const friend = await this.userRepo.getOne(friendId);
-
-    if (!friend) {
-      throw new ServerError(404, USER_NOT_FOUND);
-    }
-
-    if (!friend.isEndUser) {
-      throw new ServerError(401, USER_NOT_END_USER);
-    }
-
-    const userData = await this.userRepo.getOne(id);
-
-    if (!userData) {
-      throw new ServerError(404, USER_NOT_FOUND);
-    }
-
-    const friendship = await this.friendsRepo.getByIds(
-      id,
-      friendId
-    );
-
-    if (!friendship) {
-      throw new ServerError(422, USERS_NOT_FRIENDS);
-    }
-
-    await this.friendsRepo.destroyByIds(id, friendId);
-    this.logger.log('info', 'removefriend');
   }
 
   async create({
     username, password, role, email
   }) {
-    let roleParam = role;
-    roleParam = roles[role];
-
-    if (!role) {
-      throw new ServerError(400, INVALID_ROLE);
-    }
-
     const hash = await PasswordService.hashPassword(password);
 
     await this.userRepo.create({
       username,
       email,
       password: hash,
-      role: roleParam
+      role
     });
-
-    this.logger.log('info', 'create user');
 
     const entity = await this.userRepo.getOneByUsername(username);
 
@@ -147,6 +72,7 @@ export class UserService {
       throw new ServerError(500, DEFAULT_ERROR_MESSAGE);
     }
 
+    this.logger.log('info', 'create user');
     return entity;
   }
 
@@ -216,9 +142,6 @@ export class UserService {
       throw new ServerError(404, USER_NOT_FOUND);
     }
 
-    const user = userData;
-
-    await this.friendsRepo.updateUsername(user.username, username);
     await this.userRepo.update(id, { username });
   }
 
@@ -233,11 +156,7 @@ export class UserService {
       throw new ServerError(404, USER_NOT_FOUND);
     }
 
-    const { username } = user;
-
     await this.userRepo.destroy(id);
-    await this.friendsRepo.destroyFriendshipsWithUsername(username);
-
     this.logger.log('info', 'delete user');
   }
 }

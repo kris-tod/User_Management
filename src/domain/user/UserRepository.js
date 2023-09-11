@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import { BaseRepo } from '../../utils/BaseRepo.js';
 import { FriendshipRepository } from '../friendships/FriendshipRepository.js';
 import { User as UserModel } from '../../models/db.js';
@@ -14,6 +15,31 @@ export class UserRepository extends BaseRepo {
     const listOfIds = users.map((user) => user.toJSON().id);
 
     const friendshipsData = await this.friendshipRepo.findAllFriendshipsForUsersById(listOfIds);
+    const friendships = friendshipsData.map((friendship) => friendship.toJSON());
+
+    const collection = users.map((userData) => {
+      const user = User.createUser(userData.toJSON());
+
+      user.friendsList = friendships
+        .filter((friendship) => friendship.user_id === user.id)
+        .map((friendship) => friendship.friend_id);
+
+      return user;
+    });
+
+    return collection;
+  }
+
+  async getAllByIds(usersIds) {
+    const users = await this.dbClient.findAll({
+      where: {
+        id: {
+          [Op.in]: usersIds
+        }
+      }
+    });
+
+    const friendshipsData = await this.friendshipRepo.findAllFriendshipsForUsersById(usersIds);
     const friendships = friendshipsData.map((friendship) => friendship.toJSON());
 
     const collection = users.map((userData) => {
@@ -67,5 +93,18 @@ export class UserRepository extends BaseRepo {
     const user = await this.dbClient.findOne({ attributes, where: { id } });
 
     return user;
+  }
+
+  async updateFriends(id, friendsIds) {
+    this.friendshipRepo.deleteUserFriendshipsById(id);
+
+    friendsIds.forEach(async (friendId) => {
+      await this.friendshipRepo.create({ user_id: id, friend_id: friendId });
+    });
+  }
+
+  async destroy(id) {
+    await super.destroy(id);
+    await this.friendshipRepo.deleteUserFriendshipsAssociations(id);
   }
 }

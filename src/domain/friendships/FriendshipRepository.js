@@ -35,7 +35,13 @@ export class FriendshipRepository extends BaseRepo {
     });
   }
 
-  async deleteAllUserFriendshipsById(id) {
+  async deleteUserFriendshipsById(id) {
+    await this.dbClient.destroy({
+      where: { user_id: id }
+    });
+  }
+
+  async deleteUserFriendshipsAssociations(id) {
     await this.dbClient.destroy({
       where: {
         [Op.or]: [{ user_id: id }, { friend_id: id }]

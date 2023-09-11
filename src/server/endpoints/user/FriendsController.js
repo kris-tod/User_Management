@@ -7,13 +7,13 @@ export class FriendsController {
     this.logger = logger;
   }
 
-  async addFriend(req, res) {
+  async addFriends(req, res) {
     const { id } = req.user;
-    const { friendId } = req.body;
+    const { friends } = req.body;
 
-    await this.service.addFriend(id, friendId);
+    await this.service.addFriends(id, friends);
     res.status(200).json({
-      friendId
+      friends
     });
   }
 
@@ -26,6 +26,6 @@ export class FriendsController {
   }
 
   createRouterHandlers() {
-    return BaseController.prototype.createRouterHandlers.call(this, ['addFriend', 'removeFriend']);
+    return BaseController.prototype.createRouterHandlers.call(this, ['addFriends', 'removeFriend']);
   }
 }

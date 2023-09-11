@@ -10,18 +10,18 @@ export default (sequelize) => {
         autoIncrement: true
       },
       user_id: {
-        type: DataTypes.BIGINT
+        type: DataTypes.BIGINT,
+        allowNull: false
       },
       username: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.STRING
       },
       friend_username: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.STRING
       },
       friend_id: {
-        type: DataTypes.BIGINT
+        type: DataTypes.BIGINT,
+        allowNull: false
       }
     },
     {
