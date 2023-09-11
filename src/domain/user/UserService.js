@@ -1,5 +1,4 @@
 import PasswordService from '../services/passwordService.js';
-import ServerError from '../../utils/ServerError.js';
 import { sequelize } from '../../models/db.js';
 
 import { createToken } from '../../utils/jwt.js';
@@ -14,6 +13,9 @@ import {
 
 import { UserRepository } from './UserRepository.js';
 import { TokenBlacklistRepository } from './tokenBlacklist/TokenBlacklistRepository.js';
+import {
+  ApiError, ForbiddenError, InternalError, NotFoundError
+} from '../../utils/errors/index.js';
 
 export class UserService {
   constructor(logger) {
@@ -23,48 +25,48 @@ export class UserService {
   }
 
   async getAll(pageParam) {
+    this.logger.log('info', 'getall users');
     let page = pageParam || 1;
     if (page <= 0) {
       page = 1;
     }
 
     const collection = await this.userRepo.getAll(page);
-
-    this.logger.log('info', 'getall users');
     return collection;
   }
 
   async getOne(id) {
+    this.logger.log('info', 'getone user');
     const user = await this.userRepo.getOne(id);
 
     if (!user) {
-      throw new ServerError(404, USER_NOT_FOUND);
+      throw new NotFoundError(USER_NOT_FOUND);
     }
 
-    this.logger.log('info', 'getone user');
     return user;
   }
 
   async updateFriends(id, friendsIds, t) {
+    this.logger.log('info', 'addfriend');
     const user = await this.userRepo.getOne(id);
 
     if (!user.isEndUser()) {
-      throw new ServerError(401, USER_NOT_END_USER);
+      throw new ForbiddenError(USER_NOT_END_USER);
     }
 
     const users = await this.userRepo.getAllByIds(friendsIds, t);
 
     if (friendsIds.length !== users.length) {
-      throw new ServerError(404, INVALID_FRIENDS_IDS);
+      throw new ApiError(INVALID_FRIENDS_IDS);
     }
 
     await this.userRepo.updateFriends(id, friendsIds, t);
-    this.logger.log('info', 'addfriend');
   }
 
   async create({
     username, password, role, email
   }) {
+    this.logger.log('info', 'create user');
     const hash = await PasswordService.hashPassword(password);
 
     await this.userRepo.create({
@@ -77,18 +79,18 @@ export class UserService {
     const entity = await this.userRepo.getOneByUsername(username);
 
     if (!entity) {
-      throw new ServerError(500, DEFAULT_ERROR_MESSAGE);
+      throw new InternalError(DEFAULT_ERROR_MESSAGE);
     }
 
-    this.logger.log('info', 'create user');
     return entity;
   }
 
   async loginUser(username, password) {
+    this.logger.log('info', 'login user');
     const user = await this.userRepo.getOneByUsername(username);
 
     if (!user) {
-      throw new ServerError(404, USER_NOT_FOUND);
+      throw new NotFoundError(USER_NOT_FOUND);
     }
 
     const match = await PasswordService.comparePasswords(
@@ -97,7 +99,7 @@ export class UserService {
     );
 
     if (!match) {
-      throw new ServerError(400, PASSWORD_INCORRECT);
+      throw new ApiError(PASSWORD_INCORRECT);
     }
 
     const token = createToken({
@@ -105,7 +107,6 @@ export class UserService {
       role: user.role
     });
 
-    this.logger.log('info', 'login user');
     return {
       user,
       token
@@ -118,6 +119,7 @@ export class UserService {
   }
 
   async update(id, data) {
+    this.logger.log('info', 'update');
     const {
       username, password, email, friendsList
     } = data;
@@ -146,7 +148,6 @@ export class UserService {
       result.friendsList = friendsList;
     }
 
-    this.logger.log('info', 'update');
     return result;
   }
 
@@ -164,7 +165,7 @@ export class UserService {
     const userData = await this.userRepo.getOne(id);
 
     if (!userData) {
-      throw new ServerError(404, USER_NOT_FOUND);
+      throw new NotFoundError(USER_NOT_FOUND);
     }
 
     await this.userRepo.update(id, { username }, propObj);
@@ -175,13 +176,13 @@ export class UserService {
   }
 
   async destroy(id) {
+    this.logger.log('info', 'delete user');
     const user = await this.userRepo.getOne(id);
 
     if (!user) {
-      throw new ServerError(404, USER_NOT_FOUND);
+      throw new NotFoundError(USER_NOT_FOUND);
     }
 
     await this.userRepo.destroy(id);
-    this.logger.log('info', 'delete user');
   }
 }
