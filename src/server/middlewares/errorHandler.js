@@ -11,20 +11,20 @@ export const errorHandler = (err, req, res) => {
     ? { message: err.message }
     : { message: DEFAULT_ERROR_MESSAGE };
 
-  switch (typeof err) {
-    case AuthError:
+  switch (err.constructor.name) {
+    case 'AuthError':
       response.status = 400;
       break;
-    case NotFoundError:
+    case 'NotFoundError':
       response.status = 404;
       break;
-    case ForbiddenError:
+    case 'ForbiddenError':
       response.status = 403;
       break;
-    case InternalError:
+    case 'InternalError':
       response.status = 500;
       break;
-    case ApiError:
+    case 'ApiError':
       response.status = 400;
       break;
     default:
