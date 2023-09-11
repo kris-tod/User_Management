@@ -1,6 +1,6 @@
 import { Op } from 'sequelize';
 import { BaseRepo } from '../../utils/BaseRepo.js';
-import { FriendshipRepository } from '../friendships/FriendshipRepository.js';
+import { FriendshipRepository } from './FriendshipRepository.js';
 import { User as UserModel } from '../../models/db.js';
 import { User } from './User.js';
 
