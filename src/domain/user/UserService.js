@@ -11,7 +11,7 @@ import {
 } from '../../constants/messages.js';
 
 import { UserRepository } from './UserRepository.js';
-import { TokenBlacklistRepository } from '../tokenBlacklist/TokenBlacklistRepository.js';
+import { TokenBlacklistRepository } from './tokenBlacklist/TokenBlacklistRepository.js';
 
 export class UserService {
   constructor(logger) {

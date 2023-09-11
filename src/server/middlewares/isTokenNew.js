@@ -1,6 +1,6 @@
 import { USER_NOT_LOGGED } from '../../constants/messages.js';
 import { authCookieName } from '../../config/index.js';
-import TokenBlacklistService from '../../domain/tokenBlacklist/TokenBlacklistService.js';
+import TokenBlacklistService from '../../domain/user/tokenBlacklist/TokenBlacklistService.js';
 
 export const isTokenNew = (logger) => async (req, res, next) => {
   const token = req.cookies[authCookieName];
