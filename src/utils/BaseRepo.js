@@ -27,8 +27,14 @@ export class BaseRepo {
     await this.dbClient.create(entity);
   }
 
-  async update(id, updatedData) {
-    await this.dbClient.update(updatedData, { where: { id } });
+  async update(id, updatedData, t) {
+    const propObject = { where: { id } };
+
+    if (t) {
+      propObject.transaction = t;
+    }
+
+    await this.dbClient.update(updatedData, propObject);
   }
 
   async destroy(id) {

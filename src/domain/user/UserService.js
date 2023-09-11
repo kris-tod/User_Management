@@ -1,5 +1,6 @@
 import PasswordService from '../services/passwordService.js';
 import ServerError from '../../utils/ServerError.js';
+import { sequelize } from '../../models/db.js';
 
 import { createToken } from '../../utils/jwt.js';
 
@@ -112,41 +113,44 @@ export class UserService {
   async update(id, data) {
     const { username, password, email } = data;
 
-    if (email) {
-      await this.updateEmailById(id, email);
-    }
-    if (username) {
-      await this.updateUsernameById(id, username);
-    }
-    if (password) {
-      await this.updatePasswordById(id, password);
-    }
+    await sequelize.transaction(async (t) => {
+      if (email) {
+        await this.updateEmailById(id, email, t);
+      }
+      if (username) {
+        await this.updateUsernameById(id, username, t);
+      }
+      if (password) {
+        await this.updatePasswordById(id, password, t);
+      }
+    });
+
     this.logger.log('info', 'update');
     return this.userRepo.getOneWithAttributes(id, Object.keys(data));
   }
 
-  async updatePasswordById(id, password) {
+  async updatePasswordById(id, password, t) {
     const hash = await PasswordService.hashPassword(password);
 
-    await this.userRepo.update(id, { password: hash });
+    await this.userRepo.update(id, { password: hash }, t);
   }
 
   async updateAvatarById(id, avatar) {
     return this.userRepo.update(id, { avatar });
   }
 
-  async updateUsernameById(id, username) {
+  async updateUsernameById(id, username, t) {
     const userData = await this.userRepo.getOne(id);
 
     if (!userData) {
       throw new ServerError(404, USER_NOT_FOUND);
     }
 
-    await this.userRepo.update(id, { username });
+    await this.userRepo.update(id, { username }, t);
   }
 
-  async updateEmailById(id, email) {
-    await this.userRepo.update(id, { email });
+  async updateEmailById(id, email, t) {
+    await this.userRepo.update(id, { email }, t);
   }
 
   async destroy(id) {
