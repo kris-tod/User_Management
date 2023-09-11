@@ -1,5 +1,5 @@
 import { BaseRepo } from '../../utils/BaseRepo.js';
-import { TokenBlacklist } from '../models/db.js';
+import { TokenBlacklist } from '../../models/db.js';
 
 export class TokenBlacklistRepository extends BaseRepo {
   constructor() {
