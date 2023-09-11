@@ -2,13 +2,36 @@ import {
   DEFAULT_ERROR_MESSAGE,
   URL_NOT_FOUND
 } from '../../constants/messages.js';
+import {
+  AuthError, ForbiddenError, NotFoundError, InternalError, ApiError
+} from '../../utils/errors.js';
 
 export const errorHandler = (err, req, res) => {
   const response = err.message
     ? { message: err.message }
     : { message: DEFAULT_ERROR_MESSAGE };
 
-  res.status(err.status || 500).send(response);
+  switch (typeof err) {
+    case AuthError:
+      response.status = 400;
+      break;
+    case NotFoundError:
+      response.status = 404;
+      break;
+    case ForbiddenError:
+      response.status = 403;
+      break;
+    case InternalError:
+      response.status = 500;
+      break;
+    case ApiError:
+      response.status = 400;
+      break;
+    default:
+      response.status = 500;
+  }
+
+  res.status(err.status).send(response);
 };
 
 export const urlNotFoundHandler = (req, res) => {
@@ -16,9 +39,3 @@ export const urlNotFoundHandler = (req, res) => {
     message: URL_NOT_FOUND
   });
 };
-
-export const FORBIDDEN_STATUS_CODE = 403;
-export const BAD_REQUEST_STATUS_CODE = 400;
-export const UNAUTHORIZED_STATUS_CODE = 403;
-export const INTERNAL_ERROR_STATUS_CODE = 403;
-export const NOT_FOUND_STATUS_CODE = 404;
