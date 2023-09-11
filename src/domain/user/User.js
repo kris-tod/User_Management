@@ -2,7 +2,7 @@ import validator from 'validator';
 
 import { BaseEntity } from '../../utils/BaseEntity.js';
 import {
-  EMAIL_NOT_VALID, FRIENDS_LIMIT_REACHED, USERNAME_NOT_VALID, USERS_NOT_FRIENDS
+  EMAIL_NOT_VALID, FRIENDS_LIMIT_REACHED, INVALID_ROLE, USERNAME_NOT_VALID, USERS_NOT_FRIENDS
 } from '../../constants/messages.js';
 
 export const MAX_FRIENDS_COUNT = 1000;
@@ -39,7 +39,11 @@ export class User extends BaseEntity {
     this.username = username;
   }
 
-  setRole(role) { // TODO: Implement it in UserService!
+  setRole(role) {
+    if (!rolesList.includes(role)) {
+      throw new Error(INVALID_ROLE);
+    }
+
     this.role = role;
   }
 
