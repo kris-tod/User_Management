@@ -1,10 +1,12 @@
-import { UserService } from '../../../domain/user/UserService.js';
-import { BaseController } from '../../../utils/BaseController.js';
-import { serializeUsers } from '../serialize.js';
+import { apps } from '../../../../constants/apps.js';
+import { createUserService } from '../../../../domain/user/UserService.js';
+import { BaseController } from '../../../../utils/BaseController.js';
+import { serializeUsers } from '../../serialize.js';
 
 export class UsersController extends BaseController {
   constructor(logger) {
-    super(new UserService(logger), logger);
+    const AdminUserService = createUserService(apps.web);
+    super(new AdminUserService(logger), logger);
   }
 
   async getMany(req, res) {

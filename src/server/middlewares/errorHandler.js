@@ -2,9 +2,6 @@ import {
   DEFAULT_ERROR_MESSAGE,
   URL_NOT_FOUND
 } from '../../constants/messages.js';
-import {
-  AuthError, ForbiddenError, NotFoundError, InternalError, ApiError
-} from '../../utils/errors.js';
 
 export const errorHandler = (err, req, res) => {
   const response = err.message

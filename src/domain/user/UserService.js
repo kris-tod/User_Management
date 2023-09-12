@@ -8,16 +8,21 @@ import {
   PASSWORD_INCORRECT,
   USER_NOT_FOUND,
   DEFAULT_ERROR_MESSAGE,
-  USER_NOT_END_USER
+  USER_NOT_END_USER,
+  USER_NOT_ADMIN,
+  INVALID_ROLE
 } from '../../constants/messages.js';
 
 import { UserRepository } from './UserRepository.js';
 import { TokenBlacklistRepository } from './tokenBlacklist/TokenBlacklistRepository.js';
 import {
-  ApiError, ForbiddenError, InternalError, NotFoundError
+  ApiError, AuthError, ForbiddenError, InternalError, NotFoundError
 } from '../../utils/errors.js';
+import { roles } from './User.js';
+import { apps } from '../../constants/apps.js';
+import FileService from '../services/FileService.js';
 
-export class UserService {
+export const createUserService = (app) => class UserService {
   constructor(logger) {
     this.userRepo = new UserRepository();
     this.tokenBlacklistRepo = new TokenBlacklistRepository();
@@ -26,6 +31,7 @@ export class UserService {
 
   async getAll(pageParam) {
     this.logger.log('info', 'getall users');
+
     let page = pageParam || 1;
     if (page <= 0) {
       page = 1;
@@ -37,6 +43,7 @@ export class UserService {
 
   async getOne(id) {
     this.logger.log('info', 'getone user');
+
     const user = await this.userRepo.getOne(id);
 
     if (!user) {
@@ -64,9 +71,14 @@ export class UserService {
   }
 
   async create({
-    username, password, role, email
+    username, password, role = 'endUser', email
   }) {
     this.logger.log('info', 'create user');
+
+    if (app === apps.mobile && role !== roles.endUser) {
+      throw new ForbiddenError(INVALID_ROLE);
+    }
+
     const hash = await PasswordService.hashPassword(password);
 
     await this.userRepo.create({
@@ -93,6 +105,14 @@ export class UserService {
       throw new NotFoundError(USER_NOT_FOUND);
     }
 
+    if (app === apps.mobile && !user.isEndUser()) {
+      throw new AuthError(USER_NOT_END_USER);
+    }
+
+    if (app === apps.web && !user.isAdmin()) {
+      throw new AuthError(USER_NOT_ADMIN);
+    }
+
     const match = await PasswordService.comparePasswords(
       password,
       user.password
@@ -104,7 +124,8 @@ export class UserService {
 
     const token = createToken({
       id: user.id,
-      role: user.role
+      role: user.role,
+      app
     });
 
     return {
@@ -118,7 +139,7 @@ export class UserService {
     await this.tokenBlacklistRepo.create({ token });
   }
 
-  async update(id, data) {
+  async update(id, data, reqUser) {
     this.logger.log('info', 'update');
     const {
       username, password, email, friendsList
@@ -137,6 +158,9 @@ export class UserService {
         await this.updatePasswordById(id, password, options);
       }
       if (friendsList) {
+        if (reqUser.role !== roles.endUser) {
+          throw new ForbiddenError(USER_NOT_END_USER);
+        }
         await this.updateFriends(id, friendsList, options);
       }
     });
@@ -157,12 +181,24 @@ export class UserService {
     await this.userRepo.update(id, { password: hash }, options);
   }
 
-  async updateAvatarById(id, avatar) {
-    return this.userRepo.update(id, { avatar });
+  async updateAvatarById(id, avatar, file) {
+    const t = await sequelize.transaction();
+
+    try {
+      await this.userRepo.update(id, { avatar });
+    }
+    catch (err) {
+      FileService.deleteFile(file);
+      t.rollback();
+    }
+
+    return {
+      avatar: FileService.getFilePath(file)
+    };
   }
 
   async updateUsernameById(id, username, options) {
-    const userData = await this.userRepo.getOne(id);
+    const userData = await this.userRepo.getOne(id, options);
 
     if (!userData) {
       throw new NotFoundError(USER_NOT_FOUND);
@@ -185,4 +221,4 @@ export class UserService {
 
     await this.userRepo.destroy(id);
   }
-}
+};

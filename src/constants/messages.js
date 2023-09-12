@@ -29,3 +29,4 @@ export const FILE_NOT_PROVIDED = 'File is not passed as parameter!';
 export const INVALID_ROLE = 'Role is invalid!';
 export const DEFAULT_ERROR_MESSAGE = 'Something broke!';
 export const INVALID_FRIENDS_IDS = 'Invalid list of friends ids!';
+export const INVALID_APP = 'User is not from the right application!';

@@ -6,8 +6,10 @@ import {
   isAdmin,
   isPasswordValid,
   isEmailValid,
-  isUsernameValid
-} from '../../middlewares/index.js';
+  isUsernameValid,
+  isFromApp
+} from '../../../middlewares/index.js';
+import { apps } from '../../../../constants/apps.js';
 
 export const createUsersRouter = (logger) => {
   const router = express.Router();
@@ -16,7 +18,14 @@ export const createUsersRouter = (logger) => {
     getMany, create, update, destroy
   } = usersController.createRouterHandlers();
 
-  router.get('/', isAuth, isTokenNew(logger), isAdmin, getMany);
+  router.get(
+    '/',
+    isAuth,
+    isFromApp(apps.web),
+    isTokenNew(logger),
+    isAdmin,
+    getMany
+  );
 
   router.post(
     '/',
@@ -24,6 +33,7 @@ export const createUsersRouter = (logger) => {
     isPasswordValid,
     isEmailValid,
     isAuth,
+    isFromApp(apps.web),
     isTokenNew(logger),
     isAdmin,
     create
@@ -33,12 +43,20 @@ export const createUsersRouter = (logger) => {
     '/:id/password',
     isPasswordValid,
     isAuth,
+    isFromApp(apps.web),
     isTokenNew(logger),
     isAdmin,
     update
   );
 
-  router.delete('/:id', isAuth, isTokenNew(logger), isAdmin, destroy);
+  router.delete(
+    '/:id',
+    isAuth,
+    isFromApp(apps.web),
+    isTokenNew(logger),
+    isAdmin,
+    destroy
+  );
 
   return router;
 };

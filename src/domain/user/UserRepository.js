@@ -57,9 +57,10 @@ export class UserRepository extends BaseRepo {
     return collection;
   }
 
-  async getOne(id) {
+  async getOne(id, options = {}) {
     const userData = await this.dbClient.findOne({
-      where: { id }
+      where: { id },
+      ...options
     });
 
     if (!userData) {
@@ -68,8 +69,12 @@ export class UserRepository extends BaseRepo {
 
     const user = User.createUser(userData.toJSON());
 
-    const friendships = await this.friendshipRepo.findAllFriendshipsById(user.id);
-    user.friendsList = friendships.map((friendship) => friendship.toJSON().friend_id);
+    const friendships = await this.friendshipRepo.findAllFriendshipsById(user.id, options);
+    const friendsUsers = await this.getAllByIds(
+      friendships.map((friendship) => friendship.toJSON().friend_id),
+      options
+    );
+    user.friendsList = friendsUsers;
 
     return user;
   }
@@ -88,7 +93,7 @@ export class UserRepository extends BaseRepo {
     const friendships = await this.friendshipRepo.findAllFriendshipsById(user.id);
     user.friendsList = friendships.map((friendship) => friendship.toJSON().friend_id);
 
-    return user;
+    return User.createUser(user);
   }
 
   async getOneWithAttributes(id, attributes) {

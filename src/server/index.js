@@ -19,7 +19,7 @@ app.use(json());
 app.use(cookieParser());
 app.use(express.static(staticDirPath));
 
-app.use('/api', createRouter(logger));
+app.use('/', createRouter(logger));
 
 app.use('*', urlNotFoundHandler);
 

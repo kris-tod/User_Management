@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import { createUsersRouter } from './users/usersRouter.js';
-import { createAuthRouter } from './auth/authRouter.js';
+import { createMobileRouter } from './api/index.js';
+import { createAdminRouter } from './admin/index.js';
 import { createUserRouter } from './user/userRouter.js';
 
 export const createRouter = (logger) => {
   const router = Router();
-  router.use('/users', createUsersRouter(logger));
+  router.use('/admin', createAdminRouter(logger));
   router.use('/user', createUserRouter(logger));
-  router.use('/auth', createAuthRouter(logger));
+  router.use('/api', createMobileRouter(logger));
 
   return router;
 };

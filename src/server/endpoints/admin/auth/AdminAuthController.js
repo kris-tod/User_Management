@@ -1,12 +1,14 @@
-import { USER_LOGGED_OUT } from '../../../constants/messages.js';
+import { USER_LOGGED_OUT } from '../../../../constants/messages.js';
 
-import { authCookieName } from '../../../config/index.js';
-import { BaseController } from '../../../utils/BaseController.js';
-import { UserService } from '../../../domain/user/UserService.js';
+import { authCookieName } from '../../../../config/index.js';
+import { BaseController } from '../../../../utils/BaseController.js';
+import { createUserService } from '../../../../domain/user/UserService.js';
+import { apps } from '../../../../constants/apps.js';
 
-export class AuthController {
+export class AdminAuthController {
   constructor(logger) {
-    this.authService = new UserService(logger);
+    const AdminUserService = createUserService(apps.web);
+    this.authService = new AdminUserService(logger);
     this.logger = logger;
   }
 

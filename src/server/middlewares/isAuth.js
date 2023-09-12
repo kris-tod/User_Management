@@ -18,6 +18,7 @@ export const isAuth = (req, res, next) => {
     req.user = {};
     req.user.id = data.id;
     req.user.role = data.role;
+    req.user.app = data.app;
 
     next();
   }
