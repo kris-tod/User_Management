@@ -1,6 +1,6 @@
 import { Op } from 'sequelize';
 import { BaseRepo } from '../../utils/BaseRepo.js';
-import { Friendship } from '../../models/db.js';
+import { Friendship } from '../../db/index.js';
 
 export class FriendshipRepository extends BaseRepo {
   constructor() {

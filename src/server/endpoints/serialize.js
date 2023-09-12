@@ -4,14 +4,16 @@ export const serializeUser = ({
   email,
   avatar,
   role,
-  friendsList
+  friendsList,
+  region
 }) => ({
   id,
   username,
   email,
   avatar,
   role,
-  friendsList
+  friendsList,
+  region
 });
 
 export const serializeUsers = (users) => users.map((user) => serializeUser(user));

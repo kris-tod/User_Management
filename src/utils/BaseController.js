@@ -22,22 +22,25 @@ export class BaseController {
   async update(req, res) {
     const data = req.body;
     const id = req.params[this.identityName];
+    const { user } = req;
 
-    const updatedData = await this.service.update(id, data);
+    const updatedData = await this.service.update(id, data, user);
     res.status(200).json(updatedData);
   }
 
   async create(req, res) {
     const data = req.body;
+    const { user } = req;
 
-    const entity = await this.service.create(data);
+    const entity = await this.service.create(data, user);
     res.status(201).json(entity);
   }
 
   async destroy(req, res) {
     const id = req.params[this.identityName];
+    const { user } = req;
 
-    await this.service.destroy(id);
+    await this.service.destroy(id, user);
     res.status(204).send('');
   }
 

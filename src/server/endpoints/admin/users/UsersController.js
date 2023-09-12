@@ -9,16 +9,18 @@ export class UsersController extends BaseController {
 
   async getMany(req, res) {
     const { page } = req.query;
+    const { user } = req;
 
-    const collection = await this.service.getAll(page);
+    const collection = await this.service.getAll(page, user);
     res.status(200).json(serializeUsers(collection));
   }
 
   async update(req, res) {
     const { password } = req.body;
     const id = req.params[this.identityName];
+    const { user } = req;
 
-    const updatedData = await this.service.update(id, { password });
+    const updatedData = await this.service.update(id, { password }, user);
     res.status(200).json(updatedData);
   }
 

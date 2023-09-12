@@ -59,7 +59,8 @@ sequelize
             username: 'admin',
             password: hash,
             email: 'admin@admin.com',
-            role: 'admin'
+            role: 'superadmin',
+            region: 'everywhere'
           });
         });
       });

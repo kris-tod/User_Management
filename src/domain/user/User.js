@@ -7,15 +7,16 @@ import {
 
 export const MAX_FRIENDS_COUNT = 1000;
 
-export const rolesList = ['admin', 'endUser'];
+export const rolesList = ['admin', 'endUser', 'superadmin'];
 
 export const roles = {
   admin: 'admin',
-  endUser: 'endUser'
+  endUser: 'endUser',
+  superadmin: 'superadmin'
 };
 
 export class User extends BaseEntity {
-  constructor(id, username, password, role, email = 'default@gmail.com', avatar = '') {
+  constructor(id, username, password, role, region, email = 'default@gmail.com', avatar = '') {
     super(id);
     this.setUsername(username);
     this.password = password;
@@ -23,12 +24,13 @@ export class User extends BaseEntity {
     this.friendsList = [];
     this.email = email;
     this.avatar = avatar;
+    this.region = region;
   }
 
   static createUser({
-    id, username, password, role, email, avatar
+    id, username, password, role, email, avatar, region
   }) {
-    return new User(id, username, password, role, email || '', avatar || '');
+    return new User(id, username, password, role, region, email || '', avatar || '');
   }
 
   setUsername(username) {
@@ -80,7 +82,15 @@ export class User extends BaseEntity {
   }
 
   isAdmin() {
-    return this.role === roles.admin;
+    return this.role === roles.admin || this.isSuperAdmin();
+  }
+
+  isRegionalAdmin() {
+    return this.isAdmin() && !this.isSuperAdmin();
+  }
+
+  isSuperAdmin() {
+    return this.role === roles.superadmin;
   }
 
   hasReachedFriendsLimit() {

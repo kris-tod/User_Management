@@ -1,7 +1,7 @@
 import { Op } from 'sequelize';
 import { BaseRepo } from '../../utils/BaseRepo.js';
 import { FriendshipRepository } from './FriendshipRepository.js';
-import { User as UserModel } from '../../models/db.js';
+import { User as UserModel } from '../../db/index.js';
 import { User } from './User.js';
 
 export class UserRepository extends BaseRepo {
@@ -10,8 +10,14 @@ export class UserRepository extends BaseRepo {
     this.friendshipRepo = new FriendshipRepository();
   }
 
-  async getAll(page = 1) {
-    const users = await super.getAll(page, ['username']);
+  async getAll(page = 1, region = '') {
+    const options = {};
+
+    if (region) {
+      options.where = { region };
+    }
+
+    const users = await super.getAll(page, ['username'], options);
     const listOfIds = users.map((user) => user.toJSON().id);
 
     const friendshipsData = await this.friendshipRepo.findAllFriendshipsForUsersById(listOfIds);

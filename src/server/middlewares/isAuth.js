@@ -15,11 +15,7 @@ export const isAuth = (req, res, next) => {
   try {
     const data = verifyToken(token);
 
-    req.user = {};
-    req.user.id = data.id;
-    req.user.role = data.role;
-    req.user.app = data.app;
-
+    req.user = data;
     next();
   }
   catch (err) {

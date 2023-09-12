@@ -1,5 +1,5 @@
 import PasswordService from '../services/passwordService.js';
-import { sequelize } from '../../models/db.js';
+import { sequelize } from '../../db/index.js';
 
 import { createToken } from '../../utils/jwt.js';
 
@@ -9,7 +9,8 @@ import {
   USER_NOT_FOUND,
   DEFAULT_ERROR_MESSAGE,
   USER_NOT_END_USER,
-  USER_NOT_ADMIN
+  USER_NOT_ADMIN,
+  INVALID_REGION
 } from '../../constants/messages.js';
 
 import { UserRepository } from './UserRepository.js';
@@ -28,7 +29,7 @@ export class UserService {
     this.logger = logger;
   }
 
-  async getAll(pageParam) {
+  async getAll(pageParam, reqUser) {
     this.logger.log('info', 'getall users');
 
     let page = pageParam || 1;
@@ -36,7 +37,10 @@ export class UserService {
       page = 1;
     }
 
-    const collection = await this.userRepo.getAll(page);
+    const collection = await this.userRepo.getAll(
+      page,
+      (reqUser.role === roles.admin) ? reqUser.region : ''
+    );
     return collection;
   }
 
@@ -69,14 +73,28 @@ export class UserService {
     await this.userRepo.updateFriends(id, friendsIds, t);
   }
 
-  async register({ username, password, email }) {
-    return this.create({ username, password, email });
+  async register({
+    username, password, email, region
+  }) {
+    return this.create({
+      username, password, email, region
+    });
+  }
+
+  async createByRegionalAdmin({ username, password, email }, reqUser) {
+    return this.create({
+      username, password, email, region: reqUser.region
+    });
   }
 
   async create({
-    username, password, role = 'endUser', email
-  }) {
+    username, password, role = 'endUser', email, region
+  }, reqUser = {}) {
     this.logger.log('info', 'create user');
+
+    if (reqUser.role === roles.admin) {
+      return this.createByRegionalAdmin({ username, password, email }, reqUser);
+    }
 
     const hash = await PasswordService.hashPassword(password);
 
@@ -84,7 +102,8 @@ export class UserService {
       username,
       email,
       password: hash,
-      role
+      role,
+      region
     });
 
     const entity = await this.userRepo.getOneByUsername(username);
@@ -120,7 +139,8 @@ export class UserService {
     const token = createToken({
       id: user.id,
       role: user.role,
-      app: apps.web
+      app: apps.web,
+      region: user.region
     });
 
     return {
@@ -153,7 +173,8 @@ export class UserService {
     const token = createToken({
       id: user.id,
       role: user.role,
-      app: apps.mobile
+      app: apps.mobile,
+      region: user.region
     });
 
     return {
@@ -167,15 +188,34 @@ export class UserService {
     await this.tokenBlacklistRepo.create({ token });
   }
 
+  async checkRegion(id, reqUser) {
+    const entity = await this.userRepo.getOne(id);
+
+    if (!entity) {
+      throw new NotFoundError(USER_NOT_FOUND);
+    }
+
+    return entity.region === reqUser.region;
+  }
+
   async update(id, data, reqUser) {
     this.logger.log('info', 'update');
     const {
-      username, password, email, friendsList
+      username, password, email, friendsList, region
     } = data;
+
+    if (reqUser.role === roles.admin) {
+      const areSameRegion = await this.checkRegion(id, reqUser);
+      if (!areSameRegion) {
+        throw new ApiError(INVALID_REGION);
+      }
+    }
 
     await sequelize.transaction(async (t) => {
       const options = { transaction: t };
-
+      if (region) {
+        await this.updateRegionById(id, region, options);
+      }
       if (email) {
         await this.updateEmailById(id, email, options);
       }
@@ -201,6 +241,10 @@ export class UserService {
     }
 
     return result;
+  }
+
+  async updateRegionById(id, region, options) {
+    await this.userRepo.update(id, { region }, options);
   }
 
   async updatePasswordById(id, password, options) {
@@ -239,12 +283,16 @@ export class UserService {
     await this.userRepo.update(id, { email }, options);
   }
 
-  async destroy(id) {
+  async destroy(id, reqUser) {
     this.logger.log('info', 'delete user');
-    const user = await this.userRepo.getOne(id);
+    const entity = await this.userRepo.getOne(id);
 
-    if (!user) {
+    if (!entity) {
       throw new NotFoundError(USER_NOT_FOUND);
+    }
+
+    if (reqUser.role === roles.admin && entity.region !== reqUser.region) {
+      throw new ApiError(INVALID_REGION);
     }
 
     await this.userRepo.destroy(id);

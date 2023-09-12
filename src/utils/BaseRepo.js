@@ -1,15 +1,16 @@
-const MAX_PER_PAGE = 5;
+export const MAX_PER_PAGE = 5;
 
 export class BaseRepo {
   constructor(dbClient) {
     this.dbClient = dbClient;
   }
 
-  async getAll(page = 1, order = ['id'], entitiesPerPage = MAX_PER_PAGE) {
+  async getAll(page = 1, order = ['id'], options = {}, entitiesPerPage = MAX_PER_PAGE) {
     const collection = await this.dbClient.findAll({
       order,
       limit: entitiesPerPage,
-      offset: entitiesPerPage * (page - 1)
+      offset: entitiesPerPage * (page - 1),
+      ...options
     });
 
     return collection;
