@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "localhost:4000/api/users?page=1",
+			"name": "Users",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -151,7 +151,7 @@
 			]
 		},
 		{
-			"name": "localhost:4000/api/auth/login",
+			"name": "Mobile login",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -307,17 +307,84 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"status\": 400,\n    \"message\": \"Passwords do not match!\"\n}"
+				},
+				{
+					"name": "success (end user)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"kris\",\n    \"password\": \"dummy123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/api/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "x-auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJyb2xlIjoiZW5kVXNlciIsImlhdCI6MTY5NDQzMzAyMywiZXhwIjoxNjk0NDM2NjIzfQ.Pg027XdOARNfGiAHkdV38GbqtDVWyTyl3t9aFf2x0FM; Path=/"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "175"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"af-Ez0ALYmgKJxzKu5kG1dtRC5IKw8\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 11 Sep 2023 11:50:23 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJyb2xlIjoiZW5kVXNlciIsImlhdCI6MTY5NDQzMzAyMywiZXhwIjoxNjk0NDM2NjIzfQ.Pg027XdOARNfGiAHkdV38GbqtDVWyTyl3t9aFf2x0FM\"\n}"
 				}
 			]
 		},
 		{
-			"name": "localhost:4000/api/users/",
+			"name": "Admin login",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"dummy1\",\n    \"email\": \"dummy1@gmail.com\",\n    \"password\": \"dummy123\"\n}",
+					"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -325,13 +392,240 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:4000/api/users/",
+					"raw": "localhost:4000/admin/auth/login",
 					"host": [
 						"localhost"
 					],
 					"port": "4000",
 					"path": [
-						"api",
+						"admin",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/api/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "x-auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJyb2xlIjowLCJpYXQiOjE2OTM1NjE0NTcsImV4cCI6MTY5MzU2NTA1N30.0a7zsLHrnXAvlvtIXFSo11HHN6fwovxH2szi2oyzEJQ; Path=/"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "37"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"25-zSmdLRauxl2+Ak3IGgNPqJfzZMA\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 01 Sep 2023 09:44:17 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Successfully logged in!\"\n}"
+				},
+				{
+					"name": "wrong password",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"dummy1\",\n    \"password\": \"dummy123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/api/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "50"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"32-bxeZ7fD4utXTR3ggaYJhXi8QBMY\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 01 Sep 2023 11:27:42 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": 400,\n    \"message\": \"Passwords do not match!\"\n}"
+				},
+				{
+					"name": "success (end user)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"kris\",\n    \"password\": \"dummy123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/api/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "x-auth-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJyb2xlIjoiZW5kVXNlciIsImlhdCI6MTY5NDQzMzAyMywiZXhwIjoxNjk0NDM2NjIzfQ.Pg027XdOARNfGiAHkdV38GbqtDVWyTyl3t9aFf2x0FM; Path=/"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "175"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"af-Ez0ALYmgKJxzKu5kG1dtRC5IKw8\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 11 Sep 2023 11:50:23 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJyb2xlIjoiZW5kVXNlciIsImlhdCI6MTY5NDQzMzAyMywiZXhwIjoxNjk0NDM2NjIzfQ.Pg027XdOARNfGiAHkdV38GbqtDVWyTyl3t9aFf2x0FM\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Add user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"deni\",\n    \"email\": \"deni@gmail.com\",\n    \"password\": \"dummy123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:4000/admin/users/",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"admin",
 						"users",
 						""
 					]
@@ -404,27 +698,27 @@
 			]
 		},
 		{
-			"name": "localhost:4000/api/users/2",
+			"name": "Delete user",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:4000/api/users/2",
+					"raw": "localhost:4000/admin/users/12",
 					"host": [
 						"localhost"
 					],
 					"port": "4000",
 					"path": [
-						"api",
+						"admin",
 						"users",
-						"2"
+						"12"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "localhost:4000/api/user",
+			"name": "User info",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -603,13 +897,13 @@
 			]
 		},
 		{
-			"name": "localhost:4000/api/users/3/password",
+			"name": "Admin edit",
 			"request": {
 				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"password\": \"dummy123\"\n}",
+					"raw": "{\n    \"password\": \"denito123\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -617,15 +911,15 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:4000/api/users/3/password",
+					"raw": "localhost:4000/admin/users/12/password",
 					"host": [
 						"localhost"
 					],
 					"port": "4000",
 					"path": [
-						"api",
+						"admin",
 						"users",
-						"3",
+						"12",
 						"password"
 					]
 				}
@@ -633,100 +927,7 @@
 			"response": []
 		},
 		{
-			"name": "localhost:4000/api/user/friends",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"friendUsername\": \"dummy4\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:4000/api/user/friends",
-					"host": [
-						"localhost"
-					],
-					"port": "4000",
-					"path": [
-						"api",
-						"user",
-						"friends"
-					]
-				}
-			},
-			"response": [
-				{
-					"name": "success",
-					"originalRequest": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"friendUsername\": \"dummy4\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:4000/api/user/friends",
-							"host": [
-								"localhost"
-							],
-							"port": "4000",
-							"path": [
-								"api",
-								"user",
-								"friends"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "60"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"3c-e459bnzTpo4VRWJo2RBfzffg4+M\""
-						},
-						{
-							"key": "Date",
-							"value": "Fri, 01 Sep 2023 11:31:16 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=5"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"message\": \"Successfully removed friend from friends list!\"\n}"
-				}
-			]
-		},
-		{
-			"name": "localhost:4000/api/auth/logout",
+			"name": "Mobile logout",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -746,7 +947,27 @@
 			"response": []
 		},
 		{
-			"name": "localhost:4000/api/user/avatar",
+			"name": "Admin logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:4000/admin/auth/logout",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"admin",
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Avatar",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -756,12 +977,40 @@
 						{
 							"key": "avatar",
 							"type": "file",
-							"src": "/Users/appstreams/Desktop/dog-puppy-on-garden-royalty-free-image-1586966191.jpg"
+							"src": "/Users/appstreams/Documents/puppy-that-is-walking-snow_1340-37228.webp"
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost:4000/api/user/avatar",
+					"raw": "localhost:4000/user/avatar",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"user",
+						"avatar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit user",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"kris\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:4000/api/user/",
 					"host": [
 						"localhost"
 					],
@@ -769,11 +1018,142 @@
 					"path": [
 						"api",
 						"user",
-						"avatar"
+						""
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Failure",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"friendsList\": [7, 11],\n    \"username\": \"krischo\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/api/user/",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"user",
+								""
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "html",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Security-Policy",
+							"value": "default-src 'none'"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/html; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "910"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 11 Sep 2023 10:03:00 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "<!DOCTYPE html>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error</title>\n    </head>\n    <body>\n        <pre>Error: Invalid list of friends ids!\n            <br> &nbsp; &nbsp;at UserService.updateFriends (file:///Users/appstreams/Documents/User_Management/src/domain/user/UserService.js:58:13)\n            <br> &nbsp; &nbsp;at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n            <br> &nbsp; &nbsp;at async file:///Users/appstreams/Documents/User_Management/src/domain/user/UserService.js:136:9\n            <br> &nbsp; &nbsp;at async /Users/appstreams/Documents/User_Management/node_modules/sequelize/lib/sequelize.js:507:18\n            <br> &nbsp; &nbsp;at async UserService.update (file:///Users/appstreams/Documents/User_Management/src/domain/user/UserService.js:125:5)\n            <br> &nbsp; &nbsp;at async UserController.update (file:///Users/appstreams/Documents/User_Management/src/server/endpoints/user/UserController.js:39:25)\n        </pre>\n    </body>\n</html>"
+				},
+				{
+					"name": "success",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"friendsList\": [7, 10],\n    \"username\": \"krischo\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/api/user/",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"user",
+								""
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "43"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2b-Jsp9n81jY4/zNDDLlZVUVO4bQJE\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 11 Sep 2023 10:03:21 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"username\": \"krischo\",\n    \"friendsList\": [\n        7,\n        10\n    ]\n}"
+				}
+			]
 		}
 	]
 }
