@@ -2,20 +2,18 @@ import { USER_LOGGED_OUT } from '../../../../constants/messages.js';
 
 import { authCookieName } from '../../../../config/index.js';
 import { BaseController } from '../../../../utils/BaseController.js';
-import { createUserService } from '../../../../domain/user/UserService.js';
-import { apps } from '../../../../constants/apps.js';
+import { UserService } from '../../../../domain/user/UserService.js';
 
 export class AdminAuthController {
   constructor(logger) {
-    const AdminUserService = createUserService(apps.web);
-    this.authService = new AdminUserService(logger);
+    this.authService = new UserService(logger);
     this.logger = logger;
   }
 
   async login(req, res) {
     const { username, password } = req.body;
 
-    const { token } = await this.authService.loginUser(username, password);
+    const { token } = await this.authService.loginWebUser(username, password);
 
     res.cookie(authCookieName, token).status(200).json({
       token

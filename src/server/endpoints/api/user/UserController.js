@@ -1,12 +1,10 @@
-import { createUserService } from '../../../domain/user/UserService.js';
-import { serializeUser } from '../serialize.js';
+import { UserService } from '../../../../domain/user/UserService.js';
+import { serializeUser } from '../../serialize.js';
 
-import { BaseController } from '../../../utils/BaseController.js';
-import { apps } from '../../../constants/apps.js';
+import { BaseController } from '../../../../utils/BaseController.js';
 
 export class UserController extends BaseController {
   constructor(logger) {
-    const UserService = createUserService(apps.all);
     super(new UserService(logger), logger);
   }
 

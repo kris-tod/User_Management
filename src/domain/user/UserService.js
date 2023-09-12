@@ -9,8 +9,7 @@ import {
   USER_NOT_FOUND,
   DEFAULT_ERROR_MESSAGE,
   USER_NOT_END_USER,
-  USER_NOT_ADMIN,
-  INVALID_ROLE
+  USER_NOT_ADMIN
 } from '../../constants/messages.js';
 
 import { UserRepository } from './UserRepository.js';
@@ -22,7 +21,7 @@ import { roles } from './User.js';
 import { apps } from '../../constants/apps.js';
 import FileService from '../services/FileService.js';
 
-export const createUserService = (app) => class UserService {
+export class UserService {
   constructor(logger) {
     this.userRepo = new UserRepository();
     this.tokenBlacklistRepo = new TokenBlacklistRepository();
@@ -70,14 +69,14 @@ export const createUserService = (app) => class UserService {
     await this.userRepo.updateFriends(id, friendsIds, t);
   }
 
+  async register({ username, password, email }) {
+    return this.create({ username, password, email });
+  }
+
   async create({
     username, password, role = 'endUser', email
   }) {
     this.logger.log('info', 'create user');
-
-    if (app === apps.mobile && role !== roles.endUser) {
-      throw new ForbiddenError(INVALID_ROLE);
-    }
 
     const hash = await PasswordService.hashPassword(password);
 
@@ -97,19 +96,15 @@ export const createUserService = (app) => class UserService {
     return entity;
   }
 
-  async loginUser(username, password) {
-    this.logger.log('info', 'login user');
+  async loginWebUser(username, password) {
+    this.logger.log('info', 'login web user');
     const user = await this.userRepo.getOneByUsername(username);
 
     if (!user) {
       throw new NotFoundError(USER_NOT_FOUND);
     }
 
-    if (app === apps.mobile && !user.isEndUser()) {
-      throw new AuthError(USER_NOT_END_USER);
-    }
-
-    if (app === apps.web && !user.isAdmin()) {
+    if (!user.isAdmin()) {
       throw new AuthError(USER_NOT_ADMIN);
     }
 
@@ -125,7 +120,40 @@ export const createUserService = (app) => class UserService {
     const token = createToken({
       id: user.id,
       role: user.role,
-      app
+      app: apps.web
+    });
+
+    return {
+      user,
+      token
+    };
+  }
+
+  async loginMobileUser(username, password) {
+    this.logger.log('info', 'login mobile user');
+    const user = await this.userRepo.getOneByUsername(username);
+
+    if (!user) {
+      throw new NotFoundError(USER_NOT_FOUND);
+    }
+
+    if (!user.isEndUser()) {
+      throw new AuthError(USER_NOT_END_USER);
+    }
+
+    const match = await PasswordService.comparePasswords(
+      password,
+      user.password
+    );
+
+    if (!match) {
+      throw new ApiError(PASSWORD_INCORRECT);
+    }
+
+    const token = createToken({
+      id: user.id,
+      role: user.role,
+      app: apps.mobile
     });
 
     return {
@@ -221,4 +249,4 @@ export const createUserService = (app) => class UserService {
 
     await this.userRepo.destroy(id);
   }
-};
+}

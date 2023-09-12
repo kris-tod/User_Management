@@ -9,7 +9,7 @@ import {
   isPasswordValid,
   uploader,
   isFileValid
-} from '../../middlewares/index.js';
+} from '../../../middlewares/index.js';
 
 export const createUserRouter = (logger) => {
   const router = express.Router();
