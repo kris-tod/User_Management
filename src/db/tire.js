@@ -39,7 +39,7 @@ export default (sequelize) => {
       comment: {
         type: DataTypes.TEXT
       },
-      tires_hotel: {
+      tiresHotel: {
         type: DataTypes.TEXT
       }
     },

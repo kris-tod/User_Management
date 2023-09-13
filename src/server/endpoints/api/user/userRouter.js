@@ -28,6 +28,7 @@ export const createUserRouter = (logger) => {
     isPasswordValid,
     isEmailValid,
     isAuth,
+    isFromApp(apps.mobile),
     isTokenNew(logger),
     update
   );

@@ -611,7 +611,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"deni\",\n    \"password\": \"admin123\",\n    \"region\": \"Sofia\"\n}",
+					"raw": "{\n    \"username\": \"tosho\",\n    \"password\": \"admin123\",\n    \"region\": \"Sofia\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -703,7 +703,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:4000/admin/users/4",
+					"raw": "localhost:4000/admin/users/3",
 					"host": [
 						"localhost"
 					],
@@ -711,7 +711,7 @@
 					"path": [
 						"admin",
 						"users",
-						"4"
+						"3"
 					]
 				}
 			},
@@ -982,12 +982,13 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:4000/user/avatar",
+					"raw": "localhost:4000/api/user/avatar",
 					"host": [
 						"localhost"
 					],
 					"port": "4000",
 					"path": [
+						"api",
 						"user",
 						"avatar"
 					]
@@ -1002,7 +1003,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"vasilii@gmail.com\",\n    \"friendsList\": [3]\n}",
+					"raw": "{\n    \"email\": \"sofiaAdmin@gmail.com\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1010,13 +1011,13 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:4000/api/user/",
+					"raw": "localhost:4000/admin/user/",
 					"host": [
 						"localhost"
 					],
 					"port": "4000",
 					"path": [
-						"api",
+						"admin",
 						"user",
 						""
 					]
