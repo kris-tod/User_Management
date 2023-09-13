@@ -12,13 +12,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:4000/api/users?page=1",
+					"raw": "localhost:4000/admin/users?page=1",
 					"host": [
 						"localhost"
 					],
 					"port": "4000",
 					"path": [
-						"api",
+						"admin",
 						"users"
 					],
 					"query": [
@@ -157,7 +157,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"dummy1\",\n    \"password\": \"svk656901\"\n}",
+					"raw": "{\n    \"username\": \"kris\",\n    \"password\": \"svk656901\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -384,7 +384,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}",
+					"raw": "{\n    \"username\": \"sofiaAdmin\",\n    \"password\": \"admin123\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -611,7 +611,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"deni\",\n    \"email\": \"deni@gmail.com\",\n    \"password\": \"dummy123\"\n}",
+					"raw": "{\n    \"username\": \"deni\",\n    \"password\": \"admin123\",\n    \"region\": \"Sofia\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -703,7 +703,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:4000/admin/users/12",
+					"raw": "localhost:4000/admin/users/4",
 					"host": [
 						"localhost"
 					],
@@ -711,25 +711,25 @@
 					"path": [
 						"admin",
 						"users",
-						"12"
+						"4"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "User info",
+			"name": "Admin user info",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:4000/api/user",
+					"raw": "localhost:4000/admin/user",
 					"host": [
 						"localhost"
 					],
 					"port": "4000",
 					"path": [
-						"api",
+						"admin",
 						"user"
 					]
 				}
@@ -903,7 +903,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"password\": \"denito123\"\n}",
+					"raw": "{\n    \"password\": \"admin123\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -911,7 +911,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:4000/admin/users/12/password",
+					"raw": "localhost:4000/admin/users/5/password",
 					"host": [
 						"localhost"
 					],
@@ -919,7 +919,7 @@
 					"path": [
 						"admin",
 						"users",
-						"12",
+						"5",
 						"password"
 					]
 				}
@@ -1002,7 +1002,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"username\": \"kris\"\n}",
+					"raw": "{\n    \"email\": \"vasilii@gmail.com\",\n    \"friendsList\": [3]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1154,6 +1154,430 @@
 					"body": "{\n    \"username\": \"krischo\",\n    \"friendsList\": [\n        7,\n        10\n    ]\n}"
 				}
 			]
+		},
+		{
+			"name": "Register user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"shefa\",\n    \"password\": \"shefa123\",\n    \"email\": \"shefa@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:4000/api/auth/register",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admins",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:4000/admin/admins?page=1",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"admin",
+						"admins"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "End user info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:4000/api/user",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User cars",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:4000/api/user/cars",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"user",
+						"cars"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add car",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"idNumber\": \"CB3723MK\",\n    \"image\": \"default_image\",\n    \"brand\": \"Volkswagen\",\n    \"kilometers\": 280000,\n    \"engineType\": \"diesel\",\n    \"yearOfProduction\": 2008\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:4000/api/user/cars",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"user",
+						"cars"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idNumber\": \"CB3723MK\",\n    \"image\": \"default_image\",\n    \"brand\": \"Volkswagen\",\n    \"kilometers\": 280000,\n    \"engineType\": \"diesel\",\n    \"yearOfProduction\": 2008\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/api/user/cars",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"user",
+								"cars"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "354"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"162-azucHH0Y3Rs/+JbEWJEuOUtfmHA\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 13 Sep 2023 11:34:06 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"2\",\n    \"idNumber\": \"CB3723MK\",\n    \"image\": \"default_image\",\n    \"brand\": \"Volkswagen\",\n    \"kilometers\": 280000,\n    \"engineType\": \"diesel\",\n    \"yearOfProduction\": 2008,\n    \"frameNumber\": null,\n    \"technicalReviewExpiration\": null,\n    \"civilEnsuranceExpiration\": null,\n    \"vignetteExpiration\": null,\n    \"autoEnsuranceExpiration\": null,\n    \"leasingExpiration\": null,\n    \"comment\": null,\n    \"vehicleType\": null,\n    \"tires\": []\n}"
+				}
+			]
+		},
+		{
+			"name": "Get car",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:4000/api/user/cars/3/",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"user",
+						"cars",
+						"3",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/api/user/cars/2",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"user",
+								"cars",
+								"2"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "354"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"162-azucHH0Y3Rs/+JbEWJEuOUtfmHA\""
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 13 Sep 2023 11:34:31 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": \"2\",\n    \"idNumber\": \"CB3723MK\",\n    \"image\": \"default_image\",\n    \"brand\": \"Volkswagen\",\n    \"kilometers\": 280000,\n    \"engineType\": \"diesel\",\n    \"yearOfProduction\": 2008,\n    \"frameNumber\": null,\n    \"technicalReviewExpiration\": null,\n    \"civilEnsuranceExpiration\": null,\n    \"vignetteExpiration\": null,\n    \"autoEnsuranceExpiration\": null,\n    \"leasingExpiration\": null,\n    \"comment\": null,\n    \"vehicleType\": null,\n    \"tires\": []\n}"
+				}
+			]
+		},
+		{
+			"name": "Edit car",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"vehicleType\": \"V8\",\n    \"engineType\": \"gasoline\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:4000/api/user/cars/2",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"user",
+						"cars",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete car",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:4000/api/user/cars/2",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"user",
+						"cars",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add tire",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"brand\": \"Mischelline\",\n    \"count\": 4,\n    \"width\": 30,\n    \"ratio\": 1.5,\n    \"type\": \"summer\",\n    \"used\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:4000/api/user/cars/3/tires",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"user",
+						"cars",
+						"3",
+						"tires"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get tire",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:4000/api/user/cars/3/tires/8",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"user",
+						"cars",
+						"3",
+						"tires",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit tire",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"comment\": \"Very nice tires.\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:4000/api/user/cars/3/tires/8",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"user",
+						"cars",
+						"3",
+						"tires",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete tire",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:4000/api/user/cars/3/tires/8",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"user",
+						"cars",
+						"3",
+						"tires",
+						"8"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
