@@ -1,9 +1,9 @@
 import { DataTypes } from 'sequelize';
-import { domain } from '../config/index.js';
+import { roles } from '../domain/user/User.js';
 
 export default (sequelize) => {
-  const User = sequelize.define(
-    'user',
+  const Admin = sequelize.define(
+    'admin',
     {
       id: {
         type: DataTypes.BIGINT,
@@ -23,20 +23,20 @@ export default (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false
       },
-      avatar: {
+      role: {
         type: DataTypes.STRING,
-        defaultValue: `${domain}/default_avatar.jpg`
+        allowNull: false,
+        defaultValue: roles.admin
       },
       region: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.STRING
       }
     },
     {
-      tableName: 'users',
+      tableName: 'admins',
       timestamps: false
     }
   );
 
-  return User;
+  return Admin;
 };

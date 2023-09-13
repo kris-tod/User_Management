@@ -2,7 +2,11 @@ import validator from 'validator';
 
 import { BaseEntity } from '../../utils/BaseEntity.js';
 import {
-  EMAIL_NOT_VALID, FRIENDS_LIMIT_REACHED, INVALID_ROLE, USERNAME_NOT_VALID, USERS_NOT_FRIENDS
+  EMAIL_NOT_VALID,
+  FRIENDS_LIMIT_REACHED,
+  INVALID_ROLE,
+  USERNAME_NOT_VALID,
+  USERS_NOT_FRIENDS
 } from '../../constants/messages.js';
 
 export const MAX_FRIENDS_COUNT = 1000;
@@ -16,21 +20,37 @@ export const roles = {
 };
 
 export class User extends BaseEntity {
-  constructor(id, username, password, role, region, email = 'default@gmail.com', avatar = '') {
+  constructor(
+    id,
+    username,
+    password,
+    region,
+    friendsList = [],
+    cars = [],
+    email = 'default@gmail.com',
+    avatar = 'default_avatar.jpg'
+  ) {
     super(id);
     this.setUsername(username);
     this.password = password;
-    this.role = role;
-    this.friendsList = [];
     this.email = email;
     this.avatar = avatar;
     this.region = region;
+    this.friendsList = friendsList;
+    this.cars = cars;
   }
 
-  static createUser({
-    id, username, password, role, email, avatar, region
+  static build({
+    id,
+    username,
+    password,
+    email = 'default@gmail.com',
+    avatar = 'default_avatar.jpg',
+    region,
+    cars = [],
+    friendsList = []
   }) {
-    return new User(id, username, password, role, region, email || '', avatar || '');
+    return new User(id, username, password, region, friendsList, cars, email, avatar);
   }
 
   setUsername(username) {
@@ -74,23 +94,9 @@ export class User extends BaseEntity {
       throw new Error(USERS_NOT_FRIENDS);
     }
 
-    this.friendsList = this.friendsList.filter((friendUsername) => friendUsername !== username);
-  }
-
-  isEndUser() {
-    return this.role === roles.endUser;
-  }
-
-  isAdmin() {
-    return this.role === roles.admin || this.isSuperAdmin();
-  }
-
-  isRegionalAdmin() {
-    return this.isAdmin() && !this.isSuperAdmin();
-  }
-
-  isSuperAdmin() {
-    return this.role === roles.superadmin;
+    this.friendsList = this.friendsList.filter(
+      (friendUsername) => friendUsername !== username
+    );
   }
 
   hasReachedFriendsLimit() {

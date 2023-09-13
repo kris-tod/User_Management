@@ -1,11 +1,11 @@
-import { EndUserService } from '../../../../domain/user/EndUserService.js';
+import { AdminService } from '../../../../domain/admin/AdminService.js';
 import { serializeUser } from '../../serialize.js';
 
 import { BaseController } from '../../../../utils/BaseController.js';
 
-export class UserController extends BaseController {
+export class AdminController extends BaseController {
   constructor(logger) {
-    super(new EndUserService(logger), logger);
+    super(new AdminService(logger), logger);
   }
 
   async getOne(req, res) {

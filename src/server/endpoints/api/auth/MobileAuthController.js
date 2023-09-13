@@ -2,19 +2,23 @@ import { USER_LOGGED_OUT } from '../../../../constants/messages.js';
 
 import { authCookieName } from '../../../../config/index.js';
 import { BaseController } from '../../../../utils/BaseController.js';
-import { UserService } from '../../../../domain/user/UserService.js';
+import { AuthService } from '../../../../domain/admin/AuthService.js';
 import { serializeUser } from '../../serialize.js';
 
 export class MobileAuthController {
   constructor(logger) {
-    this.authService = new UserService(logger);
+    this.authService = new AuthService(logger);
     this.logger = logger;
   }
 
   async register(req, res) {
-    const { username, password, email } = req.body;
+    const {
+      username, password, email, region
+    } = req.body;
 
-    const entity = await this.authService.register({ username, password, email });
+    const entity = await this.authService.register({
+      username, password, email, region
+    });
     res.status(200).json(serializeUser(entity));
   }
 

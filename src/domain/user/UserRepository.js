@@ -1,13 +1,15 @@
 import { Op } from 'sequelize';
 import { BaseRepo } from '../../utils/BaseRepo.js';
 import { FriendshipRepository } from './FriendshipRepository.js';
-import { User as UserModel } from '../../db/index.js';
+import { CarRepository } from './car/CarRepository.js';
+import { User as UserModel, UserCar } from '../../db/index.js';
 import { User } from './User.js';
 
 export class UserRepository extends BaseRepo {
   constructor() {
     super(UserModel);
     this.friendshipRepo = new FriendshipRepository();
+    this.carRepo = new CarRepository();
   }
 
   async getAll(page = 1, region = '') {
@@ -24,7 +26,7 @@ export class UserRepository extends BaseRepo {
     const friendships = friendshipsData.map((friendship) => friendship.toJSON());
 
     const collection = users.map((userData) => {
-      const user = User.createUser(userData.toJSON());
+      const user = User.build(userData.toJSON());
 
       user.friendsList = friendships
         .filter((friendship) => friendship.user_id === user.id)
@@ -51,7 +53,7 @@ export class UserRepository extends BaseRepo {
     const friendships = friendshipsData.map((friendship) => friendship.toJSON());
 
     const collection = users.map((userData) => {
-      const user = User.createUser(userData.toJSON());
+      const user = User.build(userData.toJSON());
 
       user.friendsList = friendships
         .filter((friendship) => friendship.user_id === user.id)
@@ -73,7 +75,7 @@ export class UserRepository extends BaseRepo {
       return null;
     }
 
-    const user = User.createUser(userData.toJSON());
+    const user = User.build(userData.toJSON());
 
     const friendships = await this.friendshipRepo.findAllFriendshipsById(user.id, options);
     const friendsUsers = await this.getAllByIds(
@@ -81,6 +83,14 @@ export class UserRepository extends BaseRepo {
       options
     );
     user.friendsList = friendsUsers;
+
+    const carsData = await UserCar.findAll({
+      where: {
+        userId: id
+      }
+    });
+    const cars = await this.carRepo.getAllByIds(carsData.map((carData) => carData.carId));
+    user.cars = cars;
 
     return user;
   }
@@ -99,7 +109,15 @@ export class UserRepository extends BaseRepo {
     const friendships = await this.friendshipRepo.findAllFriendshipsById(user.id);
     user.friendsList = friendships.map((friendship) => friendship.toJSON().friend_id);
 
-    return User.createUser(user);
+    const carsData = await UserCar.findAll({
+      where: {
+        userId: user.id
+      }
+    });
+    const cars = await this.carRepo.getAllByIds(carsData.map((carData) => carData.carId));
+    user.cars = cars;
+
+    return User.build(user);
   }
 
   async getOneWithAttributes(id, attributes) {

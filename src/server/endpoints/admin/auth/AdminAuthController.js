@@ -2,11 +2,11 @@ import { USER_LOGGED_OUT } from '../../../../constants/messages.js';
 
 import { authCookieName } from '../../../../config/index.js';
 import { BaseController } from '../../../../utils/BaseController.js';
-import { UserService } from '../../../../domain/user/UserService.js';
+import { AuthService } from '../../../../domain/admin/AuthService.js';
 
 export class AdminAuthController {
   constructor(logger) {
-    this.authService = new UserService(logger);
+    this.authService = new AuthService(logger);
     this.logger = logger;
   }
 
@@ -14,7 +14,6 @@ export class AdminAuthController {
     const { username, password } = req.body;
 
     const { token } = await this.authService.loginWebUser(username, password);
-
     res.cookie(authCookieName, token).status(200).json({
       token
     });

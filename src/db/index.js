@@ -5,6 +5,10 @@ import { dbConfig, saltRounds } from '../config/index.js';
 import UserModel from './user.js';
 import FriendshipModel from './friendships.js';
 import TokenBlacklistModel from './tokenBlacklist.js';
+import CarModel from './car.js';
+import TireModel from './tire.js';
+import UserCarModel from './userCar.js';
+import AdminModel from './admin.js';
 
 export const sequelize = new Sequelize(
   dbConfig.database,
@@ -13,16 +17,18 @@ export const sequelize = new Sequelize(
   dbConfig.options
 );
 
-sequelize
-  .authenticate()
-  .then(() => {
-    // console.log(CONNECTED_TO_DB);
-  });
+sequelize.authenticate().then(() => {
+  // console.log(CONNECTED_TO_DB);
+});
 
 const db = {
   TokenBlacklist: TokenBlacklistModel(sequelize),
   User: UserModel(sequelize),
-  Friendship: FriendshipModel(sequelize)
+  Admin: AdminModel(sequelize),
+  Friendship: FriendshipModel(sequelize),
+  Car: CarModel(sequelize),
+  Tire: TireModel(sequelize),
+  UserCar: UserCarModel(sequelize)
 };
 
 db.Friendship.hasOne(db.User, {
@@ -40,10 +46,14 @@ db.Friendship.hasOne(db.User, {
   }
 });
 db.User.belongsTo(db.Friendship);
+db.Car.hasMany(db.Tire);
+db.Tire.belongsTo(db.Car);
+db.User.belongsToMany(db.Car, { through: db.UserCar });
+db.Car.belongsToMany(db.User, { through: db.UserCar });
 
 sequelize
-  .sync({ force: false, alter: true })
-  .then(() => db.User.findOne({ where: { username: 'admin' } }))
+  .sync({ force: false, alter: false })
+  .then(() => db.Admin.findOne({ where: { username: 'admin' } }))
   .then((data) => {
     if (!data) {
       genSalt(saltRounds, (err, salt) => {
@@ -55,12 +65,11 @@ sequelize
           if (hashError) {
             return;
           }
-          db.User.create({
+          db.Admin.create({
             username: 'admin',
             password: hash,
             email: 'admin@admin.com',
-            role: 'superadmin',
-            region: 'everywhere'
+            role: 'superadmin'
           });
         });
       });
@@ -70,3 +79,6 @@ sequelize
 export const { Friendship } = db;
 export const { User } = db;
 export const { TokenBlacklist } = db;
+export const { Car, Tire } = db;
+export const { UserCar } = db;
+export const { Admin } = db;

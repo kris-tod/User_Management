@@ -1,6 +1,5 @@
 import express from 'express';
-import { UserController } from './UserController.js';
-import { createCarsRouter } from './cars/carsRouter.js';
+import { AdminController } from './AdminController.js';
 
 import {
   isAuth,
@@ -12,7 +11,7 @@ import {
 
 export const createUserRouter = (logger) => {
   const router = express.Router();
-  const userController = new UserController(logger);
+  const userController = new AdminController(logger);
 
   const { getOne, update } = userController.createRouterHandlers();
 
@@ -27,8 +26,6 @@ export const createUserRouter = (logger) => {
     isTokenNew(logger),
     update
   );
-
-  router.use('/cars', createCarsRouter(logger));
 
   return router;
 };
