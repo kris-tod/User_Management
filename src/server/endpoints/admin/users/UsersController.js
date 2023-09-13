@@ -1,10 +1,10 @@
-import { AdminUserService } from '../../../../domain/user/AdminUserService.js';
+import { UsersService } from '../../../../domain/user/UsersService.js';
 import { BaseController } from '../../../../utils/BaseController.js';
 import { serializeUsers } from '../../serialize.js';
 
 export class UsersController extends BaseController {
   constructor(logger) {
-    super(new AdminUserService(logger), logger);
+    super(new UsersService(logger), logger);
   }
 
   async getMany(req, res) {

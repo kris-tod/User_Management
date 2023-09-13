@@ -7,16 +7,20 @@ import {
   isTokenNew,
   isUsernameValid,
   isEmailValid,
-  isPasswordValid
+  isPasswordValid,
+  isFromApp,
+  isFileValid,
+  uploader
 } from '../../../middlewares/index.js';
+import { apps } from '../../../../constants/apps.js';
 
 export const createUserRouter = (logger) => {
   const router = express.Router();
   const userController = new UserController(logger);
 
-  const { getOne, update } = userController.createRouterHandlers();
+  const { getOne, update, updateAvatar } = userController.createRouterHandlers();
 
-  router.get('/', isAuth, isTokenNew(logger), getOne);
+  router.get('/', isAuth, isFromApp(apps.mobile), isTokenNew(logger), getOne);
 
   router.patch(
     '/',
@@ -26,6 +30,16 @@ export const createUserRouter = (logger) => {
     isAuth,
     isTokenNew(logger),
     update
+  );
+
+  router.post(
+    '/avatar',
+    isAuth,
+    isFromApp(apps.mobile),
+    isTokenNew(logger),
+    uploader.single('avatar'),
+    isFileValid,
+    updateAvatar
   );
 
   router.use('/cars', createCarsRouter(logger));

@@ -10,7 +10,7 @@ import {
 } from '../../constants/messages.js';
 import { roles } from './User.js';
 
-export class AdminUserService {
+export class UsersService {
   constructor(logger) {
     this.logger = logger;
     this.userRepo = new UserRepository();

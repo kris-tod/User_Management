@@ -5,7 +5,7 @@ import { USER_NOT_FOUND, INVALID_FRIENDS_IDS } from '../../constants/messages.js
 import FileService from '../services/FileService.js';
 import PasswordService from '../services/passwordService.js';
 
-export class EndUserService {
+export class UserService {
   constructor(logger) {
     this.logger = logger;
     this.userRepo = new UserRepository();

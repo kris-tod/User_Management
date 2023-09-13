@@ -6,8 +6,10 @@ import {
   isTokenNew,
   isUsernameValid,
   isEmailValid,
-  isPasswordValid
+  isPasswordValid,
+  isFromApp
 } from '../../../middlewares/index.js';
+import { apps } from '../../../../constants/apps.js';
 
 export const createUserRouter = (logger) => {
   const router = express.Router();
@@ -15,7 +17,7 @@ export const createUserRouter = (logger) => {
 
   const { getOne, update } = userController.createRouterHandlers();
 
-  router.get('/', isAuth, isTokenNew(logger), getOne);
+  router.get('/', isAuth, isFromApp(apps.web), isTokenNew(logger), getOne);
 
   router.patch(
     '/',
@@ -23,6 +25,7 @@ export const createUserRouter = (logger) => {
     isPasswordValid,
     isEmailValid,
     isAuth,
+    isFromApp(apps.web),
     isTokenNew(logger),
     update
   );
