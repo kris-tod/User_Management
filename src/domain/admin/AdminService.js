@@ -1,13 +1,36 @@
 import { sequelize } from '../../db/index.js';
 import { AdminRepository } from './AdminRepository.js';
-import { NotFoundError } from '../../utils/errors.js';
-import { USER_NOT_FOUND } from '../../constants/messages.js';
+import { NotFoundError, InternalError, ApiError } from '../../utils/errors.js';
+import { apps } from '../../constants/apps.js';
+import { createToken } from '../../utils/jwt.js';
+import {
+  USER_NOT_FOUND,
+  ADMIN_NOT_SUPERADMIN,
+  DEFAULT_ERROR_MESSAGE,
+  PASSWORD_INCORRECT
+} from '../../constants/messages.js';
 import PasswordService from '../services/passwordService.js';
+import { roles } from '../user/User.js';
+import { TokenBlacklistRepository } from '../user/tokenBlacklist/TokenBlacklistRepository.js';
+import { Admin } from './Admin.js';
 
 export class AdminService {
   constructor(logger) {
     this.logger = logger;
     this.adminRepo = new AdminRepository();
+    this.tokenBlacklistRepo = new TokenBlacklistRepository();
+  }
+
+  async getAll(pageParam) {
+    this.logger.log('info', 'getall users');
+
+    let page = pageParam || 1;
+    if (page <= 0) {
+      page = 1;
+    }
+
+    const collection = await this.adminRepo.getAll(page);
+    return collection;
   }
 
   async getOne(id) {
@@ -22,6 +45,33 @@ export class AdminService {
     return user;
   }
 
+  async create({
+    username, password, email, region
+  }, reqUser = {}) {
+    this.logger.log('info', 'create user');
+
+    if (reqUser.role !== roles.superadmin) {
+      throw new ApiError(ADMIN_NOT_SUPERADMIN);
+    }
+
+    const hash = await PasswordService.hashPassword(password);
+    await this.adminRepo.create({
+      username,
+      email,
+      password: hash,
+      region,
+      role: roles.admin
+    });
+
+    const entity = await this.adminRepo.getOneByUsername(username);
+
+    if (!entity) {
+      throw new InternalError(DEFAULT_ERROR_MESSAGE);
+    }
+
+    return entity;
+  }
+
   async update(id, data) {
     this.logger.log('info', 'update');
     const {
@@ -31,10 +81,10 @@ export class AdminService {
     await sequelize.transaction(async (t) => {
       const options = { transaction: t };
       if (email) {
-        await this.updateEmailById(id, email, options);
+        await this.adminRepo.update(id, { email }, options);
       }
       if (username) {
-        await this.updateUsernameById(id, username, options);
+        await this.adminRepo.update(id, { username }, options);
       }
       if (password) {
         await this.updatePasswordById(id, password, options);
@@ -42,32 +92,84 @@ export class AdminService {
     });
 
     const attributes = Object.keys(data);
-    const result = await this.adminRepo.getOneWithAttributes(id, attributes);
+    const admin = await this.adminRepo.getOne(id);
+
+    const result = {};
+
+    attributes.forEach((attr) => {
+      result[attr] = admin[attr];
+    });
 
     return result;
   }
 
-  async updateRegionById(id, region, options) {
-    await this.adminRepo.update(id, { region }, options);
+  async updateAdminPassword(id, { password }, reqUser) {
+    const user = await this.adminRepo.getOne(id);
+
+    if (!user) {
+      throw new NotFoundError(USER_NOT_FOUND);
+    }
+
+    if (reqUser.role !== roles.superadmin) {
+      throw new ApiError(ADMIN_NOT_SUPERADMIN);
+    }
+
+    const hash = await PasswordService.hashPassword(password);
+    await this.adminRepo.update(id, { password: hash });
   }
 
   async updatePasswordById(id, password, options) {
     const hash = await PasswordService.hashPassword(password);
-
     await this.adminRepo.update(id, { password: hash }, options);
   }
 
-  async updateUsernameById(id, username, options) {
-    const userData = await this.adminRepo.getOne(id, options);
+  async destroy(id, reqUser) {
+    this.logger.log('info', 'delete user');
+    const entity = await this.adminRepo.getOne(id);
 
-    if (!userData) {
+    if (!entity) {
       throw new NotFoundError(USER_NOT_FOUND);
     }
 
-    await this.adminRepo.update(id, { username }, options);
+    if (reqUser.role !== roles.superadmin) {
+      throw new ApiError(ADMIN_NOT_SUPERADMIN);
+    }
+
+    await this.adminRepo.destroy(id);
   }
 
-  async updateEmailById(id, email, options) {
-    await this.adminRepo.update(id, { email }, options);
+  async loginWebUser(username, password) {
+    this.logger.log('info', 'login web user');
+    const user = await this.adminRepo.getOneByUsername(username);
+
+    if (!user) {
+      throw new NotFoundError(USER_NOT_FOUND);
+    }
+
+    const match = await PasswordService.comparePasswords(
+      password,
+      user.password
+    );
+
+    if (!match) {
+      throw new ApiError(PASSWORD_INCORRECT);
+    }
+
+    const token = createToken({
+      id: user.id,
+      role: user.role,
+      app: apps.web,
+      region: user.region
+    });
+
+    return {
+      user,
+      token
+    };
+  }
+
+  async logout(token) {
+    this.logger.log('info', 'logout');
+    await this.tokenBlacklistRepo.create({ token });
   }
 }

@@ -1,4 +1,4 @@
-import { BaseEntity } from '../../../utils/BaseEntity.js';
+import { BaseEntity } from '../../utils/BaseEntity.js';
 
 export const engineTypes = ['diesel', 'gasoline'];
 
@@ -44,43 +44,5 @@ export class Car extends BaseEntity {
       throw new Error('Invalid engine type!');
     }
     this.engineType = engineType;
-  }
-
-  static build({
-    id,
-    idNumber,
-    image,
-    brand,
-    kilometers,
-    engineType,
-    tires = [],
-    yearOfProduction = null,
-    frameNumber = null,
-    technicalReviewExpiration = Date(),
-    civilEnsuranceExpiration = Date(),
-    vignetteExpiration = Date(),
-    autoEnsuranceExpiration = Date(),
-    leasingExpiration = Date(),
-    comment = '',
-    vehicleType = ''
-  }) {
-    return new Car(
-      id,
-      idNumber,
-      image,
-      brand,
-      kilometers,
-      engineType,
-      tires,
-      yearOfProduction,
-      frameNumber,
-      technicalReviewExpiration,
-      civilEnsuranceExpiration,
-      vignetteExpiration,
-      autoEnsuranceExpiration,
-      leasingExpiration,
-      comment,
-      vehicleType
-    );
   }
 }

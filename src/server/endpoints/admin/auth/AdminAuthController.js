@@ -2,11 +2,11 @@ import { USER_LOGGED_OUT } from '../../../../constants/messages.js';
 
 import { authCookieName } from '../../../../config/index.js';
 import { BaseController } from '../../../../utils/BaseController.js';
-import { AuthService } from '../../../../domain/admin/AuthService.js';
+import { AdminService } from '../../../../domain/admin/AdminService.js';
 
 export class AdminAuthController {
   constructor(logger) {
-    this.authService = new AuthService(logger);
+    this.authService = new AdminService(logger);
     this.logger = logger;
   }
 

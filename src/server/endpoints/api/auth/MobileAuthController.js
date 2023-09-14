@@ -2,12 +2,12 @@ import { USER_LOGGED_OUT } from '../../../../constants/messages.js';
 
 import { authCookieName } from '../../../../config/index.js';
 import { BaseController } from '../../../../utils/BaseController.js';
-import { AuthService } from '../../../../domain/admin/AuthService.js';
+import { UserService } from '../../../../domain/user/UserService.js';
 import { serializeUser } from '../../serialize.js';
 
 export class MobileAuthController {
   constructor(logger) {
-    this.authService = new AuthService(logger);
+    this.authService = new UserService(logger);
     this.logger = logger;
   }
 

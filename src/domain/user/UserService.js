@@ -1,14 +1,38 @@
 import { sequelize } from '../../db/index.js';
 import { UserRepository } from './UserRepository.js';
-import { NotFoundError, ApiError } from '../../utils/errors.js';
-import { USER_NOT_FOUND, INVALID_FRIENDS_IDS } from '../../constants/messages.js';
+import {
+  NotFoundError, ApiError, InternalError, ForbiddenError
+} from '../../utils/errors.js';
+import {
+  USER_NOT_FOUND, INVALID_FRIENDS_IDS, INVALID_REGION, DEFAULT_ERROR_MESSAGE, PASSWORD_INCORRECT
+} from '../../constants/messages.js';
 import FileService from '../services/FileService.js';
 import PasswordService from '../services/passwordService.js';
+import { apps } from '../../constants/apps.js';
+import { roles } from './User.js';
+import { createToken } from '../../utils/jwt.js';
+import { TokenBlacklistRepository } from './tokenBlacklist/TokenBlacklistRepository.js';
 
 export class UserService {
   constructor(logger) {
     this.logger = logger;
     this.userRepo = new UserRepository();
+    this.tokenBlacklistRepo = new TokenBlacklistRepository();
+  }
+
+  async getAll(pageParam, reqUser) {
+    this.logger.log('info', 'getall users');
+
+    let page = pageParam || 1;
+    if (page <= 0) {
+      page = 1;
+    }
+
+    const collection = await this.userRepo.getAll(
+      page,
+      reqUser.role === roles.admin ? reqUser.region : ''
+    );
+    return collection;
   }
 
   async getOne(id) {
@@ -21,6 +45,47 @@ export class UserService {
     }
 
     return user;
+  }
+
+  async create({
+    username, password, email, region
+  }, reqUser = {}) {
+    this.logger.log('info', 'create user');
+
+    if (reqUser.role === roles.admin && reqUser.region !== region) {
+      throw new ApiError(INVALID_REGION);
+    }
+
+    const hash = await PasswordService.hashPassword(password);
+    await this.userRepo.create({
+      username,
+      email,
+      password: hash,
+      region
+    });
+
+    const entity = await this.userRepo.getOneByUsername(username);
+
+    if (!entity) {
+      throw new InternalError(DEFAULT_ERROR_MESSAGE);
+    }
+
+    return entity;
+  }
+
+  async updateUserPassword(id, { password }, reqUser) {
+    const user = await this.userRepo.getOne(id);
+
+    if (!user) {
+      throw new NotFoundError(USER_NOT_FOUND);
+    }
+
+    if (reqUser.role === roles.admin && reqUser.region !== user.region) {
+      throw new ForbiddenError(INVALID_REGION);
+    }
+
+    const hash = await PasswordService.hashPassword(password);
+    await this.userRepo.update(id, { password: hash });
   }
 
   async update(id, data) {
@@ -48,12 +113,13 @@ export class UserService {
       }
     });
 
-    const attributes = Object.keys(data).filter((attr) => attr !== 'friendsList');
-    const result = await this.userRepo.getOneWithAttributes(id, attributes);
+    const attributes = Object.keys(data);
+    const user = await this.userRepo.getOne(id);
+    const result = {};
 
-    if (friendsList) {
-      result.friendsList = friendsList;
-    }
+    attributes.forEach((attr) => {
+      result[attr] = user[attr];
+    });
 
     return result;
   }
@@ -108,5 +174,81 @@ export class UserService {
     return {
       avatar: FileService.getFilePath(file)
     };
+  }
+
+  async destroy(id, reqUser) {
+    this.logger.log('info', 'delete user');
+    const entity = await this.userRepo.getOne(id);
+
+    if (!entity) {
+      throw new NotFoundError(USER_NOT_FOUND);
+    }
+
+    if (reqUser.role === roles.admin && entity.region !== reqUser.region) {
+      throw new ApiError(INVALID_REGION);
+    }
+
+    await this.userRepo.destroy(id);
+  }
+
+  async register({
+    username, password, email, region
+  }, reqUser) {
+    this.logger.log('info', 'create user');
+
+    if (reqUser.role === roles.admin && reqUser.region !== region) {
+      throw new ApiError(INVALID_REGION);
+    }
+
+    const hash = await PasswordService.hashPassword(password);
+    await this.userRepo.create({
+      username,
+      email,
+      password: hash,
+      region
+    });
+
+    const entity = await this.userRepo.getOneByUsername(username);
+
+    if (!entity) {
+      throw new InternalError(DEFAULT_ERROR_MESSAGE);
+    }
+
+    return entity;
+  }
+
+  async loginMobileUser(username, password) {
+    this.logger.log('info', 'login mobile user');
+    const user = await this.userRepo.getOneByUsername(username);
+
+    if (!user) {
+      throw new NotFoundError(USER_NOT_FOUND);
+    }
+
+    const match = await PasswordService.comparePasswords(
+      password,
+      user.password
+    );
+
+    if (!match) {
+      throw new ApiError(PASSWORD_INCORRECT);
+    }
+
+    const token = createToken({
+      id: user.id,
+      role: roles.endUser,
+      app: apps.mobile,
+      region: user.region
+    });
+
+    return {
+      user,
+      token
+    };
+  }
+
+  async logout(token) {
+    this.logger.log('info', 'logout');
+    await this.tokenBlacklistRepo.create({ token });
   }
 }

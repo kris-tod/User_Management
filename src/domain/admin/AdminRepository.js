@@ -2,6 +2,15 @@ import { BaseRepo } from '../../utils/BaseRepo.js';
 import { Admin as AdminModel } from '../../db/index.js';
 import { Admin } from './Admin.js';
 
+const buildAdmin = ({
+  id,
+  username,
+  password,
+  role = 'admin',
+  region = null,
+  email = ''
+}) => new Admin(id, username, password, role, region, email);
+
 export class AdminRepository extends BaseRepo {
   constructor() {
     super(AdminModel);
@@ -16,23 +25,7 @@ export class AdminRepository extends BaseRepo {
 
     const users = await super.getAll(page, ['username'], options);
 
-    return users.map((user) => Admin.build(user.toJSON()));
-  }
-
-  async getOneWithAttributes(id, attributes) {
-    if (!attributes.length) {
-      return {};
-    }
-
-    const userData = await this.dbClient.findOne({ attributes, where: { id } });
-    const user = userData.toJSON();
-    const result = {};
-
-    attributes.forEach((attr) => {
-      result[attr] = user[attr];
-    });
-
-    return result;
+    return users.map((user) => buildAdmin(user.toJSON()));
   }
 
   async getOneByUsername(username) {
@@ -44,8 +37,6 @@ export class AdminRepository extends BaseRepo {
       return null;
     }
 
-    const user = userData.toJSON();
-
-    return Admin.build(user);
+    return buildAdmin(userData.toJSON());
   }
 }

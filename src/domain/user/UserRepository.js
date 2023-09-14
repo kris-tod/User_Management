@@ -1,9 +1,20 @@
 import { Op } from 'sequelize';
 import { BaseRepo } from '../../utils/BaseRepo.js';
 import { FriendshipRepository } from './FriendshipRepository.js';
-import { CarRepository } from './car/CarRepository.js';
+import { CarRepository } from '../car/CarRepository.js';
 import { User as UserModel, UserCar } from '../../db/index.js';
 import { User } from './User.js';
+
+const buildUser = ({
+  id,
+  username,
+  password,
+  email = 'default@gmail.com',
+  avatar = 'default_avatar.jpg',
+  region,
+  cars = [],
+  friendsList = []
+}) => new User(id, username, password, region, friendsList, cars, email, avatar);
 
 export class UserRepository extends BaseRepo {
   constructor() {
@@ -26,7 +37,7 @@ export class UserRepository extends BaseRepo {
     const friendships = friendshipsData.map((friendship) => friendship.toJSON());
 
     const collection = users.map((userData) => {
-      const user = User.build(userData.toJSON());
+      const user = buildUser(userData.toJSON());
 
       user.friendsList = friendships
         .filter((friendship) => friendship.user_id === user.id)
@@ -53,7 +64,7 @@ export class UserRepository extends BaseRepo {
     const friendships = friendshipsData.map((friendship) => friendship.toJSON());
 
     const collection = users.map((userData) => {
-      const user = User.build(userData.toJSON());
+      const user = buildUser(userData.toJSON());
 
       user.friendsList = friendships
         .filter((friendship) => friendship.user_id === user.id)
@@ -75,7 +86,7 @@ export class UserRepository extends BaseRepo {
       return null;
     }
 
-    const user = User.build(userData.toJSON());
+    const user = buildUser(userData.toJSON());
 
     const friendships = await this.friendshipRepo.findAllFriendshipsById(user.id, options);
     const friendsUsers = await this.getAllByIds(
@@ -117,23 +128,7 @@ export class UserRepository extends BaseRepo {
     const cars = await this.carRepo.getAllByIds(carsData.map((carData) => carData.carId));
     user.cars = cars;
 
-    return User.build(user);
-  }
-
-  async getOneWithAttributes(id, attributes) {
-    if (!attributes.length) {
-      return {};
-    }
-
-    const userData = await this.dbClient.findOne({ attributes, where: { id } });
-    const user = userData.toJSON();
-    const result = {};
-
-    attributes.forEach((attr) => {
-      result[attr] = user[attr];
-    });
-
-    return result;
+    return buildUser(user);
   }
 
   async updateFriends(id, friendsIdsData, options = {}) {

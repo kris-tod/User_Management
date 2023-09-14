@@ -1,4 +1,4 @@
-import { BaseEntity } from '../../../../utils/BaseEntity.js';
+import { BaseEntity } from '../../../utils/BaseEntity.js';
 
 export const types = ['winter', 'summer', 'allseasons'];
 
@@ -32,31 +32,5 @@ export class Tire extends BaseEntity {
       throw new Error('Invalid tire type!');
     }
     this.type = type;
-  }
-
-  static build({
-    id,
-    brand,
-    count,
-    width,
-    ratio,
-    type,
-    used,
-    carId,
-    comment = '',
-    tiresHotel = ''
-  }) {
-    return new Tire(
-      id,
-      brand,
-      count,
-      width,
-      ratio,
-      type,
-      used,
-      carId,
-      comment,
-      tiresHotel
-    );
   }
 }

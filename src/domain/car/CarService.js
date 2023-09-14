@@ -1,8 +1,8 @@
-import { ApiError } from '../../../utils/errors.js';
-import { UserRepository } from '../UserRepository.js';
+import { ApiError } from '../../utils/errors.js';
+import { UserRepository } from '../user/UserRepository.js';
 import { CarRepository } from './CarRepository.js';
 import { TireRepository } from './tire/TireRepository.js';
-import FileService from '../../services/FileService.js';
+import FileService from '../services/FileService.js';
 
 export class CarService {
   constructor(logger) {

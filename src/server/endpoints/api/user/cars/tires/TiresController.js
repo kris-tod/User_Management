@@ -1,4 +1,4 @@
-import { TireService } from '../../../../../../domain/user/car/tire/TireService.js';
+import { TireService } from '../../../../../../domain/car/tire/TireService.js';
 import { BaseController } from '../../../../../../utils/BaseController.js';
 
 export class TiresController extends BaseController {

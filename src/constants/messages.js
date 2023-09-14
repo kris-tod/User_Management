@@ -32,3 +32,4 @@ export const DEFAULT_ERROR_MESSAGE = 'Something broke!';
 export const INVALID_FRIENDS_IDS = 'Invalid list of friends ids!';
 export const INVALID_APP = 'User is not from the right application!';
 export const INVALID_REGION = 'Invalid region!';
+export const ADMIN_NOT_SUPERADMIN = 'User is not superadmin!';

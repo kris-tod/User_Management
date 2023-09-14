@@ -40,19 +40,6 @@ export class User extends BaseEntity {
     this.cars = cars;
   }
 
-  static build({
-    id,
-    username,
-    password,
-    email = 'default@gmail.com',
-    avatar = 'default_avatar.jpg',
-    region,
-    cars = [],
-    friendsList = []
-  }) {
-    return new User(id, username, password, region, friendsList, cars, email, avatar);
-  }
-
   setUsername(username) {
     if (!username) {
       throw new Error(USERNAME_NOT_VALID);

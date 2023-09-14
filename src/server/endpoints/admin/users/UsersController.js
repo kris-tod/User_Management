@@ -1,10 +1,10 @@
-import { UsersService } from '../../../../domain/user/UsersService.js';
+import { UserService } from '../../../../domain/user/UserService.js';
 import { BaseController } from '../../../../utils/BaseController.js';
 import { serializeUsers } from '../../serialize.js';
 
 export class UsersController extends BaseController {
   constructor(logger) {
-    super(new UsersService(logger), logger);
+    super(new UserService(logger), logger);
   }
 
   async getMany(req, res) {
@@ -20,7 +20,7 @@ export class UsersController extends BaseController {
     const id = req.params[this.identityName];
     const { user } = req;
 
-    const updatedData = await this.service.update(id, { password }, user);
+    const updatedData = await this.service.updateUserPassword(id, { password }, user);
     res.status(200).json(updatedData);
   }
 

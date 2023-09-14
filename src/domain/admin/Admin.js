@@ -25,15 +25,4 @@ export class Admin extends BaseEntity {
     }
     this.role = role;
   }
-
-  static build({
-    id,
-    username,
-    password,
-    role = 'admin',
-    region = null,
-    email = ''
-  }) {
-    return new Admin(id, username, password, role, region, email);
-  }
 }

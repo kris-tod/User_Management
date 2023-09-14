@@ -1,9 +1,45 @@
 import { Op } from 'sequelize';
-import { MAX_PER_PAGE, BaseRepo } from '../../../utils/BaseRepo.js';
+import { MAX_PER_PAGE, BaseRepo } from '../../utils/BaseRepo.js';
 import { Car } from './Car.js';
-import { Car as CarModel, UserCar } from '../../../db/index.js';
+import { Car as CarModel, UserCar } from '../../db/index.js';
 import { TireRepository } from './tire/TireRepository.js';
-import { NotFoundError } from '../../../utils/errors.js';
+import { NotFoundError } from '../../utils/errors.js';
+
+const buildCar = ({
+  id,
+  idNumber,
+  image,
+  brand,
+  kilometers,
+  engineType,
+  tires = [],
+  yearOfProduction = null,
+  frameNumber = null,
+  technicalReviewExpiration = Date(),
+  civilEnsuranceExpiration = Date(),
+  vignetteExpiration = Date(),
+  autoEnsuranceExpiration = Date(),
+  leasingExpiration = Date(),
+  comment = '',
+  vehicleType = ''
+}) => new Car(
+  id,
+  idNumber,
+  image,
+  brand,
+  kilometers,
+  engineType,
+  tires,
+  yearOfProduction,
+  frameNumber,
+  technicalReviewExpiration,
+  civilEnsuranceExpiration,
+  vignetteExpiration,
+  autoEnsuranceExpiration,
+  leasingExpiration,
+  comment,
+  vehicleType
+);
 
 export class CarRepository extends BaseRepo {
   constructor() {
@@ -25,7 +61,7 @@ export class CarRepository extends BaseRepo {
       entitiesPerPage
     );
 
-    return collection.map((entity) => Car.build(entity.toJSON()));
+    return collection.map((entity) => buildCar(entity.toJSON()));
   }
 
   async getByIdNumber(idNumber) {
@@ -37,7 +73,7 @@ export class CarRepository extends BaseRepo {
 
     const tires = await this.tireRepo.getAllByCar(entity.id);
 
-    return Car.build({
+    return buildCar({
       ...entity.toJSON(),
       tires
     });
@@ -52,7 +88,7 @@ export class CarRepository extends BaseRepo {
       }
     });
 
-    const cars = collection.map((entity) => Car.build(entity.toJSON()));
+    const cars = collection.map((entity) => buildCar(entity.toJSON()));
     const tires = await this.tireRepo.getAllByCars(carIds);
 
     return cars.map((carParam) => {
@@ -71,7 +107,7 @@ export class CarRepository extends BaseRepo {
 
     const tires = await this.tireRepo.getAllByCar(id);
 
-    return Car.build({
+    return buildCar({
       ...entity.toJSON(),
       tires
     });
@@ -84,7 +120,9 @@ export class CarRepository extends BaseRepo {
       }
     });
 
-    const cars = await this.getAllByIds(relations.map((rel) => rel.toJSON().carId));
+    const cars = await this.getAllByIds(
+      relations.map((rel) => rel.toJSON().carId)
+    );
     return cars;
   }
 
