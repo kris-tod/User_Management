@@ -1,5 +1,5 @@
 import { FILE_NOT_PROVIDED, FILE_TOO_BIG } from '../../constants/messages.js';
-import FileService from '../../domain/services/FileService.js';
+import FileService from '../../services/FileService.js';
 
 export const isFileValid = (req, res, next) => {
   const { file } = req;

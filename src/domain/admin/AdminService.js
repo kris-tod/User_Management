@@ -9,7 +9,7 @@ import {
   DEFAULT_ERROR_MESSAGE,
   PASSWORD_INCORRECT
 } from '../../constants/messages.js';
-import PasswordService from '../services/passwordService.js';
+import PasswordService from '../../services/passwordService.js';
 import { roles } from '../user/User.js';
 import { TokenBlacklistRepository } from '../user/tokenBlacklist/TokenBlacklistRepository.js';
 import { Admin } from './Admin.js';

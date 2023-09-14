@@ -6,8 +6,8 @@ import {
 import {
   USER_NOT_FOUND, INVALID_FRIENDS_IDS, INVALID_REGION, DEFAULT_ERROR_MESSAGE, PASSWORD_INCORRECT
 } from '../../constants/messages.js';
-import FileService from '../services/FileService.js';
-import PasswordService from '../services/passwordService.js';
+import FileService from '../../services/FileService.js';
+import PasswordService from '../../services/passwordService.js';
 import { apps } from '../../constants/apps.js';
 import { roles } from './User.js';
 import { createToken } from '../../utils/jwt.js';
