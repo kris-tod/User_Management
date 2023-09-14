@@ -1,8 +1,6 @@
-import { BaseEntity } from '../../../utils/BaseEntity.js';
-
 export const types = ['winter', 'summer', 'allseasons'];
 
-export class Tire extends BaseEntity {
+export class Tire {
   constructor(
     id,
     brand,
@@ -15,7 +13,7 @@ export class Tire extends BaseEntity {
     comment = '',
     tiresHotel = ''
   ) {
-    super(id);
+    this.id = id;
     this.brand = brand;
     this.count = count;
     this.width = width;

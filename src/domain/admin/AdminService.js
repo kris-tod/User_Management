@@ -12,7 +12,6 @@ import {
 import PasswordService from '../../services/passwordService.js';
 import { roles } from '../user/User.js';
 import { TokenBlacklistRepository } from '../user/tokenBlacklist/TokenBlacklistRepository.js';
-import { Admin } from './Admin.js';
 
 export class AdminService {
   constructor(logger) {

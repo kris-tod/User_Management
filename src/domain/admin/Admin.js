@@ -1,8 +1,6 @@
-import { BaseEntity } from '../../utils/BaseEntity.js';
-
 export const adminRoles = ['admin', 'superadmin'];
 
-export class Admin extends BaseEntity {
+export class Admin {
   constructor(
     id,
     username,
@@ -11,7 +9,7 @@ export class Admin extends BaseEntity {
     region = null,
     email = ''
   ) {
-    super(id);
+    this.id = id;
     this.username = username;
     this.password = password;
     this.setRole(role);

@@ -1,8 +1,6 @@
-import { BaseEntity } from '../../utils/BaseEntity.js';
-
 export const engineTypes = ['diesel', 'gasoline'];
 
-export class Car extends BaseEntity {
+export class Car {
   constructor(
     id,
     idNumber,
@@ -21,7 +19,7 @@ export class Car extends BaseEntity {
     comment = '',
     vehicleType = ''
   ) {
-    super(id);
+    this.id = id;
     this.idNumber = idNumber;
     this.image = image;
     this.brand = brand;

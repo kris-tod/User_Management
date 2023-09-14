@@ -1,6 +1,4 @@
 import validator from 'validator';
-
-import { BaseEntity } from '../../utils/BaseEntity.js';
 import {
   EMAIL_NOT_VALID,
   FRIENDS_LIMIT_REACHED,
@@ -19,7 +17,7 @@ export const roles = {
   superadmin: 'superadmin'
 };
 
-export class User extends BaseEntity {
+export class User {
   constructor(
     id,
     username,
@@ -30,7 +28,7 @@ export class User extends BaseEntity {
     email = 'default@gmail.com',
     avatar = 'default_avatar.jpg'
   ) {
-    super(id);
+    this.id = id;
     this.setUsername(username);
     this.password = password;
     this.email = email;
