@@ -1,4 +1,5 @@
 import { DataTypes } from 'sequelize';
+import { domain } from '../config/index.js';
 
 export default (sequelize) => {
   const Car = sequelize.define(
@@ -18,7 +19,8 @@ export default (sequelize) => {
       },
       image: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        defaultValue: `${domain}/default_car_image.jpg`
       },
       brand: {
         type: DataTypes.STRING,

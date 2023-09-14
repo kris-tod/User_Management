@@ -2,6 +2,7 @@ import { ApiError } from '../../../utils/errors.js';
 import { UserRepository } from '../UserRepository.js';
 import { CarRepository } from './CarRepository.js';
 import { TireRepository } from './tire/TireRepository.js';
+import FileService from '../../services/FileService.js';
 
 export class CarService {
   constructor(logger) {
@@ -35,6 +36,16 @@ export class CarService {
 
     const car = await this.carRepo.getOne(carId);
     return car;
+  }
+
+  async updateImage(carId, file) {
+    await this.carRepo.update(carId, { image: FileService.getFilePath(file) });
+
+    const car = await this.carRepo.getOne(carId);
+
+    return {
+      image: car.image
+    };
   }
 
   async destroy(carId, reqUser) {

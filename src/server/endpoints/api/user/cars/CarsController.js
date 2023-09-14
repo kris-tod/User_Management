@@ -13,7 +13,15 @@ export class CarsController extends BaseController {
     res.status(200).json(collection);
   }
 
+  async updateImage(req, res) {
+    const { id } = req.params;
+    const { file } = req;
+
+    const response = await this.service.updateImage(id, file);
+    res.status(200).json(response);
+  }
+
   createRouterHandlers() {
-    return super.createRouterHandlers(['getMany', 'getOne', 'create', 'update', 'destroy']);
+    return super.createRouterHandlers(['getMany', 'getOne', 'create', 'update', 'destroy', 'updateImage']);
   }
 }

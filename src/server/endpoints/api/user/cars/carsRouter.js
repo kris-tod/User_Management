@@ -6,7 +6,9 @@ import { createTiresRouter } from './tires/tiresRouter.js';
 import {
   isAuth,
   isTokenNew,
-  isFromApp
+  isFromApp,
+  uploader,
+  isFileValid
 } from '../../../../middlewares/index.js';
 
 export const createCarsRouter = (logger) => {
@@ -14,7 +16,7 @@ export const createCarsRouter = (logger) => {
   const carsController = new CarsController(logger);
 
   const {
-    getMany, getOne, create, update, destroy
+    getMany, getOne, create, update, destroy, updateImage
   } = carsController.createRouterHandlers();
 
   router.get('/', isAuth, isFromApp(apps.mobile), isTokenNew(logger), getMany);
@@ -27,7 +29,23 @@ export const createCarsRouter = (logger) => {
     getOne
   );
 
-  router.post('/', isAuth, isFromApp(apps.mobile), isTokenNew(logger), create);
+  router.post(
+    '/',
+    isAuth,
+    isFromApp(apps.mobile),
+    isTokenNew(logger),
+    create
+  );
+
+  router.post(
+    '/:id/image',
+    isAuth,
+    isFromApp(apps.mobile),
+    isTokenNew(logger),
+    uploader.single('image'),
+    isFileValid,
+    updateImage
+  );
 
   router.patch(
     '/:id',
