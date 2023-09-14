@@ -37,7 +37,7 @@ export class TireRepository extends BaseRepo {
       where: { carId }
     });
 
-    return collection.map((entity) => buildTire(entity.toJSON()));
+    return collection.map((entity) => buildTire(entity));
   }
 
   async getAllByCars(carIds) {
@@ -49,6 +49,6 @@ export class TireRepository extends BaseRepo {
       }
     });
 
-    return collection.map((entity) => buildTire(entity.toJSON()));
+    return collection.map((entity) => buildTire(entity));
   }
 }

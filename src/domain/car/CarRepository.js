@@ -5,40 +5,23 @@ import { Car as CarModel, UserCar } from '../../db/index.js';
 import { TireRepository } from './tire/TireRepository.js';
 import { NotFoundError } from '../../utils/errors.js';
 
-const buildCar = ({
-  id,
-  idNumber,
-  image,
-  brand,
-  kilometers,
-  engineType,
-  tires = [],
-  yearOfProduction = null,
-  frameNumber = null,
-  technicalReviewExpiration = Date(),
-  civilEnsuranceExpiration = Date(),
-  vignetteExpiration = Date(),
-  autoEnsuranceExpiration = Date(),
-  leasingExpiration = Date(),
-  comment = '',
-  vehicleType = ''
-}) => new Car(
-  id,
-  idNumber,
-  image,
-  brand,
-  kilometers,
-  engineType,
-  tires,
-  yearOfProduction,
-  frameNumber,
-  technicalReviewExpiration,
-  civilEnsuranceExpiration,
-  vignetteExpiration,
-  autoEnsuranceExpiration,
-  leasingExpiration,
-  comment,
-  vehicleType
+const buildCar = (model) => new Car(
+  model.id,
+  model.idNumber,
+  model.image,
+  model.brand,
+  model.kilometers,
+  model.engineType,
+  model.tires,
+  model.yearOfProduction,
+  model.frameNumber,
+  model.technicalReviewExpiration,
+  model.civilEnsuranceExpiration,
+  model.vignetteExpiration,
+  model.autoEnsuranceExpiration,
+  model.leasingExpiration,
+  model.comment,
+  model.vehicleType
 );
 
 export class CarRepository extends BaseRepo {
@@ -61,7 +44,7 @@ export class CarRepository extends BaseRepo {
       entitiesPerPage
     );
 
-    return collection.map((entity) => buildCar(entity.toJSON()));
+    return collection.map((entity) => buildCar(entity));
   }
 
   async getByIdNumber(idNumber) {
@@ -73,10 +56,9 @@ export class CarRepository extends BaseRepo {
 
     const tires = await this.tireRepo.getAllByCar(entity.id);
 
-    return buildCar({
-      ...entity.toJSON(),
-      tires
-    });
+    entity.tires = tires;
+
+    return buildCar(entity);
   }
 
   async getAllByIds(carIds) {
@@ -88,7 +70,7 @@ export class CarRepository extends BaseRepo {
       }
     });
 
-    const cars = collection.map((entity) => buildCar(entity.toJSON()));
+    const cars = collection.map((entity) => buildCar(entity));
     const tires = await this.tireRepo.getAllByCars(carIds);
 
     return cars.map((carParam) => {
@@ -98,19 +80,17 @@ export class CarRepository extends BaseRepo {
     });
   }
 
-  async getOne(id) {
-    const entity = await super.getOne(id);
+  async getOne(carId) {
+    const entity = await super.getOne(carId);
 
     if (!entity) {
       throw new NotFoundError('Car not found!');
     }
 
-    const tires = await this.tireRepo.getAllByCar(id);
+    const tires = await this.tireRepo.getAllByCar(carId);
 
-    return buildCar({
-      ...entity.toJSON(),
-      tires
-    });
+    entity.tires = tires;
+    return buildCar(entity);
   }
 
   async getUserCars(userId) {
@@ -121,7 +101,7 @@ export class CarRepository extends BaseRepo {
     });
 
     const cars = await this.getAllByIds(
-      relations.map((rel) => rel.toJSON().carId)
+      relations.map((rel) => rel.carId)
     );
     return cars;
   }

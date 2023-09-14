@@ -31,13 +31,12 @@ export class UserRepository extends BaseRepo {
     }
 
     const users = await super.getAll(page, ['username'], options);
-    const listOfIds = users.map((user) => user.toJSON().id);
+    const listOfIds = users.map((user) => user.id);
 
-    const friendshipsData = await this.friendshipRepo.findAllFriendshipsForUsersById(listOfIds);
-    const friendships = friendshipsData.map((friendship) => friendship.toJSON());
+    const friendships = await this.friendshipRepo.findAllFriendshipsForUsersById(listOfIds);
 
     const collection = users.map((userData) => {
-      const user = buildUser(userData.toJSON());
+      const user = buildUser(userData);
 
       user.friendsList = friendships
         .filter((friendship) => friendship.user_id === user.id)
@@ -59,9 +58,8 @@ export class UserRepository extends BaseRepo {
       ...options
     });
 
-    const friendshipsData = await this.friendshipRepo
+    const friendships = await this.friendshipRepo
       .findAllFriendshipsForUsersById(usersIds, options);
-    const friendships = friendshipsData.map((friendship) => friendship.toJSON());
 
     const collection = users.map((userData) => {
       const user = buildUser(userData.toJSON());
@@ -86,11 +84,11 @@ export class UserRepository extends BaseRepo {
       return null;
     }
 
-    const user = buildUser(userData.toJSON());
+    const user = buildUser(userData);
 
     const friendships = await this.friendshipRepo.findAllFriendshipsById(user.id, options);
     const friendsUsers = await this.getAllByIds(
-      friendships.map((friendship) => friendship.toJSON().friend_id),
+      friendships.map((friendship) => friendship.friend_id),
       options
     );
     user.friendsList = friendsUsers;
@@ -107,15 +105,13 @@ export class UserRepository extends BaseRepo {
   }
 
   async getOneByUsername(username) {
-    const userData = await this.dbClient.findOne({
+    const user = await this.dbClient.findOne({
       where: { username }
     });
 
-    if (!userData) {
+    if (!user) {
       return null;
     }
-
-    const user = userData.toJSON();
 
     const friendships = await this.friendshipRepo.findAllFriendshipsById(user.id);
     user.friendsList = friendships.map((friendship) => friendship.toJSON().friend_id);
@@ -134,7 +130,7 @@ export class UserRepository extends BaseRepo {
   async updateFriends(id, friendsIdsData, options = {}) {
     const friendsIds = friendsIdsData.map((friendId) => `${friendId}`);
     const userFriendsIds = (await this.friendshipRepo.findAllFriendshipsById(id, options))
-      .map((f) => f.toJSON().friend_id);
+      .map((f) => f.friend_id);
 
     const idsToAdd = friendsIds.filter((friendId) => !userFriendsIds.includes(friendId));
     const idsToRemove = userFriendsIds.filter((friendId) => !friendsIds.includes(friendId));
