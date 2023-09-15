@@ -91,7 +91,7 @@ export class UserService {
   async update(id, data) {
     this.logger.log('info', 'update');
     const {
-      username, password, email, friendsList, region
+      username, password, email, friendsList, region, favouritePartners
     } = data;
 
     await sequelize.transaction(async (t) => {
@@ -110,6 +110,9 @@ export class UserService {
       }
       if (friendsList) {
         await this.updateFriends(id, friendsList, options);
+      }
+      if (favouritePartners) {
+        await this.userRepo.updateFavouritePartners(id, favouritePartners);
       }
     });
 

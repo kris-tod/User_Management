@@ -6,7 +6,8 @@ export const serializeUser = ({
   role,
   friendsList,
   region,
-  cars
+  cars,
+  favouritePartners
 }) => ({
   id,
   username,
@@ -15,7 +16,8 @@ export const serializeUser = ({
   role,
   friendsList,
   region,
-  cars
+  cars,
+  favouritePartners
 });
 
 export const serializeUsers = (users) => users.map((user) => serializeUser(user));

@@ -23,6 +23,7 @@ export class User {
     username,
     password,
     region,
+    favouritePartners = [],
     friendsList = [],
     cars = [],
     email = 'default@gmail.com',
@@ -36,6 +37,7 @@ export class User {
     this.region = region;
     this.friendsList = friendsList;
     this.cars = cars;
+    this.favouritePartners = favouritePartners;
   }
 
   setUsername(username) {

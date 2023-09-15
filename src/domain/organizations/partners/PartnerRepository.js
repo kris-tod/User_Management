@@ -53,6 +53,34 @@ export class PartnerRepository extends BaseRepo {
     return result;
   }
 
+  async getAllByAdmin(page, id) {
+    const listOfPartnerIds = (await AdminPartnerModel.findAll({
+      where: {
+        adminId: id
+      }
+    })).map((entity) => entity.partnerId);
+
+    return this.getAllByIds(page, listOfPartnerIds);
+  }
+
+  async getAllByIds(page, listOfIds) {
+    const options = {
+      where: {
+        id: {
+          [Op.in]: listOfIds
+        }
+      }
+    };
+
+    const collection = await super.getAll(page, ['name'], options);
+
+    const result = await Promise.all(
+      collection.map(async (entity) => this.constructPartnerProps(entity))
+    );
+
+    return result;
+  }
+
   async getOne(id) {
     const entity = await super.getOne(id);
 

@@ -66,17 +66,18 @@ export class OrganizationService {
   }
 
   async getAllPartners(page, reqUser) {
-    return this.partnerRepo.getAll(
-      page,
-      reqUser.role === roles.admin ? reqUser.region : ''
-    );
+    if (reqUser.role === roles.superadmin) {
+      return this.partnerRepo.getAll(page);
+    }
+    return this.partnerRepo.getAllByAdmin(page, reqUser.id);
   }
 
   async getOnePartner(id, reqUser) {
     const entity = await this.partnerRepo.getOne(id);
 
-    if (reqUser.role === roles.admin && reqUser.region !== entity.region) {
-      throw new ForbiddenError(INVALID_REGION);
+    if (reqUser.role === roles.admin && !entity.partnerAdmins
+      .find((admin) => admin.id === reqUser.id)) {
+      throw new ForbiddenError(ADMIN_NOT_PARTNER_ADMIN);
     }
 
     return entity;
@@ -100,10 +101,6 @@ export class OrganizationService {
 
   async updatePartner(id, updatedData, reqUser) {
     const partner = await this.partnerRepo.getOne(id);
-
-    if (reqUser.role === roles.admin && reqUser.region !== partner.region) {
-      throw new ForbiddenError(INVALID_REGION);
-    }
 
     if (reqUser.role === roles.admin && !partner.partnerAdmins
       .find((admin) => admin.id === reqUser.id)) {
@@ -140,8 +137,9 @@ export class OrganizationService {
   async destroyPartner(id, reqUser) {
     const partner = await this.partnerRepo.getOne(id);
 
-    if (reqUser.role === roles.admin && reqUser.region !== partner.region) {
-      throw new ForbiddenError(INVALID_REGION);
+    if (reqUser.role === roles.admin && !partner.partnerAdmins
+      .find((admin) => admin.id === reqUser.id)) {
+      throw new ForbiddenError(ADMIN_NOT_PARTNER_ADMIN);
     }
 
     return this.partnerRepo.destroy(id); // TODO: update schema for deleting
@@ -150,8 +148,9 @@ export class OrganizationService {
   async updatePartnerLogo(id, file, reqUser) {
     const partner = await this.partnerRepo.getOne(id);
 
-    if (reqUser.role === roles.admin && reqUser.region !== partner.region) {
-      throw new ForbiddenError(INVALID_REGION);
+    if (reqUser.role === roles.admin && !partner.partnerAdmins
+      .find((admin) => admin.id === reqUser.id)) {
+      throw new ForbiddenError(ADMIN_NOT_PARTNER_ADMIN);
     }
 
     const logo = FileService.getFilePath(file);
