@@ -19,15 +19,26 @@ export class CarSupportServiceRepository extends BaseRepo {
   }
 
   async getAllByIds(listOfIds) {
-    const collection = await this.dbClient.findAll({
+    const collectionPromoted = await this.dbClient.findAll({
       where: {
         id: {
           [Op.in]: listOfIds
-        }
+        },
+        isPromoted: true
       }
     });
 
-    return collection.map((entity) => buildService(entity));
+    const collectionNotPromoted = await this.dbClient.findAll({
+      where: {
+        id: {
+          [Op.in]: listOfIds
+        },
+        isPromoted: false
+      }
+    });
+
+    return collectionPromoted.map((entity) => buildService(entity))
+      .concat(collectionNotPromoted.map((entity) => buildService(entity)));
   }
 
   async getAll(page, order, options) {
