@@ -33,3 +33,5 @@ export const INVALID_FRIENDS_IDS = 'Invalid list of friends ids!';
 export const INVALID_APP = 'User is not from the right application!';
 export const INVALID_REGION = 'Invalid region!';
 export const ADMIN_NOT_SUPERADMIN = 'User is not superadmin!';
+export const TOO_MANY_CARS = 'Too many cars for partner!';
+export const ADMIN_NOT_PARTNER_ADMIN = 'Admin not partner admin!';

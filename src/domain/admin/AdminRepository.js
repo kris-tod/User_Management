@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import { BaseRepo } from '../../utils/BaseRepo.js';
 import { Admin as AdminModel } from '../../db/index.js';
 import { Admin } from './Admin.js';
@@ -26,6 +27,18 @@ export class AdminRepository extends BaseRepo {
     const users = await super.getAll(page, ['username'], options);
 
     return users.map((user) => buildAdmin(user.toJSON()));
+  }
+
+  async getAllByIds(listOfIds) {
+    const collection = await this.dbClient.findAll({
+      where: {
+        id: {
+          [Op.in]: listOfIds
+        }
+      }
+    });
+
+    return collection.map((entity) => buildAdmin(entity));
   }
 
   async getOneByUsername(username) {

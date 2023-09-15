@@ -116,3 +116,13 @@ export const { TokenBlacklist } = db;
 export const { Car, Tire } = db;
 export const { UserCar } = db;
 export const { Admin } = db;
+export const {
+  CarSupportService,
+  Partner,
+  SubscriptionPlan,
+  Organization,
+  CarPartner,
+  AdminPartner,
+  UserPartner,
+  PartnerService
+} = db;
