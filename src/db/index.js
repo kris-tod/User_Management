@@ -9,6 +9,14 @@ import CarModel from './car.js';
 import TireModel from './tire.js';
 import UserCarModel from './userCar.js';
 import AdminModel from './admin.js';
+import CarSupportServiceModel from './carSupportService.js';
+import SubscriptionPlanModel from './subscriptionPlan.js';
+import PartnerModel from './partner.js';
+import AdminPartnerModel from './adminPartner.js';
+import OrganizationModel from './organization.js';
+import CarPartnerModel from './carPartner.js';
+import UserPartnerModel from './userPartner.js';
+import PartnerServiceModel from './partnerService.js';
 
 export const sequelize = new Sequelize(
   dbConfig.database,
@@ -28,7 +36,15 @@ const db = {
   Friendship: FriendshipModel(sequelize),
   Car: CarModel(sequelize),
   Tire: TireModel(sequelize),
-  UserCar: UserCarModel(sequelize)
+  UserCar: UserCarModel(sequelize),
+  CarSupportService: CarSupportServiceModel(sequelize),
+  SubscriptionPlan: SubscriptionPlanModel(sequelize),
+  Partner: PartnerModel(sequelize),
+  AdminPartner: AdminPartnerModel(sequelize),
+  Organization: OrganizationModel(sequelize),
+  CarPartner: CarPartnerModel(sequelize),
+  UserPartner: UserPartnerModel(sequelize),
+  PartnerService: PartnerServiceModel(sequelize)
 };
 
 db.Friendship.hasOne(db.User, {
@@ -50,6 +66,24 @@ db.Car.hasMany(db.Tire);
 db.Tire.belongsTo(db.Car);
 db.User.belongsToMany(db.Car, { through: db.UserCar });
 db.Car.belongsToMany(db.User, { through: db.UserCar });
+
+db.Partner.belongsToMany(db.CarSupportService, { through: db.PartnerService });
+db.CarSupportService.belongsToMany(db.Partner, { through: db.PartnerService });
+
+db.SubscriptionPlan.hasMany(db.Partner);
+db.Partner.belongsTo(db.SubscriptionPlan);
+
+db.Partner.belongsToMany(db.Admin, { through: db.AdminPartner });
+db.Admin.belongsToMany(db.Partner, { through: db.AdminPartner });
+
+db.Car.belongsToMany(db.Partner, { through: db.CarPartner });
+db.Partner.belongsToMany(db.Car, { through: db.CarPartner });
+
+db.Organization.hasMany(db.Partner);
+db.Partner.belongsTo(db.Organization);
+
+db.User.belongsToMany(db.Partner, { through: db.UserPartner });
+db.Partner.belongsToMany(db.User, { through: db.UserPartner });
 
 sequelize
   .sync({ force: false, alter: false })
