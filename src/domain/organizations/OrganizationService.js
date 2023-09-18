@@ -145,7 +145,7 @@ export class OrganizationService {
     const currentSubscriptionPlan = await this.subscriptionPlanRepo
       .getOne(partner.subscriptionPlan.id);
 
-    if (updatedData.cars && currentSubscriptionPlan.carsCount < updatedData.cars.length) {
+    if (updatedData.cars && currentSubscriptionPlan.carsLimit < updatedData.cars.length) {
       throw new ApiError(TOO_MANY_CARS);
     }
 

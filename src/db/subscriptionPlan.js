@@ -24,7 +24,7 @@ export default (sequelize) => {
         type: DataTypes.FLOAT,
         allowNull: false
       },
-      carsCount: {
+      carsLimit: {
         type: DataTypes.INTEGER,
         allowNull: false
       },

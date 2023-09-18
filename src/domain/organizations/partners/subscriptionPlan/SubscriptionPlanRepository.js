@@ -9,7 +9,7 @@ const buildSubscriptionPlan = (model) => new SubscriptionPlan(
   model.name,
   model.price,
   model.commissionPerRequest,
-  model.carsCount,
+  model.carsLimit,
   model.isDefault,
   model.description
 );

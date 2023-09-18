@@ -4,7 +4,7 @@ export class SubscriptionPlan {
     name,
     price,
     commissionPerRequest,
-    carsCount,
+    carsLimit,
     isDefault = false,
     description = ''
   ) {
@@ -12,7 +12,7 @@ export class SubscriptionPlan {
     this.name = name;
     this.setPrice(price);
     this.commissionPerRequest = commissionPerRequest;
-    this.setCarsCount(carsCount);
+    this.setCarsLimit(carsLimit);
     this.isDefault = isDefault;
     this.description = description;
   }
@@ -24,10 +24,10 @@ export class SubscriptionPlan {
     this.price = price;
   }
 
-  setCarsCount(carsCount) {
-    if (carsCount <= 0) {
+  setCarsLimit(carsLimit) {
+    if (carsLimit <= 0) {
       throw new Error('Invalid cars count!');
     }
-    this.carsCount = carsCount;
+    this.carsCount = carsLimit;
   }
 }
