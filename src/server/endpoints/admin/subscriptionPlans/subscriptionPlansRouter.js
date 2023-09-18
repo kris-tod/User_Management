@@ -1,5 +1,5 @@
 import express from 'express';
-import { SubscriptionsController } from './SubscriptionsController.js';
+import { SubscriptionPlansController } from './SubscriptionPlansController.js';
 import {
   isAuth,
   isTokenNew,
@@ -8,9 +8,9 @@ import {
 } from '../../../middlewares/index.js';
 import { apps } from '../../../../constants/apps.js';
 
-export const createSubscriptionsRouter = (logger) => {
+export const createSubscriptionPlansRouter = (logger) => {
   const router = express.Router();
-  const subscriptionsController = new SubscriptionsController(logger);
+  const subscriptionsController = new SubscriptionPlansController(logger);
   const {
     getMany, getOne, create, update, destroy
   } = subscriptionsController.createRouterHandlers();

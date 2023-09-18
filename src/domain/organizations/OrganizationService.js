@@ -104,9 +104,9 @@ export class OrganizationService {
       throw new ApiError('Invalid partner admins!');
     }
 
-    const subscription = await this.subscriptionPlanRepo.getOne(data.subscriptionPlanId);
+    const subscriptionPlan = await this.subscriptionPlanRepo.getOne(data.subscriptionPlanId);
 
-    if (!subscription) {
+    if (!subscriptionPlan) {
       throw new ApiError('Invalid subscription!');
     }
 
@@ -121,9 +121,10 @@ export class OrganizationService {
       throw new ForbiddenError(ADMIN_NOT_PARTNER_ADMIN);
     }
 
-    const subscriptionPlan = await this.subscriptionPlanRepo.getOne(partner.subscriptionPlan.id);
+    const currentSubscriptionPlan = await this.subscriptionPlanRepo
+      .getOne(partner.subscriptionPlan.id);
 
-    if (updatedData.cars && subscriptionPlan.carsCount < updatedData.cars.length) {
+    if (updatedData.cars && currentSubscriptionPlan.carsCount < updatedData.cars.length) {
       throw new ApiError(TOO_MANY_CARS);
     }
 
@@ -138,9 +139,10 @@ export class OrganizationService {
     }
 
     if (updatedData.subscriptionPlanId) {
-      const subscription = await this.subscriptionPlanRepo.getOne(updatedData.subscriptionPlanId);
+      const subscriptionPlan = await this.subscriptionPlanRepo
+        .getOne(updatedData.subscriptionPlanId);
 
-      if (!subscription) {
+      if (!subscriptionPlan) {
         throw new ApiError('Invalid subscription!');
       }
     }
@@ -235,15 +237,15 @@ export class OrganizationService {
     return this.servicesRepo.destroy(id);
   }
 
-  async getAllSubscriptions(page) {
+  async getAllSubscriptionPlans(page) {
     return this.subscriptionPlanRepo.getAll(page);
   }
 
-  async getOneSubscription(id) {
+  async getOneSubscriptionPlan(id) {
     return this.subscriptionPlanRepo.getOne(id);
   }
 
-  async createSubscription(data, reqUser) {
+  async createSubscriptionPlan(data, reqUser) {
     if (reqUser.role !== roles.superadmin) {
       throw new ForbiddenError(USER_NOT_SUPER_ADMIN);
     }
@@ -251,7 +253,7 @@ export class OrganizationService {
     return this.subscriptionPlanRepo.create(data);
   }
 
-  async updateSubscription(id, data, reqUser) {
+  async updateSubscriptionPlan(id, data, reqUser) {
     if (reqUser.role !== roles.superadmin) {
       throw new ForbiddenError(USER_NOT_SUPER_ADMIN);
     }
@@ -265,7 +267,7 @@ export class OrganizationService {
     }, {});
   }
 
-  async destroySubscription(id, reqUser) {
+  async destroySubscriptionPlan(id, reqUser) {
     if (reqUser.role !== roles.superadmin) {
       throw new ForbiddenError(USER_NOT_SUPER_ADMIN);
     }

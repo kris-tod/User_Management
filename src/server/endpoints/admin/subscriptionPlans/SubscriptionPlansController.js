@@ -1,7 +1,7 @@
 import { BaseController } from '../../../../utils/BaseController.js';
 import { OrganizationService } from '../../../../domain/organizations/OrganizationService.js';
 
-export class SubscriptionsController extends BaseController {
+export class SubscriptionPlansController extends BaseController {
   constructor(logger) {
     super(new OrganizationService(logger), logger);
   }
@@ -10,7 +10,7 @@ export class SubscriptionsController extends BaseController {
     const { page } = req.query;
     const { user } = req;
 
-    const collection = await this.service.getAllSubscriptions(page, user);
+    const collection = await this.service.getAllSubscriptionPlans(page, user);
     res.status(200).json(collection);
   }
 
@@ -18,7 +18,7 @@ export class SubscriptionsController extends BaseController {
     const { id } = req.params;
     const { user } = req;
 
-    const entity = await this.service.getOneSubscription(id, user);
+    const entity = await this.service.getOneSubscriptionPlan(id, user);
     res.status(200).json(entity);
   }
 
@@ -26,7 +26,7 @@ export class SubscriptionsController extends BaseController {
     const { user } = req;
     const data = req.body;
 
-    const response = await this.service.createSubscription(data, user);
+    const response = await this.service.createSubscriptionPlan(data, user);
     res.status(200).json(response);
   }
 
@@ -35,7 +35,7 @@ export class SubscriptionsController extends BaseController {
     const { id } = req.params;
     const data = req.body;
 
-    const response = await this.service.updateSubscription(id, data, user);
+    const response = await this.service.updateSubscriptionPlan(id, data, user);
     res.status(200).json(response);
   }
 
@@ -43,7 +43,7 @@ export class SubscriptionsController extends BaseController {
     const { user } = req;
     const { id } = req.params;
 
-    const response = await this.service.destroySubscription(id, user);
+    const response = await this.service.destroySubscriptionPlan(id, user);
     res.status(200).json(response);
   }
 

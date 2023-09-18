@@ -6,7 +6,7 @@ import { createAdminsRouter } from './admins/adminsRouter.js';
 import { createOrganizationsRouter } from './organizations/organizationsRouter.js';
 import { createPartnersRouter } from './partners/partnersRouter.js';
 import { createServicesRouter } from './services/servicesRouter.js';
-import { createSubscriptionsRouter } from './subscriptions/subscriptionsRouter.js';
+import { createSubscriptionPlansRouter } from './subscriptionPlans/subscriptionPlansRouter.js';
 
 export const createAdminRouter = (logger) => {
   const router = Router();
@@ -17,7 +17,7 @@ export const createAdminRouter = (logger) => {
   router.use('/organizations', createOrganizationsRouter(logger));
   router.use('/partners', createPartnersRouter(logger));
   router.use('/services', createServicesRouter(logger));
-  router.use('/subscriptions', createSubscriptionsRouter(logger));
+  router.use('/subscriptionPlans', createSubscriptionPlansRouter(logger));
 
   return router;
 };
