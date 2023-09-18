@@ -47,21 +47,6 @@ const db = {
   PartnerService: PartnerServiceModel(sequelize)
 };
 
-db.Friendship.hasOne(db.User, {
-  foreinKey: {
-    name: 'user_id',
-    type: DataTypes.BIGINT,
-    allowNull: false
-  }
-});
-db.Friendship.hasOne(db.User, {
-  foreinKey: {
-    name: 'friend_id',
-    type: DataTypes.BIGINT,
-    allowNull: false
-  }
-});
-db.User.belongsTo(db.Friendship);
 db.Car.hasMany(db.Tire);
 db.Tire.belongsTo(db.Car);
 db.User.belongsToMany(db.Car, { through: db.UserCar, onDelete: 'CASCADE' });

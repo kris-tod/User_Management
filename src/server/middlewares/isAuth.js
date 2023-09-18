@@ -1,15 +1,13 @@
 import { verifyToken } from '../../utils/jwt.js';
 import { authCookieName } from '../../config/index.js';
 import { USER_NOT_LOGGED } from '../../constants/messages.js';
+import { AuthError } from '../../utils/errors.js';
 
 export const isAuth = (req, res, next) => {
   const token = req.cookies[authCookieName];
 
   if (!token) {
-    res.status(401).send({
-      message: USER_NOT_LOGGED
-    });
-    return;
+    throw new AuthError(USER_NOT_LOGGED);
   }
 
   try {
@@ -19,8 +17,6 @@ export const isAuth = (req, res, next) => {
     next();
   }
   catch (err) {
-    res.status(401).send({
-      message: USER_NOT_LOGGED
-    });
+    throw new AuthError(USER_NOT_LOGGED);
   }
 };

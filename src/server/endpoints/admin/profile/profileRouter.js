@@ -1,5 +1,5 @@
 import express from 'express';
-import { AdminController } from './AdminController.js';
+import { ProfileController } from './ProfileController.js';
 
 import {
   isAuth,
@@ -11,9 +11,9 @@ import {
 } from '../../../middlewares/index.js';
 import { apps } from '../../../../constants/apps.js';
 
-export const createUserRouter = (logger) => {
+export const createProfileRouter = (logger) => {
   const router = express.Router();
-  const userController = new AdminController(logger);
+  const userController = new ProfileController(logger);
 
   const { getOne, update } = userController.createRouterHandlers();
 

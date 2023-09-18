@@ -4,7 +4,7 @@ import {
   NotFoundError, ApiError, InternalError, ForbiddenError
 } from '../../utils/errors.js';
 import {
-  USER_NOT_FOUND, INVALID_FRIENDS_IDS, INVALID_REGION, DEFAULT_ERROR_MESSAGE, PASSWORD_INCORRECT
+  USER_NOT_FOUND, INVALID_FRIENDS_IDS, INVALID_REGION, DEFAULT_ERROR_MESSAGE, LOGIN_FAILED
 } from '../../constants/messages.js';
 import FileService from '../../services/FileService.js';
 import PasswordService from '../../services/passwordService.js';
@@ -225,7 +225,7 @@ export class UserService {
     const user = await this.userRepo.getOneByUsername(username);
 
     if (!user) {
-      throw new NotFoundError(USER_NOT_FOUND);
+      throw new NotFoundError(LOGIN_FAILED);
     }
 
     const match = await PasswordService.comparePasswords(
@@ -234,7 +234,7 @@ export class UserService {
     );
 
     if (!match) {
-      throw new ApiError(PASSWORD_INCORRECT);
+      throw new ApiError(LOGIN_FAILED);
     }
 
     const token = createToken({

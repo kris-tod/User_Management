@@ -1,5 +1,5 @@
 import express from 'express';
-import { UserController } from './UserController.js';
+import { ProfileController } from './ProfileController.js';
 import { createCarsRouter } from './cars/carsRouter.js';
 
 import {
@@ -14,11 +14,11 @@ import {
 } from '../../../middlewares/index.js';
 import { apps } from '../../../../constants/apps.js';
 
-export const createUserRouter = (logger) => {
+export const createProfileRouter = (logger) => {
   const router = express.Router();
-  const userController = new UserController(logger);
+  const profileController = new ProfileController(logger);
 
-  const { getOne, update, updateAvatar } = userController.createRouterHandlers();
+  const { getOne, update, updateAvatar } = profileController.createRouterHandlers();
 
   router.get('/', isAuth, isFromApp(apps.mobile), isTokenNew(logger), getOne);
 

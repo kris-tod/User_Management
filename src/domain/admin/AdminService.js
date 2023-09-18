@@ -7,7 +7,7 @@ import {
   USER_NOT_FOUND,
   ADMIN_NOT_SUPERADMIN,
   DEFAULT_ERROR_MESSAGE,
-  PASSWORD_INCORRECT
+  LOGIN_FAILED
 } from '../../constants/messages.js';
 import PasswordService from '../../services/passwordService.js';
 import { roles } from '../user/User.js';
@@ -142,7 +142,7 @@ export class AdminService {
     const user = await this.adminRepo.getOneByUsername(username);
 
     if (!user) {
-      throw new NotFoundError(USER_NOT_FOUND);
+      throw new NotFoundError(LOGIN_FAILED);
     }
 
     const match = await PasswordService.comparePasswords(
@@ -151,7 +151,7 @@ export class AdminService {
     );
 
     if (!match) {
-      throw new ApiError(PASSWORD_INCORRECT);
+      throw new ApiError(LOGIN_FAILED);
     }
 
     const token = createToken({

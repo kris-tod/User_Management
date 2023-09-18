@@ -1,11 +1,11 @@
-import { AdminService } from '../../../../domain/admin/AdminService.js';
+import { UserService } from '../../../../domain/user/UserService.js';
 import { serializeUser } from '../../serialize.js';
 
 import { BaseController } from '../../../../utils/BaseController.js';
 
-export class AdminController extends BaseController {
+export class ProfileController extends BaseController {
   constructor(logger) {
-    super(new AdminService(logger), logger);
+    super(new UserService(logger), logger);
   }
 
   async getOne(req, res) {
@@ -23,7 +23,15 @@ export class AdminController extends BaseController {
     res.status(201).json(updatedData);
   }
 
+  async updateAvatar(req, res) {
+    const { id } = req.user;
+    const { file, filePath } = req;
+
+    const response = await this.service.updateAvatarById(id, filePath, file);
+    res.status(200).json(response);
+  }
+
   createRouterHandlers() {
-    return super.createRouterHandlers(['getOne', 'update']);
+    return super.createRouterHandlers(['getOne', 'update', 'updateAvatar']);
   }
 }

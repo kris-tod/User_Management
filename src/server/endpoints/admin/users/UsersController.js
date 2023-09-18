@@ -1,6 +1,6 @@
 import { UserService } from '../../../../domain/user/UserService.js';
 import { BaseController } from '../../../../utils/BaseController.js';
-import { serializeUsers } from '../../serialize.js';
+import { serializeUser, serializeUsers } from '../../serialize.js';
 
 export class UsersController extends BaseController {
   constructor(logger) {
@@ -22,6 +22,14 @@ export class UsersController extends BaseController {
 
     const updatedData = await this.service.updateUserPassword(id, { password }, user);
     res.status(200).json(updatedData);
+  }
+
+  async create(req, res) {
+    const data = req.body;
+    const { user } = req;
+
+    const entity = await this.service.create(data, user);
+    res.status(201).json(serializeUser(entity));
   }
 
   createRouterHandlers() {
