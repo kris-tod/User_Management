@@ -30,17 +30,29 @@
 											}
 										},
 										"url": {
-											"raw": "localhost:4000/api/user/cars/4/tires",
+											"raw": "{{baseUrl}}/api/profile/cars/:carId/tires",
 											"host": [
-												"localhost"
+												"{{baseUrl}}"
 											],
-											"port": "4000",
 											"path": [
 												"api",
-												"user",
+												"profile",
 												"cars",
-												"4",
+												":carId",
 												"tires"
+											],
+											"query": [
+												{
+													"key": "",
+													"value": null,
+													"disabled": true
+												}
+											],
+											"variable": [
+												{
+													"key": "carId",
+													"value": "4"
+												}
 											]
 										}
 									},
@@ -52,18 +64,27 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "localhost:4000/api/user/cars/3/tires/8",
+											"raw": "{{baseUrl}}/api/profile/cars/:carId/tires/:tireId",
 											"host": [
-												"localhost"
+												"{{baseUrl}}"
 											],
-											"port": "4000",
 											"path": [
 												"api",
-												"user",
+												"profile",
 												"cars",
-												"3",
+												":carId",
 												"tires",
-												"8"
+												":tireId"
+											],
+											"variable": [
+												{
+													"key": "carId",
+													"value": "3"
+												},
+												{
+													"key": "tireId",
+													"value": "8"
+												}
 											]
 										}
 									},
@@ -84,18 +105,27 @@
 											}
 										},
 										"url": {
-											"raw": "localhost:4000/api/user/cars/5/tires/1",
+											"raw": "{{baseUrl}}/api/profile/cars/:carId/tires/:tireId",
 											"host": [
-												"localhost"
+												"{{baseUrl}}"
 											],
-											"port": "4000",
 											"path": [
 												"api",
-												"user",
+												"profile",
 												"cars",
-												"5",
+												":carId",
 												"tires",
-												"1"
+												":tireId"
+											],
+											"variable": [
+												{
+													"key": "carId",
+													"value": "5"
+												},
+												{
+													"key": "tireId",
+													"value": "1"
+												}
 											]
 										}
 									},
@@ -107,18 +137,27 @@
 										"method": "DELETE",
 										"header": [],
 										"url": {
-											"raw": "localhost:4000/api/user/cars/5/tires/9",
+											"raw": "{{baseUrl}}/api/profile/cars/:carId/tires/:tireId",
 											"host": [
-												"localhost"
+												"{{baseUrl}}"
 											],
-											"port": "4000",
 											"path": [
 												"api",
-												"user",
+												"profile",
 												"cars",
-												"5",
+												":carId",
 												"tires",
-												"9"
+												":tireId"
+											],
+											"variable": [
+												{
+													"key": "carId",
+													"value": "5"
+												},
+												{
+													"key": "tireId",
+													"value": "9"
+												}
 											]
 										}
 									},
@@ -141,14 +180,13 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:4000/api/user/cars",
+									"raw": "{{baseUrl}}/api/profile/cars",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"api",
-										"user",
+										"profile",
 										"cars"
 									]
 								}
@@ -225,16 +263,21 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/api/user/cars/6",
+									"raw": "{{baseUrl}}/api/profile/cars/:carId",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"api",
-										"user",
+										"profile",
 										"cars",
-										"6"
+										":carId"
+									],
+									"variable": [
+										{
+											"key": "carId",
+											"value": "6"
+										}
 									]
 								}
 							},
@@ -302,19 +345,72 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/api/user/cars",
+									"raw": "{{baseUrl}}/api/profile/cars",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"api",
-										"user",
+										"profile",
 										"cars"
 									]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/profile/cars",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"profile",
+												"cars"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1084"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"43c-pFe4+eA2NyqwlC4ldnNexlpMAbg\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 18 Sep 2023 13:24:51 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "[\n    {\n        \"id\": 6,\n        \"idNumber\": \"CB3723HH\",\n        \"image\": \"http://localhost:4000/img-1694673599644.jpg\",\n        \"brand\": \"Volkswagen Caddy Life\",\n        \"kilometers\": 285000,\n        \"engineType\": \"gasoline\",\n        \"yearOfProduction\": 2008,\n        \"frameNumber\": null,\n        \"technicalReviewExpiration\": null,\n        \"civilEnsuranceExpiration\": null,\n        \"vignetteExpiration\": null,\n        \"autoEnsuranceExpiration\": null,\n        \"leasingExpiration\": null,\n        \"comment\": \"This is a very cool car!!!\",\n        \"vehicleType\": null,\n        \"tires\": [\n            {\n                \"id\": 3,\n                \"brand\": \"Mischelline\",\n                \"count\": 6,\n                \"width\": 40,\n                \"ratio\": 2,\n                \"type\": \"winter\",\n                \"used\": false,\n                \"carId\": 6,\n                \"comment\": null,\n                \"tiresHotel\": null\n            }\n        ]\n    },\n    {\n        \"id\": 4,\n        \"idNumber\": \"CB3030HH\",\n        \"image\": \"default_image\",\n        \"brand\": \"Citroen\",\n        \"kilometers\": 350000,\n        \"engineType\": \"diesel\",\n        \"yearOfProduction\": 2001,\n        \"frameNumber\": null,\n        \"technicalReviewExpiration\": null,\n        \"civilEnsuranceExpiration\": null,\n        \"vignetteExpiration\": null,\n        \"autoEnsuranceExpiration\": null,\n        \"leasingExpiration\": null,\n        \"comment\": \"This is a very slow car!!!\",\n        \"vehicleType\": \"I do not know what it is!\",\n        \"tires\": [\n            {\n                \"id\": 2,\n                \"brand\": \"Mischelline\",\n                \"count\": 6,\n                \"width\": 40,\n                \"ratio\": 2,\n                \"type\": \"winter\",\n                \"used\": false,\n                \"carId\": 4,\n                \"comment\": null,\n                \"tiresHotel\": null\n            }\n        ]\n    }\n]"
+								}
+							]
 						},
 						{
 							"name": "Edit car",
@@ -331,16 +427,21 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:4000/api/user/cars/6",
+									"raw": "{{baseUrl}}/api/profile/cars/:carId",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"api",
-										"user",
+										"profile",
 										"cars",
-										"6"
+										":carId"
+									],
+									"variable": [
+										{
+											"key": "carId",
+											"value": "6"
+										}
 									]
 								}
 							},
@@ -352,16 +453,21 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/api/user/cars/3",
+									"raw": "{{baseUrl}}/api/profile/cars/:carId",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"api",
-										"user",
+										"profile",
 										"cars",
-										"3"
+										":carId"
+									],
+									"variable": [
+										{
+											"key": "carId",
+											"value": "3"
+										}
 									]
 								}
 							},
@@ -383,17 +489,22 @@
 									]
 								},
 								"url": {
-									"raw": "localhost:4000/api/user/cars/6/image",
+									"raw": "{{baseUrl}}/api/profile/cars/:carId/image",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"api",
-										"user",
+										"profile",
 										"cars",
-										"6",
+										":carId",
 										"image"
+									],
+									"variable": [
+										{
+											"key": "carId",
+											"value": "6"
+										}
 									]
 								}
 							},
@@ -410,11 +521,10 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/api/auth/logout",
+									"raw": "{{baseUrl}}/api/auth/logout",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"api",
 										"auth",
@@ -439,11 +549,10 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:4000/api/auth/login",
+									"raw": "{{baseUrl}}/api/auth/login",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"api",
 										"auth",
@@ -666,11 +775,10 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:4000/api/auth/register",
+									"raw": "{{baseUrl}}/api/auth/register",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"api",
 										"auth",
@@ -700,11 +808,10 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:4000/api/user/",
+									"raw": "{{baseUrl}}/api/user/",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"api",
 										"user",
@@ -914,14 +1021,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/api/user",
+									"raw": "{{baseUrl}}/api/profile",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"api",
-										"user"
+										"profile"
 									]
 								}
 							},
@@ -943,11 +1049,10 @@
 									]
 								},
 								"url": {
-									"raw": "localhost:4000/api/user/avatar",
+									"raw": "{{baseUrl}}/api/user/avatar",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"api",
 										"user",
@@ -973,11 +1078,10 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/admin/organizations",
+									"raw": "{{baseUrl}}/admin/organizations",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"organizations"
@@ -1055,11 +1159,10 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:4000/admin/organizations",
+									"raw": "{{baseUrl}}/admin/organizations",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"organizations"
@@ -1146,15 +1249,20 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:4000/admin/organizations/2",
+									"raw": "{{baseUrl}}/admin/organizations/:organizationId",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"organizations",
-										"2"
+										":organizationId"
+									],
+									"variable": [
+										{
+											"key": "organizationId",
+											"value": "2"
+										}
 									]
 								}
 							},
@@ -1230,15 +1338,20 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/admin/organizations/1",
+									"raw": "{{baseUrl}}/admin/organizations/:organizationId",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"organizations",
-										"1"
+										":organizationId"
+									],
+									"variable": [
+										{
+											"key": "organizationId",
+											"value": "2"
+										}
 									]
 								}
 							},
@@ -1301,15 +1414,20 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/admin/organizations/2",
+									"raw": "{{baseUrl}}/admin/organizations/:organizationId",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"organizations",
-										"2"
+										":organizationId"
+									],
+									"variable": [
+										{
+											"key": "organizationId",
+											"value": "2"
+										}
 									]
 								}
 							},
@@ -1439,11 +1557,10 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/admin/users?page=1",
+									"raw": "{{baseUrl}}/admin/users?page=1",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"users"
@@ -1584,7 +1701,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"tosho\",\n    \"password\": \"admin123\",\n    \"region\": \"Sofia\"\n}",
+									"raw": "{\n    \"username\": \"georgi\",\n    \"password\": \"georgi123\",\n    \"region\": \"Plovdiv\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1592,11 +1709,10 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:4000/admin/users/",
+									"raw": "{{baseUrl}}/admin/users/",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"users",
@@ -1676,22 +1792,27 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/admin/users/3",
+									"raw": "{{baseUrl}}/admin/users/:userId",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"users",
-										"3"
+										":userId"
+									],
+									"variable": [
+										{
+											"key": "userId",
+											"value": "3"
+										}
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "Admin edit",
+							"name": "Change user password",
 							"request": {
 								"method": "PATCH",
 								"header": [],
@@ -1705,16 +1826,21 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:4000/admin/users/5/password",
+									"raw": "{{baseUrl}}/admin/users/:userId/password",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"users",
-										"5",
+										":userId",
 										"password"
+									],
+									"variable": [
+										{
+											"key": "userId",
+											"value": "5"
+										}
 									]
 								}
 							},
@@ -1732,7 +1858,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"sofiaAdmin\",\n    \"password\": \"admin123\"\n}",
+									"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1740,11 +1866,10 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:4000/admin/auth/login",
+									"raw": "{{baseUrl}}/admin/auth/login",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"auth",
@@ -1958,11 +2083,10 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/admin/auth/logout",
+									"raw": "{{baseUrl}}/admin/auth/logout",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"auth",
@@ -1983,14 +2107,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/admin/user",
+									"raw": "{{baseUrl}}/admin/profile",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
-										"user"
+										"profile"
 									]
 								}
 							},
@@ -2167,11 +2290,10 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/admin/admins?page=1",
+									"raw": "{{baseUrl}}/admin/admins?page=1",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"admins"
@@ -2180,6 +2302,93 @@
 										{
 											"key": "page",
 											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add admin",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"plevenAdmin\",\n    \"password\": \"admin123\",\n    \"email\": \"plevenAdmin@gmail.com\",\n    \"region\": \"Pleven\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/admins",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"admins"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Change admin password",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"password\": \"plevenAdmin123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/admins/:adminId/password",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"admins",
+										":adminId",
+										"password"
+									],
+									"variable": [
+										{
+											"key": "adminId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete admin",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/admins/:adminId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"admins",
+										":adminId"
+									],
+									"variable": [
+										{
+											"key": "adminId",
+											"value": "4"
 										}
 									]
 								}
@@ -2197,18 +2406,70 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/admin/partners",
+									"raw": "{{baseUrl}}/admin/partners",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"partners"
 									]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/admin/partners",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"admin",
+												"partners"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "2002"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"7d2-pqpojZE7PMAZRoByk1Q10JsJZFA\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 18 Sep 2023 13:14:44 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"total\": 2,\n    \"data\": [\n        {\n            \"id\": 18,\n            \"name\": \"Milenkata\",\n            \"logo\": \"http://localhost:4000/default_partner_image.jpg\",\n            \"description\": \"Nice partner!\",\n            \"address\": \"Vrajdebna\",\n            \"coordinates\": \"1.5,2.5\",\n            \"phone\": \"0895209415\",\n            \"contactPerson\": \"Milen\",\n            \"region\": \"Sofia\",\n            \"subscriptionPlan\": {\n                \"id\": 1,\n                \"name\": \"Semipremium\",\n                \"price\": 80,\n                \"commissionPerRequest\": 0.03,\n                \"carsCount\": 10,\n                \"isDefault\": true,\n                \"description\": \"Some description\"\n            },\n            \"services\": [\n                {\n                    \"id\": 1,\n                    \"name\": \"Car repair\",\n                    \"description\": \"Nothing unusual\",\n                    \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n                    \"region\": \"Sofia\",\n                    \"isRegionDefault\": true,\n                    \"isPromoted\": false\n                }\n            ],\n            \"admins\": [],\n            \"cars\": [],\n            \"organizationId\": 2\n        },\n        {\n            \"id\": 17,\n            \"name\": \"Na Denito serviza\",\n            \"logo\": \"http://localhost:4000/default_partner_image.jpg\",\n            \"description\": \"Nice partner!\",\n            \"address\": \"Na majnata si\",\n            \"coordinates\": \"[1.5, 2.5]\",\n            \"phone\": \"0895209415\",\n            \"contactPerson\": \"Milen\",\n            \"region\": \"Sofia\",\n            \"subscriptionPlan\": {\n                \"id\": 1,\n                \"name\": \"Semipremium\",\n                \"price\": 80,\n                \"commissionPerRequest\": 0.03,\n                \"carsCount\": 10,\n                \"isDefault\": true,\n                \"description\": \"Some description\"\n            },\n            \"services\": [\n                {\n                    \"id\": 1,\n                    \"name\": \"Car repair\",\n                    \"description\": \"Nothing unusual\",\n                    \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n                    \"region\": \"Sofia\",\n                    \"isRegionDefault\": true,\n                    \"isPromoted\": false\n                }\n            ],\n            \"admins\": [\n                {\n                    \"id\": 2,\n                    \"username\": \"sofiaAdmin\",\n                    \"password\": \"$2b$10$LVs87vVCTxg8DehbDVhiMO0.Jno7/L12h1yYMXLHI9YZJRDAGR2XG\",\n                    \"role\": \"admin\",\n                    \"region\": \"Sofia\",\n                    \"email\": \"sofiaAdmin@gmail.com\"\n                }\n            ],\n            \"cars\": [\n                {\n                    \"id\": 5,\n                    \"idNumber\": \"CB2890HH\",\n                    \"image\": \"default_image\",\n                    \"brand\": \"Dacia\",\n                    \"kilometers\": 350000,\n                    \"engineType\": \"diesel\",\n                    \"yearOfProduction\": 2018,\n                    \"frameNumber\": null,\n                    \"technicalReviewExpiration\": null,\n                    \"civilEnsuranceExpiration\": null,\n                    \"vignetteExpiration\": null,\n                    \"autoEnsuranceExpiration\": null,\n                    \"leasingExpiration\": null,\n                    \"comment\": \"This is a very slow car!!!\",\n                    \"vehicleType\": null,\n                    \"tires\": [\n                        {\n                            \"id\": 1,\n                            \"brand\": \"Mischelline\",\n                            \"count\": 6,\n                            \"width\": 40,\n                            \"ratio\": 2,\n                            \"type\": \"winter\",\n                            \"used\": false,\n                            \"carId\": 5,\n                            \"comment\": \"Very nice tires.\",\n                            \"tiresHotel\": \"I do not know what it is!\"\n                        }\n                    ]\n                }\n            ],\n            \"organizationId\": 2\n        }\n    ],\n    \"limit\": 5,\n    \"offset\": 0\n}"
+								}
+							]
 						},
 						{
 							"name": "Delete partner",
@@ -2216,15 +2477,20 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/admin/partners/1",
+									"raw": "{{baseUrl}}/admin/partners/:partnerId",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"partners",
-										"1"
+										":partnerId"
+									],
+									"variable": [
+										{
+											"key": "partnerId",
+											"value": "18"
+										}
 									]
 								}
 							},
@@ -2288,7 +2554,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Milenkata\",\n    \"description\": \"Nice partner!\",\n    \"address\": \"Vrajdebna\",\n    \"coordinates\": \"[1.5, 2.5]\",\n    \"phone\": \"0895209415\",\n    \"contactPerson\": \"Milen\",\n    \"region\": \"Sofia\",\n    \"subscriptionPlanId\": 1,\n    \"organizationId\": 2,\n    \"partnersAdminsIds\": [2],\n    \"carSupportServices\": [1, 3]\n    // name, logo, description, address, coordinates, phone, contactPerson,\n    // region, subscriptionPlanId, organizationId, partnersAdminsIds,\n    // carSupportServices\n}",
+									"raw": "{\n    \"name\": \"Milenkata\",\n    \"description\": \"Nice partner!\",\n    \"address\": \"Vrajdebna\",\n    \"coordinates\": \"1.5,2.5\",\n    \"phone\": \"0895209415\",\n    \"contactPerson\": \"Milen\",\n    \"region\": \"Sofia\",\n    \"subscriptionPlanId\": 1,\n    \"organizationId\": 2,\n    \"admins\": [],\n    \"services\": [1]\n    // name, logo, description, address, coordinates, phone, contactPerson,\n    // region, subscriptionPlanId, organizationId, partnersAdminsIds,\n    // carSupportServices\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2296,11 +2562,10 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:4000/admin/partners",
+									"raw": "{{baseUrl}}/admin/partners",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"partners"
@@ -2369,6 +2634,67 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"id\": \"2\",\n    \"name\": \"Milenkata\",\n    \"logo\": \"http://localhost:4000/default_partner_image.jpg\",\n    \"description\": \"Nice partner!\",\n    \"address\": \"Vrajdebna\",\n    \"coordinates\": \"[1.5, 2.5]\",\n    \"phone\": \"0895209415\",\n    \"contactPerson\": \"Milen\",\n    \"region\": \"Sofia\",\n    \"subscriptionPlan\": {\n        \"id\": \"1\",\n        \"name\": \"Basic\",\n        \"price\": 60,\n        \"commissionPerRequest\": 0.03,\n        \"carsCount\": 10,\n        \"isDefault\": true,\n        \"description\": \"Lowered the price!\"\n    },\n    \"carSupportServices\": [\n        {\n            \"id\": \"1\",\n            \"name\": \"Car repair\",\n            \"description\": \"Nothing unusual\",\n            \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n            \"region\": \"Sofia\",\n            \"isRegionDefault\": true,\n            \"isPromoted\": true\n        },\n        {\n            \"id\": \"3\",\n            \"name\": \"Car wash\",\n            \"description\": \"Nothing unusual\",\n            \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n            \"region\": \"Sofia\",\n            \"isRegionDefault\": false,\n            \"isPromoted\": true\n        }\n    ],\n    \"partnerAdmins\": [\n        {\n            \"id\": \"2\",\n            \"username\": \"sofiaAdmin\",\n            \"password\": \"$2b$10$LVs87vVCTxg8DehbDVhiMO0.Jno7/L12h1yYMXLHI9YZJRDAGR2XG\",\n            \"role\": \"admin\",\n            \"region\": \"Sofia\",\n            \"email\": \"sofiaAdmin@gmail.com\"\n        }\n    ],\n    \"cars\": [],\n    \"organizationId\": \"2\"\n}"
+								},
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Milenkata\",\n    \"description\": \"Nice partner!\",\n    \"address\": \"Vrajdebna\",\n    \"coordinates\": \"1.5,2.5\",\n    \"phone\": \"0895209415\",\n    \"contactPerson\": \"Milen\",\n    \"region\": \"Sofia\",\n    \"subscriptionPlanId\": 1,\n    \"organizationId\": 2,\n    \"admins\": [],\n    \"services\": [1]\n    // name, logo, description, address, coordinates, phone, contactPerson,\n    // region, subscriptionPlanId, organizationId, partnersAdminsIds,\n    // carSupportServices\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/admin/partners",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"admin",
+												"partners"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "617"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"269-c6tIh51pRME3WiQUa4QrsttLsKA\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 18 Sep 2023 12:59:31 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"id\": 18,\n    \"name\": \"Milenkata\",\n    \"logo\": \"http://localhost:4000/default_partner_image.jpg\",\n    \"description\": \"Nice partner!\",\n    \"address\": \"Vrajdebna\",\n    \"coordinates\": \"1.5,2.5\",\n    \"phone\": \"0895209415\",\n    \"contactPerson\": \"Milen\",\n    \"region\": \"Sofia\",\n    \"subscriptionPlan\": {\n        \"id\": 1,\n        \"name\": \"Semipremium\",\n        \"price\": 80,\n        \"commissionPerRequest\": 0.03,\n        \"carsCount\": 10,\n        \"isDefault\": true,\n        \"description\": \"Some description\"\n    },\n    \"services\": [\n        {\n            \"id\": 1,\n            \"name\": \"Car repair\",\n            \"description\": \"Nothing unusual\",\n            \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n            \"region\": \"Sofia\",\n            \"isRegionDefault\": true,\n            \"isPromoted\": false\n        }\n    ],\n    \"admins\": [],\n    \"cars\": [],\n    \"organizationId\": 2\n}"
 								}
 							]
 						},
@@ -2378,15 +2704,20 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/admin/partners/2",
+									"raw": "{{baseUrl}}/admin/partners/:partnerId",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"partners",
-										"2"
+										":partnerId"
+									],
+									"variable": [
+										{
+											"key": "partnerId",
+											"value": "2"
+										}
 									]
 								}
 							},
@@ -2454,7 +2785,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"address\": \"Na majnata si\",\n    \"name\": \"Na Denito serviza\",\n    \"carSupportServices\": [1],\n    \"partnerAdmins\": [2],\n    \"cars\": [5, 6]\n}",
+									"raw": "{\n    \"address\": \"Na majnata si\",\n    \"name\": \"Na Denito serviza\",\n    \"admins\": [2]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2462,15 +2793,20 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:4000/admin/partners/2",
+									"raw": "{{baseUrl}}/admin/partners/:partnerId",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"partners",
-										"2"
+										":partnerId"
+									],
+									"variable": [
+										{
+											"key": "partnerId",
+											"value": "17"
+										}
 									]
 								}
 							},
@@ -2614,18 +2950,70 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/admin/services",
+									"raw": "{{baseUrl}}/admin/services",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"services"
 									]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/admin/services",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"admin",
+												"services"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "415"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"19f-7WTdZF573nKg7M6bpoLwT0Lczls\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 18 Sep 2023 13:15:03 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"total\": 2,\n    \"limit\": 5,\n    \"offset\": 0,\n    \"data\": [\n        {\n            \"id\": 4,\n            \"name\": \"Something\",\n            \"description\": \"Nothing unusual\",\n            \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n            \"region\": \"Sofia\",\n            \"isRegionDefault\": false,\n            \"isPromoted\": false\n        },\n        {\n            \"id\": 1,\n            \"name\": \"Car repair\",\n            \"description\": \"Nothing unusual\",\n            \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n            \"region\": \"Sofia\",\n            \"isRegionDefault\": true,\n            \"isPromoted\": false\n        }\n    ]\n}"
+								}
+							]
 						},
 						{
 							"name": "Add service",
@@ -2642,11 +3030,10 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:4000/admin/services",
+									"raw": "{{baseUrl}}/admin/services",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"services"
@@ -2724,15 +3111,20 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/admin/services/2",
+									"raw": "{{baseUrl}}/admin/services/:serviceId",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"services",
-										"2"
+										":serviceId"
+									],
+									"variable": [
+										{
+											"key": "serviceId",
+											"value": "1"
+										}
 									]
 								}
 							},
@@ -2808,15 +3200,20 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:4000/admin/services/2",
+									"raw": "{{baseUrl}}/admin/services/:serviceId",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"services",
-										"2"
+										":serviceId"
+									],
+									"variable": [
+										{
+											"key": "serviceId",
+											"value": "1"
+										}
 									]
 								}
 							},
@@ -2892,15 +3289,20 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/admin/services/2",
+									"raw": "{{baseUrl}}/admin/services/:serviceId",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
 										"services",
-										"2"
+										":serviceId"
+									],
+									"variable": [
+										{
+											"key": "serviceId",
+											"value": "2"
+										}
 									]
 								}
 							},
@@ -2969,7 +3371,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Basic\",\n    \"price\": 80,\n    \"commissionPerRequest\": 0.03,\n    \"carsCount\": 10,\n    \"isDefault\": true,\n    \"description\": \"The most basic subscription!\"\n}",
+									"raw": "{\n    \"name\": \"Semipremium\",\n    \"price\": 80,\n    \"commissionPerRequest\": 0.03,\n    \"carsLimit\": 10,\n    \"isDefault\": true,\n    \"description\": \"Some description\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2977,14 +3379,13 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:4000/admin/subscriptions",
+									"raw": "{{baseUrl}}/admin/subscriptionPlans",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
-										"subscriptions"
+										"subscriptionPlans"
 									]
 								}
 							},
@@ -3059,15 +3460,20 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/admin/subscriptions/1",
+									"raw": "{{baseUrl}}/admin/subscriptionPlans/:subscriptionId",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
-										"subscriptions",
-										"1"
+										"subscriptionPlans",
+										":subscriptionId"
+									],
+									"variable": [
+										{
+											"key": "subscriptionId",
+											"value": "1"
+										}
 									]
 								}
 							},
@@ -3143,15 +3549,20 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:4000/admin/subscriptions/1",
+									"raw": "{{baseUrl}}/admin/subscriptionPlans/:subscriptionId",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
-										"subscriptions",
-										"1"
+										"subscriptionPlans",
+										":subscriptionId"
+									],
+									"variable": [
+										{
+											"key": "subscriptionId",
+											"value": "5"
+										}
 									]
 								}
 							},
@@ -3227,18 +3638,70 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/admin/subscriptions",
+									"raw": "{{baseUrl}}/admin/subscriptionPlans",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
-										"subscriptions"
+										"subscriptionPlans"
 									]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/admin/subscriptionPlans",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"admin",
+												"subscriptionPlans"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "175"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"af-pJw6DoOKRMv0AuU3uazWpbRG1+o\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 18 Sep 2023 13:15:27 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"total\": 1,\n    \"limit\": 5,\n    \"offset\": 0,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Semipremium\",\n            \"price\": 80,\n            \"commissionPerRequest\": 0.03,\n            \"carsCount\": 10,\n            \"isDefault\": true,\n            \"description\": \"Some description\"\n        }\n    ]\n}"
+								}
+							]
 						},
 						{
 							"name": "Delete subscription",
@@ -3246,15 +3709,20 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "localhost:4000/admin/subscriptions/4",
+									"raw": "{{baseUrl}}/admin/subscriptionPlans/:subscriptionId",
 									"host": [
-										"localhost"
+										"{{baseUrl}}"
 									],
-									"port": "4000",
 									"path": [
 										"admin",
-										"subscriptions",
-										"4"
+										"subscriptionPlans",
+										":subscriptionId"
+									],
+									"variable": [
+										{
+											"key": "subscriptionId",
+											"value": "5"
+										}
 									]
 								}
 							},
@@ -3308,12 +3776,81 @@
 									],
 									"cookie": [],
 									"body": null
+								},
+								{
+									"name": "fail",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/admin/subscriptionPlans/:subscriptionId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"admin",
+												"subscriptionPlans",
+												":subscriptionId"
+											],
+											"variable": [
+												{
+													"key": "subscriptionId",
+													"value": "6"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "html",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Security-Policy",
+											"value": "default-src 'none'"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "Content-Type",
+											"value": "text/html; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "825"
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 18 Sep 2023 11:37:49 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "<!DOCTYPE html>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error</title>\n    </head>\n    <body>\n        <pre>Error: Subscription plan not found\n            <br> &nbsp; &nbsp;at SubscriptionPlanRepository.getOne (file:///Users/appstreams/Documents/User_Management/src/domain/organizations/partners/subscriptionPlan/SubscriptionPlanRepository.js:31:13)\n            <br> &nbsp; &nbsp;at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n            <br> &nbsp; &nbsp;at async OrganizationService.destroySubscriptionPlan (file:///Users/appstreams/Documents/User_Management/src/domain/organizations/OrganizationService.js:305:30)\n            <br> &nbsp; &nbsp;at async SubscriptionPlansController.destroy (file:///Users/appstreams/Documents/User_Management/src/server/endpoints/admin/subscriptionPlans/SubscriptionPlansController.js:46:22)\n        </pre>\n    </body>\n</html>"
 								}
 							]
 						}
 					]
 				}
 			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "localhost:4000"
 		}
 	]
 }
