@@ -24,9 +24,16 @@ export class AdminRepository extends BaseRepo {
       options.where = { region };
     }
 
-    const users = await super.getAll(page, ['username'], options);
+    const {
+      total, data, limit, offset
+    } = await super.getAll(page, ['username'], options);
 
-    return users.map((user) => buildAdmin(user.toJSON()));
+    return {
+      total,
+      limit,
+      offset,
+      data: data.map((user) => buildAdmin(user.toJSON()))
+    };
   }
 
   async getAllByIds(listOfIds) {

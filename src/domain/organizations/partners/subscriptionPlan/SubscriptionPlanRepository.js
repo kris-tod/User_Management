@@ -20,9 +20,13 @@ export class SubscriptionPlanRepository extends BaseRepo {
   }
 
   async getAll(page = 1) {
-    const collection = await super.getAll(page, ['name']);
+    const {
+      total, data, limit, offset
+    } = await super.getAll(page, ['name']);
 
-    return collection.map((entity) => buildSubscriptionPlan(entity));
+    return {
+      total, limit, offset, data: data.map((entity) => buildSubscriptionPlan(entity))
+    };
   }
 
   async getOne(id) {

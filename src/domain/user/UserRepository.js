@@ -43,7 +43,9 @@ export class UserRepository extends BaseRepo {
       options.where = { region };
     }
 
-    const users = await super.getAll(page, ['username'], options);
+    const {
+      total, data: users, limit, offset
+    } = await super.getAll(page, ['username'], options);
     const listOfIds = users.map((user) => user.id);
 
     const friendships = await this.friendshipRepo.findAllFriendshipsForUsersById(listOfIds);
@@ -73,7 +75,9 @@ export class UserRepository extends BaseRepo {
       })
     );
 
-    return collection;
+    return {
+      total, data: collection, limit, offset
+    };
   }
 
   async getAllByIds(usersIds, options = {}) {

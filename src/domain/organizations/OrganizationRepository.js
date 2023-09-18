@@ -18,12 +18,14 @@ export class OrganizationRepository extends BaseRepo {
   }
 
   async getAll(page = 1) {
-    const collection = await super.getAll(page);
+    const {
+      total, data, limit, offset
+    } = await super.getAll(page);
 
-    const listOfIds = collection.map((entity) => entity.id);
+    const listOfIds = data.map((entity) => entity.id);
     const partners = await this.partnerRepo.getAllByOrganizationIds(listOfIds);
 
-    return collection.map((entity) => {
+    const collection = data.map((entity) => {
       const organization = entity;
 
       organization.partners = partners.filter(
@@ -32,6 +34,10 @@ export class OrganizationRepository extends BaseRepo {
 
       return buildOrganization(organization);
     });
+
+    return {
+      total, data: collection, limit, offset
+    };
   }
 
   async getOne(id) {

@@ -6,14 +6,16 @@ export class BaseRepo {
   }
 
   async getAll(page = 1, order = ['id'], options = {}, entitiesPerPage = MAX_PER_PAGE) {
-    const collection = await this.dbClient.findAll({
+    const { count, rows } = await this.dbClient.findAndCountAll({
       order,
       limit: entitiesPerPage,
       offset: entitiesPerPage * (page - 1),
       ...options
     });
 
-    return collection;
+    return {
+      total: count, data: rows, limit: entitiesPerPage, offset: entitiesPerPage * (page - 1)
+    };
   }
 
   async getOne(id) {

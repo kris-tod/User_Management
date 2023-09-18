@@ -1,5 +1,5 @@
 import { genSalt, hash as _hash } from 'bcrypt';
-import { DataTypes, Sequelize } from 'sequelize';
+import { Sequelize } from 'sequelize';
 import { dbConfig, saltRounds } from '../config/index.js';
 
 import UserModel from './user.js';

@@ -46,13 +46,17 @@ export class PartnerRepository extends BaseRepo {
       options.where = { region };
     }
 
-    const collection = await super.getAll(page, ['name'], options);
+    const {
+      total, data, limit, offset
+    } = await super.getAll(page, ['name'], options);
 
-    const result = await Promise.all(
-      collection.map(async (entity) => this.constructPartnerProps(entity))
+    const collection = await Promise.all(
+      data.map(async (entity) => this.constructPartnerProps(entity))
     );
 
-    return result;
+    return {
+      total, data: collection, limit, offset
+    };
   }
 
   async getAllByAdmin(page, id) {
@@ -74,10 +78,10 @@ export class PartnerRepository extends BaseRepo {
       }
     };
 
-    const collection = await super.getAll(page, ['name'], options);
+    const { data } = await super.getAll(page, ['name'], options);
 
     const result = await Promise.all(
-      collection.map(async (entity) => this.constructPartnerProps(entity))
+      data.map(async (entity) => this.constructPartnerProps(entity))
     );
 
     return result;

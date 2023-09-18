@@ -11,8 +11,12 @@ export class UsersController extends BaseController {
     const { page } = req.query;
     const { user } = req;
 
-    const collection = await this.service.getAll(page, user);
-    res.status(200).json(serializeUsers(collection));
+    const {
+      total, data, limit, offset
+    } = await this.service.getAll(page, user);
+    res.status(200).json({
+      total, limit, offset, data: serializeUsers(data)
+    });
   }
 
   async update(req, res) {

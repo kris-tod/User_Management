@@ -44,10 +44,15 @@ export class CarSupportServiceRepository extends BaseRepo {
   }
 
   async getAll(page, order, options) {
-    const listOfIds = (await super.getAll(page, order, options))
+    const {
+      total, data, limit, offset
+    } = await super.getAll(page, order, options);
+    const listOfIds = data
       .map((entity) => entity.id);
 
-    return this.getAllByIds(listOfIds);
+    return {
+      total, limit, offset, data: await this.getAllByIds(listOfIds)
+    };
   }
 
   async getOne(id) {

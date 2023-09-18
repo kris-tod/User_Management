@@ -37,14 +37,18 @@ export class CarRepository extends BaseRepo {
     options = {},
     entitiesPerPage = MAX_PER_PAGE
   ) {
-    const collection = await super.getAll(
+    const {
+      total, data, limit, offset
+    } = await super.getAll(
       page,
       order,
       options,
       entitiesPerPage
     );
 
-    return collection.map((entity) => buildCar(entity));
+    return {
+      total, limit, offset, data: data.map((entity) => buildCar(entity))
+    };
   }
 
   async getByIdNumber(idNumber) {
