@@ -5,7 +5,7 @@ import { BaseRepo } from '../../utils/BaseRepo.js';
 import { NotFoundError } from '../../utils/errors.js';
 
 const buildOrganization = (model) => new Organization(
-  model.id,
+  parseInt(model.id, 10),
   model.name,
   model.description,
   model.partners
@@ -27,7 +27,7 @@ export class OrganizationRepository extends BaseRepo {
       const organization = entity;
 
       organization.partners = partners.filter(
-        (partner) => partner.organizationId === organization.id
+        (partner) => partner.organizationId === parseInt(organization.id, 10)
       );
 
       return buildOrganization(organization);

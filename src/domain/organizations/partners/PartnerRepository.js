@@ -13,7 +13,7 @@ import { CarRepository } from '../../car/CarRepository.js';
 import { AdminRepository } from '../../admin/AdminRepository.js';
 
 const buildPartner = (model) => new Partner(
-  model.id,
+  parseInt(model.id, 10),
   model.name,
   model.logo,
   model.address,
@@ -21,7 +21,7 @@ const buildPartner = (model) => new Partner(
   model.contactPerson,
   model.region,
   model.subscriptionPlan,
-  model.organizationId,
+  parseInt(model.organizationId, 10),
   model.description,
   model.coordinates,
   model.carSupportServices,

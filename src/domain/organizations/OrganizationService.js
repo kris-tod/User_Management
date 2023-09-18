@@ -6,6 +6,7 @@ import {
 } from '../../constants/messages.js';
 import FileService from '../../services/FileService.js';
 import { ApiError, ForbiddenError } from '../../utils/errors.js';
+import { AdminRepository } from '../admin/AdminRepository.js';
 import { roles } from '../user/User.js';
 import { OrganizationRepository } from './OrganizationRepository.js';
 import { PartnerRepository } from './partners/PartnerRepository.js';
@@ -19,6 +20,7 @@ export class OrganizationService {
     this.partnerRepo = new PartnerRepository();
     this.subscriptionPlanRepo = new SubscriptionPlanRepository();
     this.servicesRepo = new CarSupportServiceRepository();
+    this.adminsRepo = new AdminRepository();
   }
 
   async getAllOrganizations(page, reqUser) {
@@ -95,6 +97,12 @@ export class OrganizationService {
         throw new ApiError(INVALID_REGION);
       }
     });
+
+    const partnerAdmins = await this.adminsRepo.getAllByIds(data.partnerAdminsIds);
+
+    if (partnerAdmins.length !== data.partnerAdminsIds.length) {
+      throw new ApiError('Invalid partner admins!');
+    }
 
     return this.partnerRepo.create(data);
   }

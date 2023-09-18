@@ -6,7 +6,7 @@ import { TireRepository } from './tire/TireRepository.js';
 import { NotFoundError } from '../../utils/errors.js';
 
 const buildCar = (model) => new Car(
-  model.id,
+  parseInt(model.id, 10),
   model.idNumber,
   model.image,
   model.brand,

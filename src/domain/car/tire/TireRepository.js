@@ -15,14 +15,14 @@ const buildTire = ({
   comment = '',
   tiresHotel = ''
 }) => new Tire(
-  id,
+  parseInt(id, 10),
   brand,
   count,
   width,
   ratio,
   type,
   used,
-  carId,
+  parseInt(carId, 10),
   comment,
   tiresHotel
 );

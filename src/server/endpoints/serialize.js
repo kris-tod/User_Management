@@ -17,7 +17,14 @@ export const serializeUser = ({
   friendsList,
   region,
   cars,
-  favouritePartners
+  favouritePartners: favouritePartners.map((partner) => partner.name)
 });
 
 export const serializeUsers = (users) => users.map((user) => serializeUser(user));
+
+export const serializeCar = (car) => ({
+  ...car,
+  id: parseInt(car.id, 10)
+});
+
+export const serializeCars = (cars) => cars.map((car) => serializeCar(car));

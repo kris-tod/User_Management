@@ -10,7 +10,7 @@ const buildAdmin = ({
   role = 'admin',
   region = null,
   email = ''
-}) => new Admin(id, username, password, role, region, email);
+}) => new Admin(parseInt(id, 10), username, password, role, region, email);
 
 export class AdminRepository extends BaseRepo {
   constructor() {

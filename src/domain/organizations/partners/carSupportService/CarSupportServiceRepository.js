@@ -4,7 +4,7 @@ import { CarSupportService as CarSupportServiceModel } from '../../../../db/inde
 import { CarSupportService } from './CarSupportService.js';
 
 const buildService = (model) => new CarSupportService(
-  model.id,
+  parseInt(model.id, 10),
   model.name,
   model.image,
   model.region,

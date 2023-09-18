@@ -17,7 +17,7 @@ const buildUser = ({
   cars = [],
   friendsList = []
 }) => new User(
-  id,
+  parseInt(id, 10),
   username,
   password,
   region,

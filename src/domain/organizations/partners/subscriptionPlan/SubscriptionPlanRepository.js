@@ -3,7 +3,7 @@ import { BaseRepo } from '../../../../utils/BaseRepo.js';
 import { SubscriptionPlan } from './SubscriptionPlan.js';
 
 const buildSubscriptionPlan = (model) => new SubscriptionPlan(
-  model.id,
+  parseInt(model.id, 10),
   model.name,
   model.price,
   model.commissionPerRequest,
