@@ -98,10 +98,16 @@ export class OrganizationService {
       }
     });
 
-    const partnerAdmins = await this.adminsRepo.getAllByIds(data.partnerAdminsIds);
+    const partnerAdmins = await this.adminsRepo.getAllByIds(data.partnerAdmins);
 
-    if (partnerAdmins.length !== data.partnerAdminsIds.length) {
+    if (partnerAdmins.length !== data.partnerAdmins.length) {
       throw new ApiError('Invalid partner admins!');
+    }
+
+    const subscription = await this.subscriptionPlanRepo.getOne(data.subscriptionPlanId);
+
+    if (!subscription) {
+      throw new ApiError('Invalid subscription!');
     }
 
     return this.partnerRepo.create(data);
@@ -129,6 +135,22 @@ export class OrganizationService {
           throw new ApiError(INVALID_REGION);
         }
       });
+    }
+
+    if (updatedData.subscriptionPlanId) {
+      const subscription = await this.subscriptionPlanRepo.getOne(updatedData.subscriptionPlanId);
+
+      if (!subscription) {
+        throw new ApiError('Invalid subscription!');
+      }
+    }
+
+    if (updatedData.partnerAdmins) {
+      const partnerAdmins = await this.adminsRepo.getAllByIds(updatedData.partnerAdmins);
+
+      if (partnerAdmins.length !== updatedData.partnerAdmins.length) {
+        throw new ApiError('Invalid partner admins!');
+      }
     }
 
     await this.partnerRepo.update(id, updatedData);

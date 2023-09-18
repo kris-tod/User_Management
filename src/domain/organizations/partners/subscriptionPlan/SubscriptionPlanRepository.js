@@ -25,6 +25,6 @@ export class SubscriptionPlanRepository extends BaseRepo {
 
   async getOne(id) {
     const entity = await super.getOne(id);
-    return buildSubscriptionPlan(entity);
+    return entity ? buildSubscriptionPlan(entity) : null;
   }
 }

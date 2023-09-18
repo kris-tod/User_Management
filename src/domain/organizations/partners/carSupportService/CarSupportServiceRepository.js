@@ -50,6 +50,6 @@ export class CarSupportServiceRepository extends BaseRepo {
 
   async getOne(id) {
     const entity = await super.getOne(id);
-    return buildService(entity);
+    return entity ? buildService(entity) : null;
   }
 }

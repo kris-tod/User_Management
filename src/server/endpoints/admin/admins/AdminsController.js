@@ -1,6 +1,6 @@
 import { AdminService } from '../../../../domain/admin/AdminService.js';
 import { BaseController } from '../../../../utils/BaseController.js';
-import { serializeUsers, serializeUser } from '../../serialize.js';
+import { serializeAdmins, serializeAdmin } from '../../serialize.js';
 
 export class AdminsController extends BaseController {
   constructor(logger) {
@@ -12,7 +12,7 @@ export class AdminsController extends BaseController {
     const { user } = req;
 
     const collection = await this.service.getAll(page, user);
-    res.status(200).json(serializeUsers(collection));
+    res.status(200).json(serializeAdmins(collection));
   }
 
   async update(req, res) {
@@ -29,7 +29,7 @@ export class AdminsController extends BaseController {
     const { user } = req;
 
     const entity = await this.service.create(data, user);
-    res.status(201).json(serializeUser(entity));
+    res.status(201).json(serializeAdmin(entity));
   }
 
   createRouterHandlers() {
