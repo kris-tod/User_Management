@@ -25,8 +25,8 @@ export class Partner {
     this.contactPerson = contactPerson;
     this.region = region;
     this.subscriptionPlan = subscriptionPlan;
-    this.carSupportServices = carSupportServices;
-    this.partnerAdmins = partnerAdmins;
+    this.services = carSupportServices;
+    this.admins = partnerAdmins;
     this.cars = cars;
     this.organizationId = organizationId;
   }

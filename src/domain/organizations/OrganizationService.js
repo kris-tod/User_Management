@@ -107,7 +107,7 @@ export class OrganizationService {
       throw new ForbiddenError(INVALID_REGION);
     }
 
-    const services = await this.servicesRepo.getAllByIds(data.carSupportServices);
+    const services = await this.servicesRepo.getAllByIds(data.services);
 
     services.forEach((service) => {
       if (service.region !== data.region) {
@@ -115,9 +115,9 @@ export class OrganizationService {
       }
     });
 
-    const partnerAdmins = await this.adminsRepo.getAllByIds(data.partnerAdmins);
+    const partnerAdmins = await this.adminsRepo.getAllByIds(data.admins);
 
-    if (partnerAdmins.length !== data.partnerAdmins.length) {
+    if (partnerAdmins.length !== data.admins.length) {
       throw new ApiError('Invalid partner admins!');
     }
 
@@ -132,7 +132,6 @@ export class OrganizationService {
 
   async updatePartner(id, updatedData, reqUser) {
     const partner = await this.partnerRepo.getOne(id);
-
     if (!partner) {
       throw new NotFoundError(PARTNER_NOT_FOUND);
     }
@@ -149,8 +148,8 @@ export class OrganizationService {
       throw new ApiError(TOO_MANY_CARS);
     }
 
-    if (updatedData.carSupportServices) {
-      const services = await this.servicesRepo.getAllByIds(updatedData.carSupportServices);
+    if (updatedData.services) {
+      const services = await this.servicesRepo.getAllByIds(updatedData.services);
 
       services.forEach((service) => {
         if (service.region !== partner.region) {
@@ -168,10 +167,10 @@ export class OrganizationService {
       }
     }
 
-    if (updatedData.partnerAdmins) {
-      const partnerAdmins = await this.adminsRepo.getAllByIds(updatedData.partnerAdmins);
+    if (updatedData.admins) {
+      const partnerAdmins = await this.adminsRepo.getAllByIds(updatedData.admins);
 
-      if (partnerAdmins.length !== updatedData.partnerAdmins.length) {
+      if (partnerAdmins.length !== updatedData.admins.length) {
         throw new ApiError('Invalid partner admins!');
       }
     }

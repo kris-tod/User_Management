@@ -26,8 +26,8 @@ const buildPartner = (model) => new Partner(
   parseInt(model.organizationId, 10),
   model.description,
   model.coordinates,
-  model.carSupportServices,
-  model.partnerAdmins,
+  model.services,
+  model.admins,
   model.cars
 );
 
@@ -121,7 +121,7 @@ export class PartnerRepository extends BaseRepo {
       })
     ).map((serviceEntity) => serviceEntity.carSupportServiceId);
 
-    partner.carSupportServices = await this.servicesRepo.getAllByIds(
+    partner.services = await this.servicesRepo.getAllByIds(
       servicesIds
     );
     const adminsIds = (
@@ -132,7 +132,7 @@ export class PartnerRepository extends BaseRepo {
       })
     ).map((serviceEntity) => serviceEntity.adminId);
 
-    partner.partnerAdmins = await this.adminRepo.getAllByIds(adminsIds);
+    partner.admins = await this.adminRepo.getAllByIds(adminsIds);
 
     const carsIds = (
       await CarPartnerModel.findAll({
@@ -149,8 +149,8 @@ export class PartnerRepository extends BaseRepo {
 
   async create({
     name, logo, description, address, coordinates, phone, contactPerson,
-    region, subscriptionPlanId, organizationId, partnersAdminsIds,
-    carSupportServices
+    region, subscriptionPlanId, organizationId, admins,
+    services
   }) {
     const partner = await super.create({
       name,
@@ -165,14 +165,14 @@ export class PartnerRepository extends BaseRepo {
       organizationId
     });
 
-    await Promise.all(partnersAdminsIds.map(async (adminId) => {
+    await Promise.all(admins.map(async (adminId) => {
       await AdminPartnerModel.create({
         adminId,
         partnerId: partner.id
       });
     }));
 
-    await Promise.all(carSupportServices.map(async (carSupportServiceId) => {
+    await Promise.all(services.map(async (carSupportServiceId) => {
       await PartnerServiceModel.create({
         carSupportServiceId,
         partnerId: partner.id
@@ -184,7 +184,7 @@ export class PartnerRepository extends BaseRepo {
 
   async update(id, updatedData) {
     const partnerProps = Object.keys(updatedData)
-      .filter((key) => !['carSupportServices', 'partnerAdmins', 'cars'].includes(key))
+      .filter((key) => !['services', 'admins', 'cars'].includes(key))
       .reduce((obj, key) => {
         const propObj = obj;
         propObj[key] = updatedData[key];
@@ -193,14 +193,14 @@ export class PartnerRepository extends BaseRepo {
 
     await super.update(id, partnerProps);
 
-    if (updatedData.carSupportServices) {
+    if (updatedData.services) {
       await PartnerServiceModel.destroy({
         where: {
           partnerId: id
         }
       });
 
-      await Promise.all(updatedData.carSupportServices.map(async (carSupportServiceId) => {
+      await Promise.all(updatedData.services.map(async (carSupportServiceId) => {
         await PartnerServiceModel.create({
           partnerId: id,
           carSupportServiceId
@@ -208,14 +208,14 @@ export class PartnerRepository extends BaseRepo {
       }));
     }
 
-    if (updatedData.partnerAdmins) {
+    if (updatedData.admins) {
       await AdminPartnerModel.destroy({
         where: {
           partnerId: id
         }
       });
 
-      await Promise.all(updatedData.partnerAdmins.map(async (adminId) => {
+      await Promise.all(updatedData.admins.map(async (adminId) => {
         await AdminPartnerModel.create({
           partnerId: id,
           adminId
