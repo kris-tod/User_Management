@@ -2,10 +2,12 @@ import {
   INVALID_REGION,
   USER_NOT_SUPER_ADMIN,
   TOO_MANY_CARS,
-  ADMIN_NOT_PARTNER_ADMIN
+  ADMIN_NOT_PARTNER_ADMIN,
+  PARTNER_NOT_FOUND,
+  SUBSCRIPTION_PLAN_NOT_FOUND
 } from '../../constants/messages.js';
 import FileService from '../../services/FileService.js';
-import { ApiError, ForbiddenError } from '../../utils/errors.js';
+import { ApiError, ForbiddenError, NotFoundError } from '../../utils/errors.js';
 import { AdminRepository } from '../admin/AdminRepository.js';
 import { roles } from '../user/User.js';
 import { OrganizationRepository } from './OrganizationRepository.js';
@@ -37,6 +39,10 @@ export class OrganizationService {
     }
     const entity = await this.organizationRepo.getOne(id);
 
+    if (!entity) {
+      throw new NotFoundError('Organization not found');
+    }
+
     return entity;
   }
 
@@ -51,6 +57,11 @@ export class OrganizationService {
     if (reqUser.role !== roles.superadmin) {
       throw new ForbiddenError(USER_NOT_SUPER_ADMIN);
     }
+    const organization = await this.organizationRepo.getOne(id);
+    if (!organization) {
+      throw new NotFoundError('Organization not found!');
+    }
+
     await this.organizationRepo.update(id, data);
     const result = await this.organizationRepo.getOne(id);
     return Object.keys(data).reduce((obj, key) => {
@@ -64,6 +75,12 @@ export class OrganizationService {
     if (reqUser.role !== roles.superadmin) {
       throw new ForbiddenError(USER_NOT_SUPER_ADMIN);
     }
+    const organization = await this.organizationRepo.getOne(id);
+
+    if (!organization) {
+      throw new NotFoundError('Organization not found!');
+    }
+
     return this.organizationRepo.destroy(id);
   }
 
@@ -115,6 +132,10 @@ export class OrganizationService {
 
   async updatePartner(id, updatedData, reqUser) {
     const partner = await this.partnerRepo.getOne(id);
+
+    if (!partner) {
+      throw new NotFoundError(PARTNER_NOT_FOUND);
+    }
 
     if (reqUser.role === roles.admin && !partner.partnerAdmins
       .find((admin) => admin.id === reqUser.id)) {
@@ -174,7 +195,7 @@ export class OrganizationService {
       throw new ForbiddenError(ADMIN_NOT_PARTNER_ADMIN);
     }
 
-    return this.partnerRepo.destroy(id); // TODO: update schema for deleting
+    return this.partnerRepo.destroy(id);
   }
 
   async updatePartnerLogo(id, file, reqUser) {
@@ -200,7 +221,8 @@ export class OrganizationService {
   }
 
   async getOneService(id) {
-    return this.servicesRepo.getOne(id);
+    const service = await this.servicesRepo.getOne(id);
+    return service;
   }
 
   async createService(data, reqUser) {
@@ -242,7 +264,8 @@ export class OrganizationService {
   }
 
   async getOneSubscriptionPlan(id) {
-    return this.subscriptionPlanRepo.getOne(id);
+    const subscriptionPlan = await this.subscriptionPlanRepo.getOne(id);
+    return subscriptionPlan;
   }
 
   async createSubscriptionPlan(data, reqUser) {
@@ -258,6 +281,12 @@ export class OrganizationService {
       throw new ForbiddenError(USER_NOT_SUPER_ADMIN);
     }
 
+    const subscriptionPlan = await this.subscriptionPlanRepo.getOne(id);
+
+    if (!subscriptionPlan) {
+      throw new NotFoundError(SUBSCRIPTION_PLAN_NOT_FOUND);
+    }
+
     await this.subscriptionPlanRepo.update(id, data);
     const result = await this.subscriptionPlanRepo.getOne(id);
     return Object.keys(data).reduce((obj, key) => {
@@ -270,6 +299,12 @@ export class OrganizationService {
   async destroySubscriptionPlan(id, reqUser) {
     if (reqUser.role !== roles.superadmin) {
       throw new ForbiddenError(USER_NOT_SUPER_ADMIN);
+    }
+
+    const subscriptionPlan = await this.subscriptionPlanRepo.getOne(id);
+
+    if (!subscriptionPlan) {
+      throw new NotFoundError(SUBSCRIPTION_PLAN_NOT_FOUND);
     }
 
     return this.subscriptionPlanRepo.destroy(id);

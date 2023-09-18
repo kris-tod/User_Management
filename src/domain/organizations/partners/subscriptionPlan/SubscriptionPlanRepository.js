@@ -1,5 +1,7 @@
+import { SUBSCRIPTION_PLAN_NOT_FOUND } from '../../../../constants/messages.js';
 import { SubscriptionPlan as SubscriptionPlanModel } from '../../../../db/index.js';
 import { BaseRepo } from '../../../../utils/BaseRepo.js';
+import { NotFoundError } from '../../../../utils/errors.js';
 import { SubscriptionPlan } from './SubscriptionPlan.js';
 
 const buildSubscriptionPlan = (model) => new SubscriptionPlan(
@@ -25,6 +27,9 @@ export class SubscriptionPlanRepository extends BaseRepo {
 
   async getOne(id) {
     const entity = await super.getOne(id);
-    return entity ? buildSubscriptionPlan(entity) : null;
+    if (!entity) {
+      throw new NotFoundError(SUBSCRIPTION_PLAN_NOT_FOUND);
+    }
+    return buildSubscriptionPlan(entity);
   }
 }

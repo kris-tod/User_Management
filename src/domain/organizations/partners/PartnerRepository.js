@@ -11,6 +11,8 @@ import { CarSupportServiceRepository } from './carSupportService/CarSupportServi
 import { Partner } from './Partner.js';
 import { CarRepository } from '../../car/CarRepository.js';
 import { AdminRepository } from '../../admin/AdminRepository.js';
+import { NotFoundError } from '../../../utils/errors.js';
+import { PARTNER_NOT_FOUND } from '../../../constants/messages.js';
 
 const buildPartner = (model) => new Partner(
   parseInt(model.id, 10),
@@ -83,7 +85,9 @@ export class PartnerRepository extends BaseRepo {
 
   async getOne(id) {
     const entity = await super.getOne(id);
-
+    if (!entity) {
+      throw new NotFoundError(PARTNER_NOT_FOUND);
+    }
     return this.constructPartnerProps(entity);
   }
 

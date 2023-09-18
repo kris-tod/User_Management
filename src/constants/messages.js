@@ -36,3 +36,7 @@ export const INVALID_REGION = 'Invalid region!';
 export const ADMIN_NOT_SUPERADMIN = 'User is not superadmin!';
 export const TOO_MANY_CARS = 'Too many cars for partner!';
 export const ADMIN_NOT_PARTNER_ADMIN = 'Admin not partner admin!';
+export const ORGANIZATION_NOT_FOUND = 'Organization not found!';
+export const PARTNER_NOT_FOUND = 'Partner not found!';
+export const SUBSCRIPTION_PLAN_NOT_FOUND = 'Subscription plan not found!';
+export const SERVICE_NOT_FOUND = 'Car service plan not found!';

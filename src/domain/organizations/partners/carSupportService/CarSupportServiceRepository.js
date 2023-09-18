@@ -2,6 +2,8 @@ import { Op } from 'sequelize';
 import { BaseRepo } from '../../../../utils/BaseRepo.js';
 import { CarSupportService as CarSupportServiceModel } from '../../../../db/index.js';
 import { CarSupportService } from './CarSupportService.js';
+import { NotFoundError } from '../../../../utils/errors.js';
+import { SERVICE_NOT_FOUND } from '../../../../constants/messages.js';
 
 const buildService = (model) => new CarSupportService(
   parseInt(model.id, 10),
@@ -50,6 +52,9 @@ export class CarSupportServiceRepository extends BaseRepo {
 
   async getOne(id) {
     const entity = await super.getOne(id);
-    return entity ? buildService(entity) : null;
+    if (!entity) {
+      throw new NotFoundError(SERVICE_NOT_FOUND);
+    }
+    return buildService(entity);
   }
 }
