@@ -12,7 +12,7 @@ import { Partner } from './Partner.js';
 import { CarRepository } from '../../car/CarRepository.js';
 import { AdminRepository } from '../../admin/AdminRepository.js';
 import { NotFoundError } from '../../../utils/errors.js';
-import { PARTNER_NOT_FOUND } from '../../../constants/messages.js';
+import { PARTNER_NOT_FOUND, SUBSCRIPTION_PLAN_NOT_FOUND } from '../../../constants/messages.js';
 
 const buildPartner = (model) => new Partner(
   parseInt(model.id, 10),
@@ -113,9 +113,11 @@ export class PartnerRepository extends BaseRepo {
   async constructPartnerProps(entity) {
     const partner = entity;
 
-    partner.subscriptionPlan = await this.subscriptionPlanRepo.getOne(
-      partner.subscriptionPlanId
-    );
+    if (partner.subscriptionPlanId) {
+      partner.subscriptionPlan = await this.subscriptionPlanRepo.getOne(
+        partner.subscriptionPlanId
+      );
+    }
 
     const servicesIds = (
       await PartnerServiceModel.findAll({
@@ -188,7 +190,7 @@ export class PartnerRepository extends BaseRepo {
 
   async update(id, updatedData) {
     const partnerProps = Object.keys(updatedData)
-      .filter((key) => !['services', 'admins', 'cars'].includes(key))
+      .filter((key) => !['subscriptionPlanId', 'services', 'admins', 'cars'].includes(key))
       .reduce((obj, key) => {
         const propObj = obj;
         propObj[key] = updatedData[key];
@@ -196,6 +198,17 @@ export class PartnerRepository extends BaseRepo {
       }, {});
 
     await super.update(id, partnerProps);
+
+    if (updatedData.subscriptionPlanId) {
+      const subscriptionPlan = await this.subscriptionPlanRepo
+        .getOne(updatedData.subscriptionPlanId);
+
+      if (!subscriptionPlan) {
+        throw new NotFoundError(SUBSCRIPTION_PLAN_NOT_FOUND);
+      }
+
+      await super.update(id, { subscriptionPlanId: updatedData.subscriptionPlanId });
+    }
 
     if (updatedData.services) {
       await PartnerServiceModel.destroy({

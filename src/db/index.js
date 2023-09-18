@@ -55,7 +55,7 @@ db.Car.belongsToMany(db.User, { through: db.UserCar, onDelete: 'CASCADE' });
 db.Partner.belongsToMany(db.CarSupportService, { through: db.PartnerService, onDelete: 'CASCADE' });
 db.CarSupportService.belongsToMany(db.Partner, { through: db.PartnerService, onDelete: 'CASCADE' });
 
-db.SubscriptionPlan.hasMany(db.Partner);
+db.SubscriptionPlan.hasMany(db.Partner, { onDelete: 'RESTRICT' });
 db.Partner.belongsTo(db.SubscriptionPlan);
 
 db.Partner.belongsToMany(db.Admin, { through: db.AdminPartner, onDelete: 'CASCADE' });
