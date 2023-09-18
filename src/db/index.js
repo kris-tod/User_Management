@@ -64,26 +64,26 @@ db.Friendship.hasOne(db.User, {
 db.User.belongsTo(db.Friendship);
 db.Car.hasMany(db.Tire);
 db.Tire.belongsTo(db.Car);
-db.User.belongsToMany(db.Car, { through: db.UserCar });
-db.Car.belongsToMany(db.User, { through: db.UserCar });
+db.User.belongsToMany(db.Car, { through: db.UserCar, onDelete: 'CASCADE' });
+db.Car.belongsToMany(db.User, { through: db.UserCar, onDelete: 'CASCADE' });
 
-db.Partner.belongsToMany(db.CarSupportService, { through: db.PartnerService });
-db.CarSupportService.belongsToMany(db.Partner, { through: db.PartnerService });
+db.Partner.belongsToMany(db.CarSupportService, { through: db.PartnerService, onDelete: 'CASCADE' });
+db.CarSupportService.belongsToMany(db.Partner, { through: db.PartnerService, onDelete: 'CASCADE' });
 
 db.SubscriptionPlan.hasMany(db.Partner);
 db.Partner.belongsTo(db.SubscriptionPlan);
 
-db.Partner.belongsToMany(db.Admin, { through: db.AdminPartner });
-db.Admin.belongsToMany(db.Partner, { through: db.AdminPartner });
+db.Partner.belongsToMany(db.Admin, { through: db.AdminPartner, onDelete: 'CASCADE' });
+db.Admin.belongsToMany(db.Partner, { through: db.AdminPartner, onDelete: 'CASCADE' });
 
-db.Car.belongsToMany(db.Partner, { through: db.CarPartner });
-db.Partner.belongsToMany(db.Car, { through: db.CarPartner });
+db.Car.belongsToMany(db.Partner, { through: db.CarPartner, onDelete: 'CASCADE' });
+db.Partner.belongsToMany(db.Car, { through: db.CarPartner, onDelete: 'CASCADE' });
 
 db.Organization.hasMany(db.Partner);
 db.Partner.belongsTo(db.Organization);
 
-db.User.belongsToMany(db.Partner, { through: db.UserPartner });
-db.Partner.belongsToMany(db.User, { through: db.UserPartner });
+db.User.belongsToMany(db.Partner, { through: db.UserPartner, onDelete: 'CASCADE' });
+db.Partner.belongsToMany(db.User, { through: db.UserPartner, onDelete: 'CASCADE' });
 
 sequelize
   .sync({ force: false, alter: false })
