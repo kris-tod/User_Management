@@ -3,7 +3,7 @@ import {
   URL_NOT_FOUND
 } from '../../constants/messages.js';
 
-export const errorHandler = (err, req, res) => {
+export const errorHandler = (err, req, res, next) => {
   const response = err.message
     ? { message: err.message }
     : { message: DEFAULT_ERROR_MESSAGE };
@@ -28,7 +28,7 @@ export const errorHandler = (err, req, res) => {
       response.status = 500;
   }
 
-  res.status(err.status).send(response);
+  res.status(response.status).json(response);
 };
 
 export const urlNotFoundHandler = (req, res) => {
