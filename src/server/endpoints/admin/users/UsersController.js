@@ -1,10 +1,33 @@
 import { UserService } from '../../../../domain/user/UserService.js';
 import { BaseController } from '../../../../utils/BaseController.js';
-import { serializeUser, serializeUsers } from '../../serialize.js';
 
 export class UsersController extends BaseController {
   constructor(logger) {
     super(new UserService(logger), logger);
+  }
+
+  serializeEntity({
+    id,
+    username,
+    email,
+    avatar,
+    role,
+    friendsList = [],
+    region,
+    cars = [],
+    favouritePartners = []
+  }) {
+    return {
+      id,
+      username,
+      email,
+      avatar,
+      role,
+      friendsList,
+      region,
+      cars,
+      favouritePartners: favouritePartners.map((partner) => partner.name)
+    };
   }
 
   async getMany(req, res) {
@@ -15,7 +38,7 @@ export class UsersController extends BaseController {
       total, data, limit, offset
     } = await this.service.getAll(page, user);
     res.status(200).json({
-      total, limit, offset, data: serializeUsers(data)
+      total, limit, offset, data: data.map((entity) => this.serializeEntity(entity))
     });
   }
 
@@ -33,7 +56,7 @@ export class UsersController extends BaseController {
     const { user } = req;
 
     const entity = await this.service.create(data, user);
-    res.status(201).json(serializeUser(entity));
+    res.status(201).json(this.serializeEntity(entity));
   }
 
   createRouterHandlers() {

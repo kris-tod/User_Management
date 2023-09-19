@@ -131,7 +131,7 @@ export class PartnerRepository extends BaseRepo {
     };
 
     const {
-      data
+      rows
     } = await this.dbClient.findAndCountAll({
       order,
       include: [Region],
@@ -141,7 +141,7 @@ export class PartnerRepository extends BaseRepo {
     });
 
     const result = await Promise.all(
-      data.map(async (entity) => this.constructPartnerProps(entity))
+      rows.map(async (entity) => this.constructPartnerProps(entity))
     );
 
     return result;

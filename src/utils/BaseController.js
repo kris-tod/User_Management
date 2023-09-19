@@ -5,18 +5,22 @@ export class BaseController {
     this.logger = logger;
   }
 
+  serializeEntity(entity) {
+    return entity;
+  }
+
   async getMany(req, res) {
     const { page } = req.query;
 
     const collection = await this.service.getAll(page);
-    res.status(200).json(collection);
+    res.status(200).json(collection.map((entity) => this.serializeEntity(entity)));
   }
 
   async getOne(req, res) {
     const id = req.params[this.identityName];
 
     const entity = await this.service.getOne(id);
-    res.status(200).json(entity);
+    res.status(200).json(this.serializeEntity(entity));
   }
 
   async update(req, res) {
@@ -33,7 +37,7 @@ export class BaseController {
     const { user } = req;
 
     const entity = await this.service.create(data, user);
-    res.status(201).json(entity);
+    res.status(201).json(this.serializeEntity(entity));
   }
 
   async destroy(req, res) {

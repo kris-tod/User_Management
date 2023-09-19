@@ -1,5 +1,4 @@
 import { AdminService } from '../../../../domain/admin/AdminService.js';
-import { serializeAdmin } from '../../serialize.js';
 
 import { BaseController } from '../../../../utils/BaseController.js';
 
@@ -8,11 +7,19 @@ export class ProfileController extends BaseController {
     super(new AdminService(logger), logger);
   }
 
+  serializeEntity({
+    id, username, email, region
+  }) {
+    return {
+      id, username, email, region
+    };
+  }
+
   async getOne(req, res) {
     const { id } = req.user;
 
     const entity = await this.service.getOne(id);
-    res.status(200).json(serializeAdmin(entity));
+    res.status(200).json(this.serializeEntity(entity));
   }
 
   async update(req, res) {

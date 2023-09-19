@@ -1,5 +1,4 @@
 import { UserService } from '../../../../domain/user/UserService.js';
-import { serializeUser } from '../../serialize.js';
 
 import { BaseController } from '../../../../utils/BaseController.js';
 
@@ -8,11 +7,35 @@ export class ProfileController extends BaseController {
     super(new UserService(logger), logger);
   }
 
+  serializeEntity({
+    id,
+    username,
+    email,
+    avatar,
+    role,
+    friendsList = [],
+    region,
+    cars = [],
+    favouritePartners = []
+  }) {
+    return {
+      id,
+      username,
+      email,
+      avatar,
+      role,
+      friendsList,
+      region,
+      cars,
+      favouritePartners: favouritePartners.map((partner) => partner.name)
+    };
+  }
+
   async getOne(req, res) {
     const { id } = req.user;
 
     const entity = await this.service.getOne(id);
-    res.status(200).json(serializeUser(entity));
+    res.status(200).json(this.serializeEntity(entity));
   }
 
   async update(req, res) {

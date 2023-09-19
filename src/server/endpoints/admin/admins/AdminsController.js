@@ -1,10 +1,17 @@
 import { AdminService } from '../../../../domain/admin/AdminService.js';
 import { BaseController } from '../../../../utils/BaseController.js';
-import { serializeAdmins, serializeAdmin } from '../../serialize.js';
 
 export class AdminsController extends BaseController {
   constructor(logger) {
     super(new AdminService(logger), logger);
+  }
+
+  serializeEntity({
+    id, username, email, region
+  }) {
+    return {
+      id, username, email, region
+    };
   }
 
   async getMany(req, res) {
@@ -15,7 +22,7 @@ export class AdminsController extends BaseController {
       total, data, limit, offset
     } = await this.service.getAll(page, user);
     res.status(200).json({
-      total, limit, offset, data: serializeAdmins(data)
+      total, limit, offset, data: data.map((entity) => this.serializeEntity(entity))
     });
   }
 
@@ -33,7 +40,7 @@ export class AdminsController extends BaseController {
     const { user } = req;
 
     const entity = await this.service.create(data, user);
-    res.status(201).json(serializeAdmin(entity));
+    res.status(201).json(this.serializeEntity(entity));
   }
 
   createRouterHandlers() {
