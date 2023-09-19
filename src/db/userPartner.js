@@ -1,12 +1,16 @@
+import { Model } from 'sequelize';
+
 export default (sequelize) => {
-  const UserPartner = sequelize.define(
-    'user_partner',
+  class UserPartner extends Model {}
+  UserPartner.init(
     {},
     {
-      tableName: 'users_partners',
+      sequelize,
+      modelName: 'user_partner',
       timestamps: false
     }
   );
 
+  UserPartner.tableName = 'users_partners';
   return UserPartner;
 };

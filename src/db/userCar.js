@@ -1,12 +1,16 @@
+import { Model } from 'sequelize';
+
 export default (sequelize) => {
-  const Tire = sequelize.define(
-    'user_car',
+  class UserCar extends Model {}
+  UserCar.init(
     {},
     {
-      tableName: 'users_cars',
+      sequelize,
+      modelName: 'user_car',
       timestamps: false
     }
   );
 
-  return Tire;
+  UserCar.tableName = 'users_cars';
+  return UserCar;
 };

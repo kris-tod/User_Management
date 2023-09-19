@@ -1,9 +1,19 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import { domain } from '../config/index.js';
 
 export default (sequelize) => {
-  const CarSupportService = sequelize.define(
-    'car_support_service',
+  class CarSupportService extends Model {
+    static associate({
+      Partner, PartnerService, Region
+    }) {
+      Partner.belongsToMany(CarSupportService, { through: PartnerService, onDelete: 'CASCADE' });
+      CarSupportService.belongsToMany(Partner, { through: PartnerService, onDelete: 'CASCADE' });
+      Region.hasMany(CarSupportService, { onDelete: 'RESTRICT' });
+      CarSupportService.belongsTo(Region);
+    }
+  }
+
+  CarSupportService.init(
     {
       id: {
         type: DataTypes.BIGINT,
@@ -34,10 +44,12 @@ export default (sequelize) => {
       }
     },
     {
-      tableName: 'car_support_services',
+      sequelize,
+      modelName: 'car_support_service',
       timestamps: false
     }
   );
 
+  CarSupportService.tableName = 'car_support_services';
   return CarSupportService;
 };

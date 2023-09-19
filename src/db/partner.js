@@ -1,9 +1,23 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import { domain } from '../config/index.js';
 
 export default (sequelize) => {
-  const Partner = sequelize.define(
-    'partner',
+  class Partner extends Model {
+    static associate({
+      Region, SubscriptionPlan, UserPartner, User
+    }) {
+      Region.hasMany(Partner, { onDelete: 'RESTRICT' });
+      Partner.belongsTo(Region);
+
+      SubscriptionPlan.hasMany(Partner, { onDelete: 'RESTRICT' });
+      Partner.belongsTo(SubscriptionPlan);
+
+      User.belongsToMany(Partner, { through: UserPartner, onDelete: 'CASCADE' });
+      Partner.belongsToMany(User, { through: UserPartner, onDelete: 'CASCADE' });
+    }
+  }
+
+  Partner.init(
     {
       id: {
         type: DataTypes.BIGINT,
@@ -39,10 +53,13 @@ export default (sequelize) => {
       }
     },
     {
-      tableName: 'partners',
+      sequelize,
+      modelName: 'partner',
       timestamps: false
     }
   );
+
+  Partner.tableName = 'partners';
 
   return Partner;
 };

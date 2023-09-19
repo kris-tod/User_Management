@@ -1,8 +1,9 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 
 export default (sequelize) => {
-  const SubscriptionPlan = sequelize.define(
-    'subscription_plan',
+  class SubscriptionPlan extends Model {}
+
+  SubscriptionPlan.init(
     {
       id: {
         type: DataTypes.BIGINT,
@@ -35,10 +36,12 @@ export default (sequelize) => {
       }
     },
     {
-      tableName: 'subscription_plans',
+      sequelize,
+      modelName: 'subscription_plan',
       timestamps: false
     }
   );
 
+  SubscriptionPlan.tableName = 'subscription_plans';
   return SubscriptionPlan;
 };

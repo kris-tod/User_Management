@@ -1,8 +1,9 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 
 export default (sequelize) => {
-  const Friendship = sequelize.define(
-    'friendship',
+  class Friendship extends Model {}
+
+  Friendship.init(
     {
       id: {
         type: DataTypes.BIGINT,
@@ -25,10 +26,12 @@ export default (sequelize) => {
       }
     },
     {
-      tableName: 'friendships',
+      sequelize,
+      modelName: 'friendship',
       timestamps: true
     }
   );
 
+  Friendship.tableName = 'friendships';
   return Friendship;
 };

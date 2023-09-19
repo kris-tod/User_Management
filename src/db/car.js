@@ -1,9 +1,20 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import { domain } from '../config/index.js';
 
 export default (sequelize) => {
-  const Car = sequelize.define(
-    'car',
+  class Car extends Model {
+    static associate({
+      Tire, User, Partner, UserCar, CarPartner
+    }) {
+      Car.hasMany(Tire);
+      Tire.belongsTo(Car);
+      User.belongsToMany(Car, { through: UserCar, onDelete: 'CASCADE' });
+      Car.belongsToMany(User, { through: UserCar, onDelete: 'CASCADE' });
+      Car.belongsToMany(Partner, { through: CarPartner, onDelete: 'CASCADE' });
+      Partner.belongsToMany(Car, { through: CarPartner, onDelete: 'CASCADE' });
+    }
+  }
+  Car.init(
     {
       id: {
         type: DataTypes.BIGINT,
@@ -63,10 +74,13 @@ export default (sequelize) => {
       }
     },
     {
-      tableName: 'cars',
-      timestamps: true
+      sequelize,
+      modelName: 'car',
+      timestamps: false
     }
   );
+
+  Car.tableName = 'cars';
 
   return Car;
 };

@@ -1,8 +1,9 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 
 export default (sequelize) => {
-  const Tire = sequelize.define(
-    'tire',
+  class Tire extends Model {}
+
+  Tire.init(
     {
       id: {
         type: DataTypes.BIGINT,
@@ -44,10 +45,11 @@ export default (sequelize) => {
       }
     },
     {
-      tableName: 'tires',
+      sequelize,
+      modelName: 'tire',
       timestamps: false
     }
   );
-
+  Tire.tableName = 'tires';
   return Tire;
 };

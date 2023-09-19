@@ -1,12 +1,16 @@
+import { Model } from 'sequelize';
+
 export default (sequelize) => {
-  const AdminPartner = sequelize.define(
-    'admin_partner',
+  class AdminPartner extends Model {}
+  AdminPartner.init(
     {},
     {
-      tableName: 'admins_partners',
+      sequelize,
+      modelName: 'admin_partner',
       timestamps: false
     }
   );
+  AdminPartner.tableName = 'admins_partners';
 
   return AdminPartner;
 };

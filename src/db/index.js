@@ -49,40 +49,12 @@ const db = {
   Region: RegionModel(sequelize)
 };
 
-db.Car.hasMany(db.Tire);
-db.Tire.belongsTo(db.Car);
-db.User.belongsToMany(db.Car, { through: db.UserCar, onDelete: 'CASCADE' });
-db.Car.belongsToMany(db.User, { through: db.UserCar, onDelete: 'CASCADE' });
-
-db.Partner.belongsToMany(db.CarSupportService, { through: db.PartnerService, onDelete: 'CASCADE' });
-db.CarSupportService.belongsToMany(db.Partner, { through: db.PartnerService, onDelete: 'CASCADE' });
-
-db.SubscriptionPlan.hasMany(db.Partner, { onDelete: 'RESTRICT' });
-db.Partner.belongsTo(db.SubscriptionPlan);
-
-db.Partner.belongsToMany(db.Admin, { through: db.AdminPartner, onDelete: 'CASCADE' });
-db.Admin.belongsToMany(db.Partner, { through: db.AdminPartner, onDelete: 'CASCADE' });
-
-db.Car.belongsToMany(db.Partner, { through: db.CarPartner, onDelete: 'CASCADE' });
-db.Partner.belongsToMany(db.Car, { through: db.CarPartner, onDelete: 'CASCADE' });
-
-db.Organization.hasMany(db.Partner);
-db.Partner.belongsTo(db.Organization);
-
-db.User.belongsToMany(db.Partner, { through: db.UserPartner, onDelete: 'CASCADE' });
-db.Partner.belongsToMany(db.User, { through: db.UserPartner, onDelete: 'CASCADE' });
-
-db.Region.hasMany(db.Admin, { onDelete: 'RESTRICT' });
-db.Admin.belongsTo(db.Region);
-
-db.Region.hasMany(db.User, { onDelete: 'RESTRICT' });
-db.User.belongsTo(db.Region);
-
-db.Region.hasMany(db.Partner, { onDelete: 'RESTRICT' });
-db.Partner.belongsTo(db.Region);
-
-db.Region.hasMany(db.CarSupportService, { onDelete: 'RESTRICT' });
-db.CarSupportService.belongsTo(db.Region);
+db.Admin.associate(db);
+db.Car.associate(db);
+db.CarSupportService.associate(db);
+db.Organization.associate(db);
+db.Partner.associate(db);
+db.Region.associate(db);
 
 sequelize
   .sync({ force: false, alter: false })

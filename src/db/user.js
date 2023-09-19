@@ -1,9 +1,10 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import { domain } from '../config/index.js';
 
 export default (sequelize) => {
-  const User = sequelize.define(
-    'user',
+  class User extends Model {}
+
+  User.init(
     {
       id: {
         type: DataTypes.BIGINT,
@@ -29,10 +30,12 @@ export default (sequelize) => {
       }
     },
     {
-      tableName: 'users',
+      sequelize,
+      modelName: 'user',
       timestamps: false
     }
   );
 
+  User.tableName = 'users';
   return User;
 };

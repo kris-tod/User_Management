@@ -1,8 +1,9 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 
 export default (sequelize) => {
-  const TokenBlacklist = sequelize.define(
-    'blacklist',
+  class TokenBlacklist extends Model {}
+
+  TokenBlacklist.init(
     {
       id: {
         type: DataTypes.BIGINT,
@@ -15,10 +16,12 @@ export default (sequelize) => {
       }
     },
     {
-      tableName: 'token_blacklist',
+      sequelize,
+      modelName: 'token_blacklist',
       timestamps: false
     }
   );
 
+  TokenBlacklist.tableName = 'token_blacklist';
   return TokenBlacklist;
 };

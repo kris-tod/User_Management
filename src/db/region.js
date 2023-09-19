@@ -1,8 +1,15 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 
 export default (sequelize) => {
-  const Region = sequelize.define(
-    'region',
+  class Region extends Model {
+    static associate({
+      User
+    }) {
+      Region.hasMany(User, { onDelete: 'RESTRICT' });
+      User.belongsTo(Region);
+    }
+  }
+  Region.init(
     {
       id: {
         type: DataTypes.BIGINT,
@@ -16,10 +23,12 @@ export default (sequelize) => {
       }
     },
     {
-      tableName: 'regions',
+      sequelize,
+      modelName: 'region',
       timestamps: false
     }
   );
 
+  Region.tableName = 'regions';
   return Region;
 };

@@ -1,8 +1,16 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 
 export default (sequelize) => {
-  const Organization = sequelize.define(
-    'organization',
+  class Organization extends Model {
+    static associate({
+      Partner
+    }) {
+      Organization.hasMany(Partner);
+      Partner.belongsTo(Organization);
+    }
+  }
+
+  Organization.init(
     {
       id: {
         type: DataTypes.BIGINT,
@@ -18,10 +26,12 @@ export default (sequelize) => {
       }
     },
     {
-      tableName: 'organizations',
+      sequelize,
+      modelName: 'organization',
       timestamps: false
     }
   );
 
+  Organization.tableName = 'organizations';
   return Organization;
 };
