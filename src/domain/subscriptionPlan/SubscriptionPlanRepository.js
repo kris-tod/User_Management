@@ -21,10 +21,10 @@ export class SubscriptionPlanRepository extends BaseRepo {
     );
   }
 
-  async getAll(page = 1) {
+  async getAll(page = 1, options = {}) {
     const {
       total, data, limit, offset
-    } = await super.getAll(page, ['name']);
+    } = await super.getAll(page, ['name'], options);
 
     return {
       total, limit, offset, data

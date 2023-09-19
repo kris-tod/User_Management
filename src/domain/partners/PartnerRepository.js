@@ -62,10 +62,10 @@ export class PartnerRepository extends BaseRepo {
     );
   }
 
-  async getAll(page = 1, region = '', order = ['name'], entitiesPerPage = MAX_PER_PAGE) {
-    const options = {};
-    if (region) {
-      options.where = { region };
+  async getAll(page = 1, optionParam = {}, order = ['name'], entitiesPerPage = MAX_PER_PAGE) {
+    const options = optionParam;
+    if (optionParam.region) {
+      options.where = { region: optionParam.region };
     }
 
     const {

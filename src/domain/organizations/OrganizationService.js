@@ -316,6 +316,14 @@ export class OrganizationService {
       throw new NotFoundError(SUBSCRIPTION_PLAN_NOT_FOUND);
     }
 
+    const { data } = await this.partnerRepo.getAll(1, {
+      where: { subscriptionPlanId: subscriptionPlan.id }
+    });
+
+    if (data.length) {
+      throw new ApiError('Subscription plan is currently used!');
+    }
+
     return this.subscriptionPlanRepo.destroy(id);
   }
 }
