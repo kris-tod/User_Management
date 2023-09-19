@@ -68,7 +68,25 @@ export class PartnerRepository extends BaseRepo {
       }
     })).map((entity) => entity.partnerId);
 
-    return this.getAllByIds(page, listOfPartnerIds);
+    const options = {
+      where: {
+        id: {
+          [Op.in]: listOfPartnerIds
+        }
+      }
+    };
+
+    const {
+      total, data, limit, offset
+    } = await super.getAll(page, ['name'], options);
+
+    const result = await Promise.all(
+      data.map(async (entity) => this.constructPartnerProps(entity))
+    );
+
+    return {
+      total, data: result, limit, offset
+    };
   }
 
   async getAllByIds(page, listOfIds) {
