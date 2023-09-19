@@ -800,7 +800,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"email\": \"kris@gmail.com\",\n    \"friendsList\": [],\n    \"username\": \"kris\",\n    \"favouritePartners\": [2]\n}",
+									"raw": "{\n    \"favouritePartners\": [7]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -808,13 +808,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/api/user/",
+									"raw": "{{baseUrl}}/api/profile/",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"api",
-										"user",
+										"profile",
 										""
 									]
 								}
@@ -2516,7 +2516,7 @@
 									"variable": [
 										{
 											"key": "partnerId",
-											"value": "18"
+											"value": "8"
 										}
 									]
 								}
@@ -2581,7 +2581,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Milenkata\",\n    \"description\": \"Nice partner!\",\n    \"address\": \"Vrajdebna\",\n    \"coordinates\": \"1.5,2.5\",\n    \"phone\": \"0895209415\",\n    \"contactPerson\": \"Milen\",\n    \"region\": 1,\n    \"subscriptionPlanId\": 1,\n    \"organizationId\": 2,\n    \"admins\": [2],\n    \"services\": [2, 3, 4]\n    // name, logo, description, address, coordinates, phone, contactPerson,\n    // region, subscriptionPlanId, organizationId, partnersAdminsIds,\n    // carSupportServices\n}",
+									"raw": "{\n    \"name\": \"Kriskata\",\n    \"description\": \"Nice partner!\",\n    \"address\": \"Vrajdebna\",\n    \"coordinates\": \"1.5,2.5\",\n    \"phone\": \"0895209415\",\n    \"contactPerson\": \"Milen\",\n    \"region\": 1,\n    \"subscriptionPlanId\": 1,\n    \"organizationId\": 2,\n    \"admins\": [2],\n    \"services\": [2, 3, 4]\n    // name, logo, description, address, coordinates, phone, contactPerson,\n    // region, subscriptionPlanId, organizationId, partnersAdminsIds,\n    // carSupportServices\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2681,7 +2681,7 @@
 									"variable": [
 										{
 											"key": "partnerId",
-											"value": "2"
+											"value": "7"
 										}
 									]
 								}
@@ -2750,7 +2750,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"address\": \"Na majnata si\",\n    \"name\": \"Na Denito serviza\",\n    \"admins\": [2]\n}",
+									"raw": "{\n    \"cars\": [7]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2770,7 +2770,7 @@
 									"variable": [
 										{
 											"key": "partnerId",
-											"value": "17"
+											"value": "7"
 										}
 									]
 								}
