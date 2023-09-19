@@ -237,19 +237,15 @@ export class PartnerRepository extends BaseRepo {
       organizationId
     });
 
-    await Promise.all(admins.map(async (adminId) => {
-      await AdminPartnerModel.create({
-        adminId,
-        partnerId: partner.id
-      });
-    }));
+    await AdminPartnerModel.bulkCreate(admins.map((adminId) => ({
+      adminId,
+      partnerId: partner.id
+    })));
 
-    await Promise.all(services.map(async (carSupportServiceId) => {
-      await PartnerServiceModel.create({
-        carSupportServiceId,
-        partnerId: partner.id
-      });
-    }));
+    await PartnerServiceModel.bulkCreate(services.map((carSupportServiceId) => ({
+      carSupportServiceId,
+      partnerId: partner.id
+    })));
 
     return this.getOne(partner.id);
   }
