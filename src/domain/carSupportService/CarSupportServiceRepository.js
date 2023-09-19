@@ -1,10 +1,10 @@
 import { Op } from 'sequelize';
-import { BaseRepo, MAX_PER_PAGE } from '../../../../utils/BaseRepo.js';
-import { CarSupportService as CarSupportServiceModel, Region } from '../../../../db/index.js';
+import { BaseRepo, MAX_PER_PAGE } from '../../utils/BaseRepo.js';
+import { CarSupportService as CarSupportServiceModel, Region } from '../../db/index.js';
 import { CarSupportService } from './CarSupportService.js';
-import { NotFoundError } from '../../../../utils/errors.js';
-import { SERVICE_NOT_FOUND } from '../../../../constants/messages.js';
-import { RegionRepository } from '../../../region/RegionRepository.js';
+import { NotFoundError } from '../../utils/errors.js';
+import { SERVICE_NOT_FOUND } from '../../constants/messages.js';
+import { RegionRepository } from '../region/RegionRepository.js';
 
 export class CarSupportServiceRepository extends BaseRepo {
   constructor() {

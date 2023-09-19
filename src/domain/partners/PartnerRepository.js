@@ -5,16 +5,16 @@ import {
   AdminPartner as AdminPartnerModel,
   CarPartner as CarPartnerModel,
   Region
-} from '../../../db/index.js';
-import { BaseRepo, MAX_PER_PAGE } from '../../../utils/BaseRepo.js';
-import { SubscriptionPlanRepository } from './subscriptionPlan/SubscriptionPlanRepository.js';
-import { CarSupportServiceRepository } from './carSupportService/CarSupportServiceRepository.js';
+} from '../../db/index.js';
+import { BaseRepo, MAX_PER_PAGE } from '../../utils/BaseRepo.js';
+import { SubscriptionPlanRepository } from '../subscriptionPlan/SubscriptionPlanRepository.js';
+import { CarSupportServiceRepository } from '../carSupportService/CarSupportServiceRepository.js';
 import { Partner } from './Partner.js';
-import { CarRepository } from '../../car/CarRepository.js';
-import { AdminRepository } from '../../admin/AdminRepository.js';
-import { NotFoundError } from '../../../utils/errors.js';
-import { PARTNER_NOT_FOUND, SUBSCRIPTION_PLAN_NOT_FOUND } from '../../../constants/messages.js';
-import { RegionRepository } from '../../region/RegionRepository.js';
+import { CarRepository } from '../car/CarRepository.js';
+import { AdminRepository } from '../admin/AdminRepository.js';
+import { NotFoundError } from '../../utils/errors.js';
+import { PARTNER_NOT_FOUND, SUBSCRIPTION_PLAN_NOT_FOUND } from '../../constants/messages.js';
+import { RegionRepository } from '../region/RegionRepository.js';
 
 const buildPartner = (model) => new Partner(
   parseInt(model.id, 10),

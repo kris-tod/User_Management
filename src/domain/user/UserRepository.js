@@ -6,7 +6,7 @@ import {
   User as UserModel, UserCar, UserPartner, Region
 } from '../../db/index.js';
 import { User } from './User.js';
-import { PartnerRepository } from '../organizations/partners/PartnerRepository.js';
+import { PartnerRepository } from '../partners/PartnerRepository.js';
 import { RegionRepository } from '../region/RegionRepository.js';
 
 export class UserRepository extends BaseRepo {

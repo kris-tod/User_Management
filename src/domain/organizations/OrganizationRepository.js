@@ -1,6 +1,6 @@
 import { Organization as OrganizationModel } from '../../db/index.js';
 import { Organization } from './Organization.js';
-import { PartnerRepository } from './partners/PartnerRepository.js';
+import { PartnerRepository } from '../partners/PartnerRepository.js';
 import { BaseRepo } from '../../utils/BaseRepo.js';
 import { NotFoundError } from '../../utils/errors.js';
 

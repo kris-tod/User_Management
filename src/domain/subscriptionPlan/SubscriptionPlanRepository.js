@@ -1,7 +1,7 @@
-import { SUBSCRIPTION_PLAN_NOT_FOUND } from '../../../../constants/messages.js';
-import { SubscriptionPlan as SubscriptionPlanModel } from '../../../../db/index.js';
-import { BaseRepo } from '../../../../utils/BaseRepo.js';
-import { NotFoundError, ApiError } from '../../../../utils/errors.js';
+import { SUBSCRIPTION_PLAN_NOT_FOUND } from '../../constants/messages.js';
+import { SubscriptionPlan as SubscriptionPlanModel } from '../../db/index.js';
+import { BaseRepo } from '../../utils/BaseRepo.js';
+import { NotFoundError, ApiError } from '../../utils/errors.js';
 import { SubscriptionPlan } from './SubscriptionPlan.js';
 
 export class SubscriptionPlanRepository extends BaseRepo {

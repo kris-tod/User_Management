@@ -12,9 +12,9 @@ import { AdminRepository } from '../admin/AdminRepository.js';
 import { RegionRepository } from '../region/RegionRepository.js';
 import { roles } from '../user/User.js';
 import { OrganizationRepository } from './OrganizationRepository.js';
-import { PartnerRepository } from './partners/PartnerRepository.js';
-import { CarSupportServiceRepository } from './partners/carSupportService/CarSupportServiceRepository.js';
-import { SubscriptionPlanRepository } from './partners/subscriptionPlan/SubscriptionPlanRepository.js';
+import { PartnerRepository } from '../partners/PartnerRepository.js';
+import { CarSupportServiceRepository } from '../carSupportService/CarSupportServiceRepository.js';
+import { SubscriptionPlanRepository } from '../subscriptionPlan/SubscriptionPlanRepository.js';
 
 export class OrganizationService {
   constructor(logger) {
