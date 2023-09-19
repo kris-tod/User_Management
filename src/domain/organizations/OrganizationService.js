@@ -4,10 +4,13 @@ import {
   TOO_MANY_CARS,
   ADMIN_NOT_PARTNER_ADMIN,
   PARTNER_NOT_FOUND,
-  SUBSCRIPTION_PLAN_NOT_FOUND
+  SUBSCRIPTION_PLAN_NOT_FOUND,
+  DEFAULT_ERROR_MESSAGE
 } from '../../constants/messages.js';
 import FileService from '../../services/FileService.js';
-import { ApiError, ForbiddenError, NotFoundError } from '../../utils/errors.js';
+import {
+  ApiError, ForbiddenError, InternalError, NotFoundError
+} from '../../utils/errors.js';
 import { AdminRepository } from '../admin/AdminRepository.js';
 import { RegionRepository } from '../region/RegionRepository.js';
 import { roles } from '../user/User.js';
@@ -15,6 +18,7 @@ import { OrganizationRepository } from './OrganizationRepository.js';
 import { PartnerRepository } from '../partners/PartnerRepository.js';
 import { CarSupportServiceRepository } from '../carSupportService/CarSupportServiceRepository.js';
 import { SubscriptionPlanRepository } from '../subscriptionPlan/SubscriptionPlanRepository.js';
+import { sequelize } from '../../db/index.js';
 
 export class OrganizationService {
   constructor(logger) {
@@ -134,9 +138,17 @@ export class OrganizationService {
       throw new ApiError('Invalid subscription!');
     }
 
-    return this.partnerRepo.create({
-      ...data,
-      regionId: data.region
+    return sequelize.transaction(async (t) => {
+      const options = {
+        transaction: t
+      };
+
+      const result = await this.partnerRepo.create({
+        ...data,
+        regionId: data.region
+      }, options);
+
+      return result;
     });
   }
 
@@ -182,15 +194,21 @@ export class OrganizationService {
       }
     }
 
-    await this.partnerRepo.update(id, updatedData);
-    const entity = await this.partnerRepo.getOne(id);
+    return sequelize.transaction(async (t) => {
+      const options = {
+        transaction: t
+      };
 
-    return Object.keys(updatedData)
-      .reduce((obj, key) => {
-        const propObj = obj;
-        propObj[key] = entity[key];
-        return propObj;
-      }, {});
+      await this.partnerRepo.update(id, updatedData, options);
+      const entity = await this.partnerRepo.getOne(id, options);
+
+      return Object.keys(updatedData)
+        .reduce((obj, key) => {
+          const propObj = obj;
+          propObj[key] = entity[key];
+          return propObj;
+        }, {});
+    });
   }
 
   async destroyPartner(id, reqUser) {
@@ -212,10 +230,22 @@ export class OrganizationService {
       throw new ForbiddenError(ADMIN_NOT_PARTNER_ADMIN);
     }
 
+    const t = await sequelize.transaction();
     const logo = FileService.getFilePath(file);
-    await this.partnerRepo.update(id, { logo });
 
-    return { logo };
+    try {
+      const options = {
+        transaction: t
+      };
+
+      await this.partnerRepo.update(id, { logo }, options);
+      return { logo };
+    }
+    catch (err) {
+      t.rollback();
+      FileService.deleteFile(logo);
+      throw new InternalError(DEFAULT_ERROR_MESSAGE);
+    }
   }
 
   async getAllServices(page, reqUser) {

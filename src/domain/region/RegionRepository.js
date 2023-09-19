@@ -20,8 +20,8 @@ export class RegionRepository extends BaseRepo {
     };
   }
 
-  async getOne(id) {
-    const entity = await super.getOne(id);
+  async getOne(id, options = {}) {
+    const entity = await super.getOne(id, options);
     if (!entity) {
       throw new NotFoundError('Region not found!');
     }

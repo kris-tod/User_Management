@@ -28,6 +28,6 @@ export class SubscriptionPlan {
     if (carsLimit <= 0) {
       throw new Error('Invalid cars count!');
     }
-    this.carsCount = carsLimit;
+    this.carsLimit = carsLimit;
   }
 }

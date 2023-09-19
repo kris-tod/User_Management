@@ -59,14 +59,15 @@ export class AdminRepository extends BaseRepo {
     return this.buildEntity(entity);
   }
 
-  async getAllByIds(listOfIds) {
+  async getAllByIds(listOfIds, options = {}) {
     const collection = await this.dbClient.findAll({
       include: [Region],
       where: {
         id: {
           [Op.in]: listOfIds
         }
-      }
+      },
+      ...options
     });
 
     return collection.map((entity) => this.buildEntity(entity));

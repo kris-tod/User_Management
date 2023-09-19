@@ -21,7 +21,7 @@ export default class FileService {
     return `${dirname}/src/${staticDirname}`;
   }
 
-  static deleteFile(file) {
-    fs.unlinkSync(`${staticDirname}/${file.filename}`);
+  static deleteFile(filePath) {
+    fs.unlinkSync(filePath);
   }
 }

@@ -168,17 +168,23 @@ export class UserService {
   async updateAvatarById(id, avatar, file) {
     const t = await sequelize.transaction();
 
+    const filePath = FileService.getFilePath(file);
+
     try {
-      await this.userRepo.update(id, { avatar });
+      const options = {
+        transaction: t
+      };
+
+      await this.userRepo.update(id, { avatar: filePath }, options);
+      return {
+        avatar: filePath
+      };
     }
     catch (err) {
-      FileService.deleteFile(file);
+      FileService.deleteFile(filePath);
       t.rollback();
+      throw new InternalError(DEFAULT_ERROR_MESSAGE);
     }
-
-    return {
-      avatar: FileService.getFilePath(file)
-    };
   }
 
   async destroy(id, reqUser) {

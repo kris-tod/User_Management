@@ -67,17 +67,18 @@ export class CarRepository extends BaseRepo {
     return this.buildEntity(entity);
   }
 
-  async getAllByIds(carIds) {
+  async getAllByIds(carIds, options = {}) {
     const collection = await this.dbClient.findAll({
       where: {
         id: {
           [Op.in]: carIds
         }
-      }
+      },
+      ...options
     });
 
     const cars = collection.map((entity) => this.buildEntity(entity));
-    const tires = await this.tireRepo.getAllByCars(carIds);
+    const tires = await this.tireRepo.getAllByCars(carIds, options);
 
     return cars.map((carParam) => {
       const car = carParam;

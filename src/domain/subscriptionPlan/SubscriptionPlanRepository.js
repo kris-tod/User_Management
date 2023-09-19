@@ -31,8 +31,8 @@ export class SubscriptionPlanRepository extends BaseRepo {
     };
   }
 
-  async getOne(id) {
-    const entity = await super.getOne(id);
+  async getOne(id, options = {}) {
+    const entity = await super.getOne(id, options);
     if (!entity) {
       throw new NotFoundError(SUBSCRIPTION_PLAN_NOT_FOUND);
     }

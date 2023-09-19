@@ -24,14 +24,15 @@ export class CarSupportServiceRepository extends BaseRepo {
     );
   }
 
-  async getAllByIds(listOfIds) {
+  async getAllByIds(listOfIds, options = {}) {
     const collectionPromoted = await this.dbClient.findAll({
       where: {
         id: {
           [Op.in]: listOfIds
         },
         isPromoted: true
-      }
+      },
+      ...options
     });
 
     const collectionNotPromoted = await this.dbClient.findAll({
@@ -40,18 +41,19 @@ export class CarSupportServiceRepository extends BaseRepo {
           [Op.in]: listOfIds
         },
         isPromoted: false
-      }
+      },
+      ...options
     });
 
     const resultPromoted = await Promise.all(collectionPromoted.map(async (entity) => {
       const service = entity;
-      service.region = await this.regionRepo.getOne(service.regionId);
+      service.region = await this.regionRepo.getOne(service.regionId, options);
       return this.buildEntity(service);
     }));
 
     const resultNotPromoted = await Promise.all(collectionNotPromoted.map(async (entity) => {
       const service = entity;
-      service.region = await this.regionRepo.getOne(service.regionId);
+      service.region = await this.regionRepo.getOne(service.regionId, options);
       return this.buildEntity(service);
     }));
 

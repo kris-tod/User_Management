@@ -25,16 +25,17 @@ export class BaseRepo {
     };
   }
 
-  async getOne(id) {
+  async getOne(id, options = {}) {
     const entity = await this.dbClient.findOne({
-      where: { id }
+      where: { id },
+      ...options
     });
 
     return this.buildEntity(entity);
   }
 
-  async create(entity) {
-    return this.dbClient.create(entity);
+  async create(entity, options = {}) {
+    return this.dbClient.create(entity, options);
   }
 
   async update(id, updatedData, propObj) {

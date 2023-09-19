@@ -42,13 +42,14 @@ export class TireRepository extends BaseRepo {
     return collection.map((entity) => this.buildEntity(entity));
   }
 
-  async getAllByCars(carIds) {
+  async getAllByCars(carIds, options = {}) {
     const collection = await this.dbClient.findAll({
       where: {
         carId: {
           [Op.in]: carIds
         }
-      }
+      },
+      ...options
     });
 
     return collection.map((entity) => this.buildEntity(entity));
