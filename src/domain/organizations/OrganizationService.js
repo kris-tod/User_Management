@@ -9,6 +9,7 @@ import {
 import FileService from '../../services/FileService.js';
 import { ApiError, ForbiddenError, NotFoundError } from '../../utils/errors.js';
 import { AdminRepository } from '../admin/AdminRepository.js';
+import { RegionRepository } from '../region/RegionRepository.js';
 import { roles } from '../user/User.js';
 import { OrganizationRepository } from './OrganizationRepository.js';
 import { PartnerRepository } from './partners/PartnerRepository.js';
@@ -23,6 +24,7 @@ export class OrganizationService {
     this.subscriptionPlanRepo = new SubscriptionPlanRepository();
     this.servicesRepo = new CarSupportServiceRepository();
     this.adminsRepo = new AdminRepository();
+    this.regionRepo = new RegionRepository();
   }
 
   async getAllOrganizations(page, reqUser) {
@@ -110,7 +112,7 @@ export class OrganizationService {
     const services = await this.servicesRepo.getAllByIds(data.services);
 
     services.forEach((service) => {
-      if (service.region !== data.region) {
+      if (parseInt(service.region.id, 10) !== data.region) {
         throw new ApiError(INVALID_REGION);
       }
     });
@@ -127,7 +129,10 @@ export class OrganizationService {
       throw new ApiError('Invalid subscription!');
     }
 
-    return this.partnerRepo.create(data);
+    return this.partnerRepo.create({
+      ...data,
+      regionId: data.region
+    });
   }
 
   async updatePartner(id, updatedData, reqUser) {
@@ -136,7 +141,7 @@ export class OrganizationService {
       throw new NotFoundError(PARTNER_NOT_FOUND);
     }
 
-    if (reqUser.role === roles.admin && !partner.partnerAdmins
+    if (reqUser.role === roles.admin && !partner.admins
       .find((admin) => admin.id === reqUser.id)) {
       throw new ForbiddenError(ADMIN_NOT_PARTNER_ADMIN);
     }
@@ -152,7 +157,7 @@ export class OrganizationService {
       const services = await this.servicesRepo.getAllByIds(updatedData.services);
 
       services.forEach((service) => {
-        if (service.region !== partner.region) {
+        if (service.region.id !== partner.region.id) {
           throw new ApiError(INVALID_REGION);
         }
       });
@@ -214,7 +219,7 @@ export class OrganizationService {
   async getAllServices(page, reqUser) {
     const options = {};
     if (reqUser.role === roles.admin) {
-      options.where = { region: reqUser.region };
+      options.where = { regionId: reqUser.region };
     }
     return this.servicesRepo.getAll(page, ['name'], options);
   }
@@ -229,7 +234,10 @@ export class OrganizationService {
       throw new ForbiddenError(INVALID_REGION);
     }
 
-    return this.servicesRepo.create(data);
+    return this.servicesRepo.create({
+      ...data,
+      regionId: data.region
+    });
   }
 
   async updateService(id, updatedData, reqUser) {

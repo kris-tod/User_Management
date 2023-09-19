@@ -26,10 +26,6 @@ export default (sequelize) => {
       avatar: {
         type: DataTypes.STRING,
         defaultValue: `${domain}/default_avatar.jpg`
-      },
-      region: {
-        type: DataTypes.STRING,
-        allowNull: false
       }
     },
     {

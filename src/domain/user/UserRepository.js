@@ -5,6 +5,7 @@ import { CarRepository } from '../car/CarRepository.js';
 import { User as UserModel, UserCar, UserPartner } from '../../db/index.js';
 import { User } from './User.js';
 import { PartnerRepository } from '../organizations/partners/PartnerRepository.js';
+import { RegionRepository } from '../region/RegionRepository.js';
 
 const buildUser = ({
   id,
@@ -34,13 +35,14 @@ export class UserRepository extends BaseRepo {
     this.friendshipRepo = new FriendshipRepository();
     this.carRepo = new CarRepository();
     this.partnerRepo = new PartnerRepository();
+    this.regionRepo = new RegionRepository();
   }
 
   async getAll(page = 1, region = '') {
     const options = {};
 
     if (region) {
-      options.where = { region };
+      options.where = { regionId: region };
     }
 
     const {
@@ -70,6 +72,10 @@ export class UserRepository extends BaseRepo {
           1,
           favouritePartnersIds
         );
+
+        if (userData.regionId) {
+          user.region = await this.regionRepo.getOne(userData.regionId);
+        }
 
         return user;
       })
@@ -116,6 +122,10 @@ export class UserRepository extends BaseRepo {
           favouritePartnersIds
         );
 
+        if (userData.regionId) {
+          user.region = await this.regionRepo.getOne(userData.regionId);
+        }
+
         return user;
       })
     );
@@ -131,6 +141,10 @@ export class UserRepository extends BaseRepo {
 
     if (!userData) {
       return null;
+    }
+
+    if (userData.regionId) {
+      userData.region = await this.regionRepo.getOne(userData.regionId);
     }
 
     const user = buildUser(userData);
@@ -173,6 +187,10 @@ export class UserRepository extends BaseRepo {
 
     if (!user) {
       return null;
+    }
+
+    if (user.regionId) {
+      user.region = await this.regionRepo.getOne(user.regionId);
     }
 
     const friendships = await this.friendshipRepo.findAllFriendshipsById(

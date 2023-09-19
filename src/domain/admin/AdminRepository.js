@@ -2,38 +2,64 @@ import { Op } from 'sequelize';
 import { BaseRepo } from '../../utils/BaseRepo.js';
 import { Admin as AdminModel } from '../../db/index.js';
 import { Admin } from './Admin.js';
+import { RegionRepository } from '../region/RegionRepository.js';
+import { NotFoundError } from '../../utils/errors.js';
+import { USER_NOT_FOUND } from '../../constants/messages.js';
 
-const buildAdmin = ({
-  id,
-  username,
-  password,
-  role = 'admin',
-  region = null,
-  email = ''
-}) => new Admin(parseInt(id, 10), username, password, role, region, email);
+const buildAdmin = (model) => new Admin(
+  parseInt(model.id, 10),
+  model.username,
+  model.password,
+  model.role,
+  model.region,
+  model.email
+);
 
 export class AdminRepository extends BaseRepo {
   constructor() {
     super(AdminModel);
+    this.regionRepo = new RegionRepository();
   }
 
-  async getAll(page = 1, region = '') {
+  async getAll(page = 1, regionProp = '') {
     const options = {};
 
-    if (region) {
-      options.where = { region };
+    if (regionProp) {
+      options.where = { regionId: regionProp };
     }
 
     const {
       total, data, limit, offset
     } = await super.getAll(page, ['username'], options);
 
-    return {
+    const result = {
       total,
       limit,
       offset,
-      data: data.map((user) => buildAdmin(user.toJSON()))
+      data: await Promise.all(data.map(async (adminData) => {
+        const admin = adminData;
+        if (adminData.regionId) {
+          admin.region = await this.regionRepo.getOne(adminData.regionId);
+        }
+        return buildAdmin(admin);
+      }))
     };
+
+    return result;
+  }
+
+  async getOne(id) {
+    const entity = await super.getOne(id);
+
+    if (!entity) {
+      throw new NotFoundError(USER_NOT_FOUND);
+    }
+
+    if (entity.regionId) {
+      entity.region = await this.regionRepo.getOne(entity.regionId);
+    }
+
+    return buildAdmin(entity);
   }
 
   async getAllByIds(listOfIds) {
@@ -45,7 +71,13 @@ export class AdminRepository extends BaseRepo {
       }
     });
 
-    return collection.map((entity) => buildAdmin(entity));
+    return Promise.all(collection.map(async (adminData) => {
+      const admin = adminData;
+      if (admin.regionId) {
+        admin.region = await this.regionRepo.getOne(adminData.regionId);
+      }
+      return buildAdmin(admin);
+    }));
   }
 
   async getOneByUsername(username) {
@@ -56,7 +88,9 @@ export class AdminRepository extends BaseRepo {
     if (!userData) {
       return null;
     }
-
-    return buildAdmin(userData.toJSON());
+    if (userData.regionId) {
+      userData.region = await this.regionRepo.getOne(userData.regionId);
+    }
+    return buildAdmin(userData);
   }
 }

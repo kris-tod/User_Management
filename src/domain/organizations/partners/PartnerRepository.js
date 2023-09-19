@@ -13,6 +13,7 @@ import { CarRepository } from '../../car/CarRepository.js';
 import { AdminRepository } from '../../admin/AdminRepository.js';
 import { NotFoundError } from '../../../utils/errors.js';
 import { PARTNER_NOT_FOUND, SUBSCRIPTION_PLAN_NOT_FOUND } from '../../../constants/messages.js';
+import { RegionRepository } from '../../region/RegionRepository.js';
 
 const buildPartner = (model) => new Partner(
   parseInt(model.id, 10),
@@ -38,6 +39,7 @@ export class PartnerRepository extends BaseRepo {
     this.servicesRepo = new CarSupportServiceRepository();
     this.carRepo = new CarRepository();
     this.adminRepo = new AdminRepository();
+    this.regionRepo = new RegionRepository();
   }
 
   async getAll(page = 1, region = '') {
@@ -119,6 +121,9 @@ export class PartnerRepository extends BaseRepo {
       );
     }
 
+    if (entity.regionId) {
+      partner.region = await this.regionRepo.getOne(partner.regionId);
+    }
     const servicesIds = (
       await PartnerServiceModel.findAll({
         where: {
@@ -166,7 +171,7 @@ export class PartnerRepository extends BaseRepo {
       coordinates,
       phone,
       contactPerson,
-      region,
+      regionId: region,
       subscriptionPlanId,
       organizationId
     });
@@ -190,7 +195,7 @@ export class PartnerRepository extends BaseRepo {
 
   async update(id, updatedData) {
     const partnerProps = Object.keys(updatedData)
-      .filter((key) => !['subscriptionPlanId', 'services', 'admins', 'cars'].includes(key))
+      .filter((key) => !['subscriptionPlanId', 'services', 'admins', 'cars', 'region'].includes(key))
       .reduce((obj, key) => {
         const propObj = obj;
         propObj[key] = updatedData[key];
@@ -198,6 +203,10 @@ export class PartnerRepository extends BaseRepo {
       }, {});
 
     await super.update(id, partnerProps);
+
+    if (updatedData.region) {
+      await super.update(id, { regionId: updatedData.region });
+    }
 
     if (updatedData.subscriptionPlanId) {
       const subscriptionPlan = await this.subscriptionPlanRepo

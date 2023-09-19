@@ -12,12 +12,14 @@ import {
 import PasswordService from '../../services/passwordService.js';
 import { roles } from '../user/User.js';
 import { TokenBlacklistRepository } from '../user/tokenBlacklist/TokenBlacklistRepository.js';
+import { RegionRepository } from '../region/RegionRepository.js';
 
 export class AdminService {
   constructor(logger) {
     this.logger = logger;
     this.adminRepo = new AdminRepository();
     this.tokenBlacklistRepo = new TokenBlacklistRepository();
+    this.regionRepo = new RegionRepository();
   }
 
   async getAll(pageParam) {
@@ -58,7 +60,7 @@ export class AdminService {
       username,
       email,
       password: hash,
-      region,
+      regionId: region,
       role: roles.admin
     });
 
@@ -158,7 +160,7 @@ export class AdminService {
       id: user.id,
       role: user.role,
       app: apps.web,
-      region: user.region
+      region: user.region ? user.region.id : null
     });
 
     return {

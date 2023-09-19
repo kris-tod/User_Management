@@ -4,6 +4,7 @@ import { CarSupportService as CarSupportServiceModel } from '../../../../db/inde
 import { CarSupportService } from './CarSupportService.js';
 import { NotFoundError } from '../../../../utils/errors.js';
 import { SERVICE_NOT_FOUND } from '../../../../constants/messages.js';
+import { RegionRepository } from '../../../region/RegionRepository.js';
 
 const buildService = (model) => new CarSupportService(
   parseInt(model.id, 10),
@@ -18,6 +19,7 @@ const buildService = (model) => new CarSupportService(
 export class CarSupportServiceRepository extends BaseRepo {
   constructor() {
     super(CarSupportServiceModel);
+    this.regionRepo = new RegionRepository();
   }
 
   async getAllByIds(listOfIds) {
@@ -39,8 +41,19 @@ export class CarSupportServiceRepository extends BaseRepo {
       }
     });
 
-    return collectionPromoted.map((entity) => buildService(entity))
-      .concat(collectionNotPromoted.map((entity) => buildService(entity)));
+    const resultPromoted = await Promise.all(collectionPromoted.map(async (entity) => {
+      const service = entity;
+      service.region = await this.regionRepo.getOne(service.regionId);
+      return buildService(service);
+    }));
+
+    const resultNotPromoted = await Promise.all(collectionNotPromoted.map(async (entity) => {
+      const service = entity;
+      service.region = await this.regionRepo.getOne(service.regionId);
+      return buildService(service);
+    }));
+
+    return resultPromoted.concat(resultNotPromoted);
   }
 
   async getAll(page, order, options) {
@@ -60,6 +73,7 @@ export class CarSupportServiceRepository extends BaseRepo {
     if (!entity) {
       throw new NotFoundError(SERVICE_NOT_FOUND);
     }
+    entity.region = await this.regionRepo.getOne(entity.regionId);
     return buildService(entity);
   }
 }

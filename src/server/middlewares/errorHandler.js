@@ -4,6 +4,7 @@ import {
 } from '../../constants/messages.js';
 
 export const errorHandler = (err, req, res, next) => {
+  console.log(err);
   const response = err.message
     ? { message: err.message }
     : { message: DEFAULT_ERROR_MESSAGE };

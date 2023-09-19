@@ -22,10 +22,6 @@ export default (sequelize) => {
         allowNull: false,
         defaultValue: `${domain}/default_support_service_image.webp`
       },
-      region: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
       isRegionDefault: {
         type: DataTypes.BOOLEAN,
         allowNull: false,

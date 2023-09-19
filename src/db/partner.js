@@ -36,10 +36,6 @@ export default (sequelize) => {
       contactPerson: {
         type: DataTypes.STRING,
         allowNull: false
-      },
-      region: {
-        type: DataTypes.STRING,
-        allowNull: false
       }
     },
     {

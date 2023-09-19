@@ -17,6 +17,7 @@ import OrganizationModel from './organization.js';
 import CarPartnerModel from './carPartner.js';
 import UserPartnerModel from './userPartner.js';
 import PartnerServiceModel from './partnerService.js';
+import RegionModel from './region.js';
 
 export const sequelize = new Sequelize(
   dbConfig.database,
@@ -44,7 +45,8 @@ const db = {
   Organization: OrganizationModel(sequelize),
   CarPartner: CarPartnerModel(sequelize),
   UserPartner: UserPartnerModel(sequelize),
-  PartnerService: PartnerServiceModel(sequelize)
+  PartnerService: PartnerServiceModel(sequelize),
+  Region: RegionModel(sequelize)
 };
 
 db.Car.hasMany(db.Tire);
@@ -69,6 +71,18 @@ db.Partner.belongsTo(db.Organization);
 
 db.User.belongsToMany(db.Partner, { through: db.UserPartner, onDelete: 'CASCADE' });
 db.Partner.belongsToMany(db.User, { through: db.UserPartner, onDelete: 'CASCADE' });
+
+db.Region.hasMany(db.Admin, { onDelete: 'RESTRICT' });
+db.Admin.belongsTo(db.Region);
+
+db.Region.hasMany(db.User, { onDelete: 'RESTRICT' });
+db.User.belongsTo(db.Region);
+
+db.Region.hasMany(db.Partner, { onDelete: 'RESTRICT' });
+db.Partner.belongsTo(db.Region);
+
+db.Region.hasMany(db.CarSupportService, { onDelete: 'RESTRICT' });
+db.CarSupportService.belongsTo(db.Region);
 
 sequelize
   .sync({ force: false, alter: false })
@@ -109,5 +123,6 @@ export const {
   CarPartner,
   AdminPartner,
   UserPartner,
-  PartnerService
+  PartnerService,
+  Region
 } = db;

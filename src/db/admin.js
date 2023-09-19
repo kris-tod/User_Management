@@ -27,9 +27,6 @@ export default (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: roles.admin
-      },
-      region: {
-        type: DataTypes.STRING
       }
     },
     {

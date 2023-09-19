@@ -12,12 +12,14 @@ import { apps } from '../../constants/apps.js';
 import { roles } from './User.js';
 import { createToken } from '../../utils/jwt.js';
 import { TokenBlacklistRepository } from './tokenBlacklist/TokenBlacklistRepository.js';
+import { RegionRepository } from '../region/RegionRepository.js';
 
 export class UserService {
   constructor(logger) {
     this.logger = logger;
     this.userRepo = new UserRepository();
     this.tokenBlacklistRepo = new TokenBlacklistRepository();
+    this.regionRepo = new RegionRepository();
   }
 
   async getAll(pageParam, reqUser) {
@@ -61,7 +63,7 @@ export class UserService {
       username,
       email,
       password: hash,
-      region
+      regionId: region
     });
 
     const entity = await this.userRepo.getOneByUsername(username);
@@ -80,7 +82,7 @@ export class UserService {
       throw new NotFoundError(USER_NOT_FOUND);
     }
 
-    if (reqUser.role === roles.admin && reqUser.region !== user.region) {
+    if (reqUser.role === roles.admin && reqUser.region !== user.region.id) {
       throw new ForbiddenError(INVALID_REGION);
     }
 
@@ -128,7 +130,7 @@ export class UserService {
   }
 
   async updateRegionById(id, region, options) {
-    await this.userRepo.update(id, { region }, options);
+    await this.userRepo.update(id, { regionId: region }, options);
   }
 
   async updatePasswordById(id, password, options) {
@@ -187,7 +189,7 @@ export class UserService {
       throw new NotFoundError(USER_NOT_FOUND);
     }
 
-    if (reqUser.role === roles.admin && entity.region !== reqUser.region) {
+    if (reqUser.role === roles.admin && entity.region.id !== reqUser.region) {
       throw new ApiError(INVALID_REGION);
     }
 
@@ -199,7 +201,9 @@ export class UserService {
   }, reqUser) {
     this.logger.log('info', 'create user');
 
-    if (reqUser.role === roles.admin && reqUser.region !== region) {
+    const regionEntity = await this.regionRepo.getOne(region);
+
+    if (reqUser.role === roles.admin && reqUser.region !== regionEntity.name) {
       throw new ApiError(INVALID_REGION);
     }
 
@@ -208,7 +212,7 @@ export class UserService {
       username,
       email,
       password: hash,
-      region
+      regionId: region
     });
 
     const entity = await this.userRepo.getOneByUsername(username);
@@ -241,7 +245,7 @@ export class UserService {
       id: user.id,
       role: roles.endUser,
       app: apps.mobile,
-      region: user.region
+      region: parseInt(user.region.id, 10)
     });
 
     return {
