@@ -30,4 +30,8 @@ export class Partner {
     this.cars = cars;
     this.organizationId = organizationId;
   }
+
+  checkIfCarsMatchSubscriptionPlan(cars) {
+    return this.subscriptionPlan.carsLimit >= cars.length;
+  }
 }

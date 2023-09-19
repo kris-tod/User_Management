@@ -109,6 +109,11 @@ export class OrganizationService {
       throw new ForbiddenError(INVALID_REGION);
     }
 
+    if (!data.services || !data.admins || !data.subscriptionPlanId || !data.organizationId
+      || !Array.isArray(data.services) || !Array.isArray(data.admins) || !data.admins.length) {
+      throw new ApiError('Invalid data!');
+    }
+
     const services = await this.servicesRepo.getAllByIds(data.services);
 
     services.forEach((service) => {
@@ -146,10 +151,7 @@ export class OrganizationService {
       throw new ForbiddenError(ADMIN_NOT_PARTNER_ADMIN);
     }
 
-    const currentSubscriptionPlan = await this.subscriptionPlanRepo
-      .getOne(partner.subscriptionPlan.id);
-
-    if (updatedData.cars && currentSubscriptionPlan.carsLimit < updatedData.cars.length) {
+    if (updatedData.cars && !partner.checkIfCarsMatchSubscriptionPlan(updatedData.cars)) {
       throw new ApiError(TOO_MANY_CARS);
     }
 
