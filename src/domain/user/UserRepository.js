@@ -1,33 +1,13 @@
 import { Op } from 'sequelize';
-import { BaseRepo } from '../../utils/BaseRepo.js';
+import { BaseRepo, MAX_PER_PAGE } from '../../utils/BaseRepo.js';
 import { FriendshipRepository } from './FriendshipRepository.js';
 import { CarRepository } from '../car/CarRepository.js';
-import { User as UserModel, UserCar, UserPartner } from '../../db/index.js';
+import {
+  User as UserModel, UserCar, UserPartner, Region
+} from '../../db/index.js';
 import { User } from './User.js';
 import { PartnerRepository } from '../organizations/partners/PartnerRepository.js';
 import { RegionRepository } from '../region/RegionRepository.js';
-
-const buildUser = ({
-  id,
-  username,
-  password,
-  email = 'default@gmail.com',
-  avatar = 'default_avatar.jpg',
-  region,
-  favouritePartners = [],
-  cars = [],
-  friendsList = []
-}) => new User(
-  parseInt(id, 10),
-  username,
-  password,
-  region,
-  favouritePartners,
-  friendsList,
-  cars,
-  email,
-  avatar
-);
 
 export class UserRepository extends BaseRepo {
   constructor() {
@@ -38,7 +18,31 @@ export class UserRepository extends BaseRepo {
     this.regionRepo = new RegionRepository();
   }
 
-  async getAll(page = 1, region = '') {
+  buildEntity({
+    id,
+    username,
+    password,
+    email = 'default@gmail.com',
+    avatar = 'default_avatar.jpg',
+    region,
+    favouritePartners = [],
+    cars = [],
+    friendsList = []
+  }) {
+    return new User(
+      parseInt(id, 10),
+      username,
+      password,
+      region,
+      favouritePartners,
+      friendsList,
+      cars,
+      email,
+      avatar
+    );
+  }
+
+  async getAll(page = 1, region = '', order = ['id'], entitiesPerPage = MAX_PER_PAGE) {
     const options = {};
 
     if (region) {
@@ -46,15 +50,21 @@ export class UserRepository extends BaseRepo {
     }
 
     const {
-      total, data: users, limit, offset
-    } = await super.getAll(page, ['username'], options);
+      total,
+      rows: users
+    } = await this.dbClient.findAndCountAll({
+      include: [Region],
+      limit: entitiesPerPage,
+      offset: entitiesPerPage * (page - 1),
+      order
+    });
     const listOfIds = users.map((user) => user.id);
 
     const friendships = await this.friendshipRepo.findAllFriendshipsForUsersById(listOfIds);
 
     const collection = await Promise.all(
       users.map(async (userData) => {
-        const user = buildUser(userData);
+        const user = this.buildEntity(userData);
 
         user.friendsList = friendships
           .filter((friendship) => friendship.user_id === user.id)
@@ -73,16 +83,15 @@ export class UserRepository extends BaseRepo {
           favouritePartnersIds
         );
 
-        if (userData.regionId) {
-          user.region = await this.regionRepo.getOne(userData.regionId);
-        }
-
         return user;
       })
     );
 
     return {
-      total, data: collection, limit, offset
+      total,
+      data: collection,
+      limit: entitiesPerPage,
+      offset: entitiesPerPage * (page - 1)
     };
   }
 
@@ -103,7 +112,7 @@ export class UserRepository extends BaseRepo {
 
     const collection = await Promise.all(
       users.map(async (userData) => {
-        const user = buildUser(userData.toJSON());
+        const user = this.buildEntity(userData.toJSON());
 
         user.friendsList = friendships
           .filter((friendship) => friendship.user_id === user.id)
@@ -135,6 +144,7 @@ export class UserRepository extends BaseRepo {
 
   async getOne(id, options = {}) {
     const userData = await this.dbClient.findOne({
+      include: [Region],
       where: { id },
       ...options
     });
@@ -143,11 +153,7 @@ export class UserRepository extends BaseRepo {
       return null;
     }
 
-    if (userData.regionId) {
-      userData.region = await this.regionRepo.getOne(userData.regionId);
-    }
-
-    const user = buildUser(userData);
+    const user = this.buildEntity(userData);
 
     const friendships = await this.friendshipRepo.findAllFriendshipsById(
       user.id,
@@ -169,28 +175,30 @@ export class UserRepository extends BaseRepo {
     );
     user.cars = cars;
 
-    const favouritePartnersIds = (await UserPartner.findAll({
-      where: {
-        userId: user.id
-      }
-    })).map((entity) => entity.partnerId);
+    const favouritePartnersIds = (
+      await UserPartner.findAll({
+        where: {
+          userId: user.id
+        }
+      })
+    ).map((entity) => entity.partnerId);
 
-    user.favouritePartners = await this.partnerRepo.getAllByIds(1, favouritePartnersIds);
+    user.favouritePartners = await this.partnerRepo.getAllByIds(
+      1,
+      favouritePartnersIds
+    );
 
     return user;
   }
 
   async getOneByUsername(username) {
     const user = await this.dbClient.findOne({
+      include: [Region],
       where: { username }
     });
 
     if (!user) {
       return null;
-    }
-
-    if (user.regionId) {
-      user.region = await this.regionRepo.getOne(user.regionId);
     }
 
     const friendships = await this.friendshipRepo.findAllFriendshipsById(
@@ -210,15 +218,20 @@ export class UserRepository extends BaseRepo {
     );
     user.cars = cars;
 
-    const favouritePartnersIds = (await UserPartner.findAll({
-      where: {
-        userId: user.id
-      }
-    })).map((entity) => entity.partnerId);
+    const favouritePartnersIds = (
+      await UserPartner.findAll({
+        where: {
+          userId: user.id
+        }
+      })
+    ).map((entity) => entity.partnerId);
 
-    user.favouritePartners = await this.partnerRepo.getAllByIds(1, favouritePartnersIds);
+    user.favouritePartners = await this.partnerRepo.getAllByIds(
+      1,
+      favouritePartnersIds
+    );
 
-    return buildUser(user);
+    return this.buildEntity(user);
   }
 
   async updateFavouritePartners(id, favouritePartnersIds) {

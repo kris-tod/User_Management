@@ -3,9 +3,10 @@ import {
   Partner as PartnerModel,
   PartnerService as PartnerServiceModel,
   AdminPartner as AdminPartnerModel,
-  CarPartner as CarPartnerModel
+  CarPartner as CarPartnerModel,
+  Region
 } from '../../../db/index.js';
-import { BaseRepo } from '../../../utils/BaseRepo.js';
+import { BaseRepo, MAX_PER_PAGE } from '../../../utils/BaseRepo.js';
 import { SubscriptionPlanRepository } from './subscriptionPlan/SubscriptionPlanRepository.js';
 import { CarSupportServiceRepository } from './carSupportService/CarSupportServiceRepository.js';
 import { Partner } from './Partner.js';
@@ -42,26 +43,51 @@ export class PartnerRepository extends BaseRepo {
     this.regionRepo = new RegionRepository();
   }
 
-  async getAll(page = 1, region = '') {
+  buildEntity(model) {
+    return new Partner(
+      parseInt(model.id, 10),
+      model.name,
+      model.logo,
+      model.address,
+      model.phone,
+      model.contactPerson,
+      model.region,
+      model.subscriptionPlan,
+      parseInt(model.organizationId, 10),
+      model.description,
+      model.coordinates,
+      model.services,
+      model.admins,
+      model.cars
+    );
+  }
+
+  async getAll(page = 1, region = '', order = ['name'], entitiesPerPage = MAX_PER_PAGE) {
     const options = {};
     if (region) {
       options.where = { region };
     }
 
     const {
-      total, data, limit, offset
-    } = await super.getAll(page, ['name'], options);
+      rows, count
+    } = await this.dbClient.findAndCountAll({
+      order,
+      include: [Region],
+      limit: entitiesPerPage,
+      offset: entitiesPerPage * (page - 1),
+      ...options
+    });
 
     const collection = await Promise.all(
-      data.map(async (entity) => this.constructPartnerProps(entity))
+      rows.map(async (entity) => this.constructPartnerProps(entity))
     );
 
     return {
-      total, data: collection, limit, offset
+      total: count, data: collection, limit: entitiesPerPage, offset: entitiesPerPage * (page - 1)
     };
   }
 
-  async getAllByAdmin(page, id) {
+  async getAllByAdmin(page, id, order = ['name'], entitiesPerPage = MAX_PER_PAGE) {
     const listOfPartnerIds = (await AdminPartnerModel.findAll({
       where: {
         adminId: id
@@ -78,7 +104,13 @@ export class PartnerRepository extends BaseRepo {
 
     const {
       total, data, limit, offset
-    } = await super.getAll(page, ['name'], options);
+    } = await this.dbClient.findAndCountAll({
+      order,
+      include: [Region],
+      limit: entitiesPerPage,
+      offset: entitiesPerPage * (page - 1),
+      ...options
+    });
 
     const result = await Promise.all(
       data.map(async (entity) => this.constructPartnerProps(entity))
@@ -89,7 +121,7 @@ export class PartnerRepository extends BaseRepo {
     };
   }
 
-  async getAllByIds(page, listOfIds) {
+  async getAllByIds(page, listOfIds, order = ['name'], entitiesPerPage = MAX_PER_PAGE) {
     const options = {
       where: {
         id: {
@@ -98,7 +130,15 @@ export class PartnerRepository extends BaseRepo {
       }
     };
 
-    const { data } = await super.getAll(page, ['name'], options);
+    const {
+      data
+    } = await this.dbClient.findAndCountAll({
+      order,
+      include: [Region],
+      limit: entitiesPerPage,
+      offset: entitiesPerPage * (page - 1),
+      ...options
+    });
 
     const result = await Promise.all(
       data.map(async (entity) => this.constructPartnerProps(entity))
@@ -108,7 +148,10 @@ export class PartnerRepository extends BaseRepo {
   }
 
   async getOne(id) {
-    const entity = await super.getOne(id);
+    const entity = await this.dbClient.findOne({
+      include: [Region],
+      where: { id }
+    });
     if (!entity) {
       throw new NotFoundError(PARTNER_NOT_FOUND);
     }
@@ -173,7 +216,7 @@ export class PartnerRepository extends BaseRepo {
 
     partner.cars = await this.carRepo.getAllByIds(carsIds);
 
-    return buildPartner(partner);
+    return this.buildEntity(partner);
   }
 
   async create({

@@ -221,7 +221,7 @@ export class OrganizationService {
     if (reqUser.role === roles.admin) {
       options.where = { regionId: reqUser.region };
     }
-    return this.servicesRepo.getAll(page, ['name'], options);
+    return this.servicesRepo.getAll(page, options);
   }
 
   async getOneService(id) {

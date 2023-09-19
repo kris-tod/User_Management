@@ -3,33 +3,35 @@ import { BaseRepo } from '../../../utils/BaseRepo.js';
 import { Tire } from './Tire.js';
 import { Tire as TireModel } from '../../../db/index.js';
 
-const buildTire = ({
-  id,
-  brand,
-  count,
-  width,
-  ratio,
-  type,
-  used,
-  carId,
-  comment = '',
-  tiresHotel = ''
-}) => new Tire(
-  parseInt(id, 10),
-  brand,
-  count,
-  width,
-  ratio,
-  type,
-  used,
-  parseInt(carId, 10),
-  comment,
-  tiresHotel
-);
-
 export class TireRepository extends BaseRepo {
   constructor() {
     super(TireModel);
+  }
+
+  buildEntity({
+    id,
+    brand,
+    count,
+    width,
+    ratio,
+    type,
+    used,
+    carId,
+    comment = '',
+    tiresHotel = ''
+  }) {
+    return new Tire(
+      parseInt(id, 10),
+      brand,
+      count,
+      width,
+      ratio,
+      type,
+      used,
+      parseInt(carId, 10),
+      comment,
+      tiresHotel
+    );
   }
 
   async getAllByCar(carId) {
@@ -37,7 +39,7 @@ export class TireRepository extends BaseRepo {
       where: { carId }
     });
 
-    return collection.map((entity) => buildTire(entity));
+    return collection.map((entity) => this.buildEntity(entity));
   }
 
   async getAllByCars(carIds) {
@@ -49,6 +51,6 @@ export class TireRepository extends BaseRepo {
       }
     });
 
-    return collection.map((entity) => buildTire(entity));
+    return collection.map((entity) => this.buildEntity(entity));
   }
 }

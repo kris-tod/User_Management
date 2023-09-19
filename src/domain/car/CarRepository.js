@@ -5,30 +5,32 @@ import { Car as CarModel, UserCar } from '../../db/index.js';
 import { TireRepository } from './tire/TireRepository.js';
 import { NotFoundError } from '../../utils/errors.js';
 
-const buildCar = (model) => new Car(
-  parseInt(model.id, 10),
-  model.idNumber,
-  model.image,
-  model.brand,
-  model.kilometers,
-  model.engineType,
-  model.tires,
-  model.yearOfProduction,
-  model.frameNumber,
-  model.technicalReviewExpiration,
-  model.civilEnsuranceExpiration,
-  model.vignetteExpiration,
-  model.autoEnsuranceExpiration,
-  model.leasingExpiration,
-  model.comment,
-  model.vehicleType
-);
-
 export class CarRepository extends BaseRepo {
   constructor() {
     super(CarModel);
     this.tireRepo = new TireRepository();
     this.userCar = UserCar;
+  }
+
+  buildEntity(model) {
+    return new Car(
+      parseInt(model.id, 10),
+      model.idNumber,
+      model.image,
+      model.brand,
+      model.kilometers,
+      model.engineType,
+      model.tires,
+      model.yearOfProduction,
+      model.frameNumber,
+      model.technicalReviewExpiration,
+      model.civilEnsuranceExpiration,
+      model.vignetteExpiration,
+      model.autoEnsuranceExpiration,
+      model.leasingExpiration,
+      model.comment,
+      model.vehicleType
+    );
   }
 
   async getAll(
@@ -47,7 +49,7 @@ export class CarRepository extends BaseRepo {
     );
 
     return {
-      total, limit, offset, data: data.map((entity) => buildCar(entity))
+      total, limit, offset, data: data.map((entity) => this.buildEntity(entity))
     };
   }
 
@@ -62,7 +64,7 @@ export class CarRepository extends BaseRepo {
 
     entity.tires = tires;
 
-    return buildCar(entity);
+    return this.buildEntity(entity);
   }
 
   async getAllByIds(carIds) {
@@ -74,7 +76,7 @@ export class CarRepository extends BaseRepo {
       }
     });
 
-    const cars = collection.map((entity) => buildCar(entity));
+    const cars = collection.map((entity) => this.buildEntity(entity));
     const tires = await this.tireRepo.getAllByCars(carIds);
 
     return cars.map((carParam) => {
@@ -92,9 +94,9 @@ export class CarRepository extends BaseRepo {
     }
 
     const tires = await this.tireRepo.getAllByCar(carId);
-
     entity.tires = tires;
-    return buildCar(entity);
+
+    return entity;
   }
 
   async getUserCars(userId) {

@@ -1,19 +1,10 @@
 import { Op } from 'sequelize';
-import { BaseRepo } from '../../utils/BaseRepo.js';
-import { Admin as AdminModel } from '../../db/index.js';
+import { BaseRepo, MAX_PER_PAGE } from '../../utils/BaseRepo.js';
+import { Admin as AdminModel, Region } from '../../db/index.js';
 import { Admin } from './Admin.js';
 import { RegionRepository } from '../region/RegionRepository.js';
 import { NotFoundError } from '../../utils/errors.js';
 import { USER_NOT_FOUND } from '../../constants/messages.js';
-
-const buildAdmin = (model) => new Admin(
-  parseInt(model.id, 10),
-  model.username,
-  model.password,
-  model.role,
-  model.region,
-  model.email
-);
 
 export class AdminRepository extends BaseRepo {
   constructor() {
@@ -21,49 +12,56 @@ export class AdminRepository extends BaseRepo {
     this.regionRepo = new RegionRepository();
   }
 
-  async getAll(page = 1, regionProp = '') {
+  buildEntity(model) {
+    return new Admin(
+      parseInt(model.id, 10),
+      model.username,
+      model.password,
+      model.role,
+      model.region,
+      model.email
+    );
+  }
+
+  async getAll(page = 1, regionProp = '', entitiesPerPage = MAX_PER_PAGE) {
     const options = {};
 
     if (regionProp) {
       options.where = { regionId: regionProp };
     }
 
-    const {
-      total, data, limit, offset
-    } = await super.getAll(page, ['username'], options);
+    const { count, rows } = await this.dbClient.findAndCountAll({
+      include: [Region]
+    });
 
     const result = {
-      total,
-      limit,
-      offset,
-      data: await Promise.all(data.map(async (adminData) => {
-        const admin = adminData;
-        if (adminData.regionId) {
-          admin.region = await this.regionRepo.getOne(adminData.regionId);
-        }
-        return buildAdmin(admin);
-      }))
+      total: count,
+      limit: entitiesPerPage,
+      offset: entitiesPerPage * (page - 1),
+      data: rows.map((entity) => this.buildEntity(entity))
     };
 
     return result;
   }
 
   async getOne(id) {
-    const entity = await super.getOne(id);
+    const entity = await this.dbClient.findOne({
+      include: [Region],
+      where: {
+        id
+      }
+    });
 
     if (!entity) {
       throw new NotFoundError(USER_NOT_FOUND);
     }
 
-    if (entity.regionId) {
-      entity.region = await this.regionRepo.getOne(entity.regionId);
-    }
-
-    return buildAdmin(entity);
+    return this.buildEntity(entity);
   }
 
   async getAllByIds(listOfIds) {
     const collection = await this.dbClient.findAll({
+      include: [Region],
       where: {
         id: {
           [Op.in]: listOfIds
@@ -71,26 +69,19 @@ export class AdminRepository extends BaseRepo {
       }
     });
 
-    return Promise.all(collection.map(async (adminData) => {
-      const admin = adminData;
-      if (admin.regionId) {
-        admin.region = await this.regionRepo.getOne(adminData.regionId);
-      }
-      return buildAdmin(admin);
-    }));
+    return collection.map((entity) => this.buildEntity(entity));
   }
 
   async getOneByUsername(username) {
     const userData = await this.dbClient.findOne({
+      include: [Region],
       where: { username }
     });
 
     if (!userData) {
       return null;
     }
-    if (userData.regionId) {
-      userData.region = await this.regionRepo.getOne(userData.regionId);
-    }
-    return buildAdmin(userData);
+
+    return this.buildEntity(userData);
   }
 }

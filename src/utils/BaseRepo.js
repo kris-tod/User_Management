@@ -5,6 +5,10 @@ export class BaseRepo {
     this.dbClient = dbClient;
   }
 
+  buildEntity(entity) {
+    return entity.toJSON();
+  }
+
   async getAll(page = 1, order = ['id'], options = {}, entitiesPerPage = MAX_PER_PAGE) {
     const { count, rows } = await this.dbClient.findAndCountAll({
       order,
@@ -14,7 +18,10 @@ export class BaseRepo {
     });
 
     return {
-      total: count, data: rows, limit: entitiesPerPage, offset: entitiesPerPage * (page - 1)
+      total: count,
+      data: rows.map((entity) => this.buildEntity(entity)),
+      limit: entitiesPerPage,
+      offset: entitiesPerPage * (page - 1)
     };
   }
 
@@ -23,7 +30,7 @@ export class BaseRepo {
       where: { id }
     });
 
-    return entity;
+    return this.buildEntity(entity);
   }
 
   async create(entity) {

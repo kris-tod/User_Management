@@ -4,19 +4,21 @@ import { BaseRepo } from '../../../../utils/BaseRepo.js';
 import { NotFoundError, ApiError } from '../../../../utils/errors.js';
 import { SubscriptionPlan } from './SubscriptionPlan.js';
 
-const buildSubscriptionPlan = (model) => new SubscriptionPlan(
-  parseInt(model.id, 10),
-  model.name,
-  model.price,
-  model.commissionPerRequest,
-  model.carsLimit,
-  model.isDefault,
-  model.description
-);
-
 export class SubscriptionPlanRepository extends BaseRepo {
   constructor() {
     super(SubscriptionPlanModel);
+  }
+
+  buildEntity(model) {
+    return new SubscriptionPlan(
+      parseInt(model.id, 10),
+      model.name,
+      model.price,
+      model.commissionPerRequest,
+      model.carsLimit,
+      model.isDefault,
+      model.description
+    );
   }
 
   async getAll(page = 1) {
@@ -25,7 +27,7 @@ export class SubscriptionPlanRepository extends BaseRepo {
     } = await super.getAll(page, ['name']);
 
     return {
-      total, limit, offset, data: data.map((entity) => buildSubscriptionPlan(entity))
+      total, limit, offset, data
     };
   }
 
@@ -34,7 +36,7 @@ export class SubscriptionPlanRepository extends BaseRepo {
     if (!entity) {
       throw new NotFoundError(SUBSCRIPTION_PLAN_NOT_FOUND);
     }
-    return buildSubscriptionPlan(entity);
+    return entity;
   }
 
   async destroy(id) {
