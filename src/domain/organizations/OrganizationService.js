@@ -169,11 +169,20 @@ export class OrganizationService {
       throw new ForbiddenError(ADMIN_NOT_PARTNER_ADMIN);
     }
 
-    if (updatedData.cars && !partner.checkIfCarsMatchSubscriptionPlan(updatedData.cars)) {
-      throw new ApiError(TOO_MANY_CARS);
+    if (updatedData.cars) {
+      if (!Array.isArray(updatedData.cars)) {
+        throw new ApiError('Invalid cars!');
+      }
+      if (!partner.checkIfCarsMatchSubscriptionPlan(updatedData.cars)) {
+        throw new ApiError(TOO_MANY_CARS);
+      }
     }
 
     if (updatedData.services) {
+      if (!Array.isArray(updatedData.services)) {
+        throw new ApiError('Invalid services!');
+      }
+
       const services = await this.servicesRepo.getAllByIds(updatedData.services);
 
       if (services.length !== updatedData.services.length) {
@@ -197,6 +206,10 @@ export class OrganizationService {
     }
 
     if (updatedData.admins) {
+      if (!Array.isArray(updatedData.admins)) {
+        throw new ApiError('Invalid partner admins!');
+      }
+
       const partnerAdmins = await this.adminsRepo.getAllByIds(updatedData.admins);
 
       if (partnerAdmins.length !== updatedData.admins.length) {
