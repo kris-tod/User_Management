@@ -120,11 +120,9 @@ export class OrganizationService {
 
     const services = await this.servicesRepo.getAllByIds(data.services);
 
-    services.forEach((service) => {
-      if (service.region.id !== data.region) {
-        throw new ApiError(INVALID_REGION);
-      }
-    });
+    if (services.some((service) => service.region.id !== data.region)) {
+      throw new ApiError(INVALID_REGION);
+    }
 
     const partnerAdmins = await this.adminsRepo.getAllByIds(data.admins);
 
@@ -132,11 +130,9 @@ export class OrganizationService {
       throw new ApiError('Invalid partner admins!');
     }
 
-    partnerAdmins.forEach((admin) => {
-      if (admin.region.id !== data.region) {
-        throw new ApiError('Invalid region!');
-      }
-    });
+    if (partnerAdmins.some((admin) => admin.region.id !== data.region)) {
+      throw new ApiError('Invalid region!');
+    }
 
     const subscriptionPlan = await this.subscriptionPlanRepo.getOne(data.subscriptionPlanId);
 
@@ -189,11 +185,9 @@ export class OrganizationService {
         throw new ApiError('Invalid services!');
       }
 
-      services.forEach((service) => {
-        if (service.region.id !== partner.region.id) {
-          throw new ApiError(INVALID_REGION);
-        }
-      });
+      if (services.some((service) => service.region.id !== partner.region.id)) {
+        throw new ApiError(INVALID_REGION);
+      }
     }
 
     if (updatedData.subscriptionPlanId) {
