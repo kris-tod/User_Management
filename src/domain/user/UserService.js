@@ -204,14 +204,8 @@ export class UserService {
 
   async register({
     username, password, email, region
-  }, reqUser) {
+  }) {
     this.logger.log('info', 'create user');
-
-    const regionEntity = await this.regionRepo.getOne(region);
-
-    if (reqUser.role === roles.admin && reqUser.region !== regionEntity.name) {
-      throw new ApiError(INVALID_REGION);
-    }
 
     const hash = await PasswordService.hashPassword(password);
     await this.userRepo.create({
