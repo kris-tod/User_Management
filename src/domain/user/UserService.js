@@ -1,7 +1,7 @@
 import { sequelize } from '../../db/index.js';
 import { UserRepository } from './UserRepository.js';
 import {
-  NotFoundError, ApiError, InternalError, ForbiddenError
+  NotFoundError, ApiError, InternalError, ForbiddenError, AuthError
 } from '../../utils/errors.js';
 import {
   USER_NOT_FOUND, INVALID_FRIENDS_IDS, INVALID_REGION, DEFAULT_ERROR_MESSAGE, LOGIN_FAILED
@@ -218,7 +218,7 @@ export class UserService {
     const entity = await this.userRepo.getOneByUsername(username);
 
     if (!entity) {
-      throw new InternalError(DEFAULT_ERROR_MESSAGE);
+      throw new AuthError('Registration failed!');
     }
 
     return entity;
