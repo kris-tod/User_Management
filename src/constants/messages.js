@@ -40,3 +40,4 @@ export const ORGANIZATION_NOT_FOUND = 'Organization not found!';
 export const PARTNER_NOT_FOUND = 'Partner not found!';
 export const SUBSCRIPTION_PLAN_NOT_FOUND = 'Subscription plan not found!';
 export const SERVICE_NOT_FOUND = 'Car service plan not found!';
+export const USER_NOT_DRIVER = 'User not driver!';

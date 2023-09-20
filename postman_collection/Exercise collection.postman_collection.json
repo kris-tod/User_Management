@@ -2404,7 +2404,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"lovechAdmin\",\n    \"password\": \"admin123\",\n    \"email\": \"lovechAdmin@gmail.com\",\n    \"region\": 5\n}",
+									"raw": "{\n    \"username\": \"plovdivAdmin\",\n    \"password\": \"admin123\",\n    \"email\": \"plovdivAdmin@gmail.com\",\n    \"region\": 2\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2643,7 +2643,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Jorkata\",\n    \"description\": \"Nice partner!\",\n    \"address\": \"Somewhere in Plovdiv\",\n    \"coordinates\": \"1.5,2.5\",\n    \"phone\": \"0895209415\",\n    \"contactPerson\": \"Milen\",\n    \"region\": 2,\n    \"subscriptionPlanId\": 1,\n    \"organizationId\": 1,\n    \"admins\": [3],\n    \"services\": [5, 6]\n    // name, logo, description, address, coordinates, phone, contactPerson,\n    // region, subscriptionPlanId, organizationId, partnersAdminsIds,\n    // carSupportServices\n}",
+									"raw": "{\n    \"name\": \"Jorkata\",\n    \"description\": \"Nice partner!\",\n    \"address\": \"Somewhere in Plovdiv\",\n    \"coordinates\": \"1.5,2.5\",\n    \"phone\": \"0895209415\",\n    \"contactPerson\": \"Milen\",\n    \"region\": 1,\n    \"subscriptionPlanId\": 1,\n    \"organizationId\": 1,\n    \"admins\": [2],\n    \"services\": [1, 2]\n    // name, logo, description, address, coordinates, phone, contactPerson,\n    // region, subscriptionPlanId, organizationId, partnersAdminsIds,\n    // carSupportServices\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2812,7 +2812,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"cars\": [1, 2],\n    \"address\": \"Somewhere in Sofia\"\n}",
+									"raw": "{\n    \"name\": \"kriskata\",\n    \"address\": \"Somewhere in Sofia\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2832,7 +2832,7 @@
 									"variable": [
 										{
 											"key": "partnerId",
-											"value": "2"
+											"value": "1"
 										}
 									]
 								}
@@ -3049,7 +3049,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Technical review\",\n    \"region\": 1,\n    \"isPromoted\": false,\n    \"description\": \"Nothing unusual\"\n}",
+									"raw": "{\n    \"name\": \"Car wash\",\n    \"region\": 1,\n    \"isPromoted\": true,\n    \"description\": \"Nothing unusual\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -4010,7 +4010,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Lovech\"\n}",
+									"raw": "{\n    \"name\": \"Sofia\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -4185,7 +4185,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Sofia\"\n}",
+									"raw": "{\n    \"driverId\": null\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -4205,7 +4205,7 @@
 									"variable": [
 										{
 											"key": "regionId",
-											"value": "1"
+											"value": "2"
 										}
 									]
 								}
@@ -4296,6 +4296,264 @@
 									"body": "{\n    \"message\": \"User is not super admin!\",\n    \"status\": 403\n}"
 								}
 							]
+						}
+					]
+				},
+				{
+					"name": "drivers",
+					"item": [
+						{
+							"name": "Drivers",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/drivers",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"drivers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add driver",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Sofia driver\",\n    \"password\": \"driver123\",\n    \"description\": \"A student working for a living.\",\n    \"number\": 1,\n    \"pushNotificationsToken\": \"token\",\n    \"signature\": \"signature\",\n    \"regionId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/drivers",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"drivers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete driver",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/drivers/:driverId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"drivers",
+										":driverId"
+									],
+									"variable": [
+										{
+											"key": "driverId",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get driver",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/drivers/:driverId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"drivers",
+										":driverId"
+									],
+									"variable": [
+										{
+											"key": "driverId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit driver",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"partnerId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/drivers/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"drivers",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "driver",
+			"item": [
+				{
+					"name": "auth",
+					"item": [
+						{
+							"name": "driver login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"SofiaDriver\",\n    \"password\": \"driver123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/driver/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"driver",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "driver logout",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/driver/auth/logout",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"driver",
+										"auth",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "profile",
+					"item": [
+						{
+							"name": "driver user info",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/driver/profile",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"driver",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit driver",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"signature\": \"1234\",\n    \"name\": \"SofiaDriver\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/driver/profile",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"driver",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "partners",
+					"item": [
+						{
+							"name": "Partners",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/driver/partners",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"driver",
+										"partners"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				}

@@ -18,6 +18,7 @@ import CarPartnerModel from './carPartner.js';
 import UserPartnerModel from './userPartner.js';
 import PartnerServiceModel from './partnerService.js';
 import RegionModel from './region.js';
+import DriverModel from './driver.js';
 
 export const sequelize = new Sequelize(
   dbConfig.database,
@@ -46,7 +47,8 @@ const db = {
   CarPartner: CarPartnerModel(sequelize),
   UserPartner: UserPartnerModel(sequelize),
   PartnerService: PartnerServiceModel(sequelize),
-  Region: RegionModel(sequelize)
+  Region: RegionModel(sequelize),
+  Driver: DriverModel(sequelize)
 };
 
 db.Admin.associate(db);
@@ -55,6 +57,7 @@ db.CarSupportService.associate(db);
 db.Organization.associate(db);
 db.Partner.associate(db);
 db.Region.associate(db);
+db.Driver.associate(db);
 
 sequelize
   .sync({ force: false, alter: false })
@@ -96,5 +99,6 @@ export const {
   AdminPartner,
   UserPartner,
   PartnerService,
-  Region
+  Region,
+  Driver
 } = db;

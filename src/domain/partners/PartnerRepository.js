@@ -156,6 +156,23 @@ export class PartnerRepository extends BaseRepo {
     return result;
   }
 
+  async getAllOfferingService(page, carSupportServiceId, options = {}, order = ['name'], entitiesPerPage = MAX_PER_PAGE) {
+    const partnersIds = (await PartnerServiceModel.findAll({
+      where: {
+        carSupportServiceId
+      }
+    }, options)).map((entity) => entity.partnerId);
+
+    const partners = await this.getAllByIds(page, partnersIds, order, entitiesPerPage);
+
+    return {
+      total: partners.length,
+      data: partners,
+      limit: entitiesPerPage,
+      offset: entitiesPerPage * (page - 1)
+    };
+  }
+
   async constructPartnerProps(entity, options = {}) {
     const partner = entity;
 

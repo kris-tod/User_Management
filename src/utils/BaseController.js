@@ -23,8 +23,9 @@ export class BaseController {
 
   async getOne(req, res) {
     const id = req.params[this.identityName];
+    const { user } = req;
 
-    const entity = await this.service.getOne(id);
+    const entity = await this.service.getOne(id, user);
     res.status(200).json(this.serializeEntity(entity));
   }
 

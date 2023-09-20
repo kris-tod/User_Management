@@ -292,7 +292,7 @@ export class OrganizationService {
   async updateService(id, updatedData, reqUser) {
     const service = await this.servicesRepo.getOne(id);
 
-    if (reqUser.role === roles.admin && reqUser.region !== service.region) {
+    if (reqUser.role === roles.admin && reqUser.region !== service.region.id) {
       throw new ForbiddenError(INVALID_REGION);
     }
 

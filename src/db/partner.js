@@ -4,7 +4,7 @@ import { domain } from '../config/index.js';
 export default (sequelize) => {
   class Partner extends Model {
     static associate({
-      Region, SubscriptionPlan, UserPartner, User
+      Region, SubscriptionPlan, UserPartner, User, Driver
     }) {
       Region.hasMany(Partner, { onDelete: 'RESTRICT' });
       Partner.belongsTo(Region);
@@ -14,6 +14,9 @@ export default (sequelize) => {
 
       User.belongsToMany(Partner, { through: UserPartner, onDelete: 'CASCADE' });
       Partner.belongsToMany(User, { through: UserPartner, onDelete: 'CASCADE' });
+
+      Partner.hasMany(Driver);
+      Driver.belongsTo(Partner);
     }
   }
 

@@ -3,10 +3,12 @@ import { DataTypes, Model } from 'sequelize';
 export default (sequelize) => {
   class Region extends Model {
     static associate({
-      User
+      User, Driver
     }) {
       Region.hasMany(User, { onDelete: 'RESTRICT' });
       User.belongsTo(Region);
+      Driver.hasMany(Region);
+      Region.belongsTo(Driver);
     }
   }
   Region.init(

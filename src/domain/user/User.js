@@ -9,12 +9,13 @@ import {
 
 export const MAX_FRIENDS_COUNT = 1000;
 
-export const rolesList = ['admin', 'endUser', 'superadmin'];
+export const rolesList = ['admin', 'endUser', 'superadmin', 'driver'];
 
 export const roles = {
   admin: 'admin',
   endUser: 'endUser',
-  superadmin: 'superadmin'
+  superadmin: 'superadmin',
+  driver: 'driver'
 };
 
 export class User {
