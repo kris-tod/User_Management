@@ -268,12 +268,12 @@ export class UserRepository extends BaseRepo {
       (friendId) => !friendsIds.includes(friendId)
     );
 
-    idsToAdd.forEach(async (friendId) => {
-      await this.friendshipRepo.create(
-        { user_id: id, friend_id: friendId },
-        options
-      );
-    });
+    await this.friendshipRepo.addFriendships(idsToAdd.map((friendId) => ({
+      user_id: id,
+      friend_id: friendId
+    })), options);
+
+    await this.friendshipRepo.destroyUserFriendshipsByIds(id, idsToRemove, options);
 
     idsToRemove.forEach(async (friendId) => {
       await this.friendshipRepo.destroyByIds(id, friendId, options);

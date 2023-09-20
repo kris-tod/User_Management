@@ -17,6 +17,22 @@ export class FriendshipRepository extends BaseRepo {
     return collection;
   }
 
+  async addFriendships(friendships, options = {}) {
+    return this.dbClient.bulkCreate(friendships, options);
+  }
+
+  async destroyUserFriendshipsByIds(id, friendshipsIds, options = {}) {
+    return this.dbClient.destroy({
+      where: {
+        user_id: id,
+        friend_id: {
+          [Op.in]: friendshipsIds
+        }
+      },
+      ...options
+    });
+  }
+
   async findAllFriendshipsById(userId, options = {}) {
     const collection = await this.dbClient.findAll({
       where: {
