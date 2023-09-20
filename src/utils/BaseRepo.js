@@ -26,11 +26,7 @@ export class BaseRepo {
   }
 
   async getOne(id, options = {}) {
-    const entity = await this.dbClient.findOne({
-      where: { id },
-      ...options
-    });
-
+    const entity = await this.dbClient.findByPk(id, options);
     return this.buildEntity(entity);
   }
 

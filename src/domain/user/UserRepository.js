@@ -145,9 +145,8 @@ export class UserRepository extends BaseRepo {
   }
 
   async getOne(id, options = {}) {
-    const userData = await this.dbClient.findOne({
+    const userData = await this.dbClient.findByPk(id, {
       include: [Region],
-      where: { id },
       ...options
     });
 

@@ -131,9 +131,8 @@ export class PartnerRepository extends BaseRepo {
   }
 
   async getOne(id, options = {}) {
-    const entity = await this.dbClient.findOne({
+    const entity = await this.dbClient.findByPk(id, {
       include: [Region],
-      where: { id },
       ...options
     });
     if (!entity) {

@@ -57,9 +57,8 @@ export class CarSupportServiceRepository extends BaseRepo {
   }
 
   async getOne(id) {
-    const entity = await this.dbClient.findOne({
-      include: [Region],
-      where: { id }
+    const entity = await this.dbClient.findByPk(id, {
+      include: [Region]
     });
 
     if (!entity) {
