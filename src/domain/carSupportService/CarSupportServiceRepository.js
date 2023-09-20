@@ -25,39 +25,18 @@ export class CarSupportServiceRepository extends BaseRepo {
   }
 
   async getAllByIds(listOfIds, options = {}) {
-    const collectionPromoted = await this.dbClient.findAll({
+    const collection = await this.dbClient.findAll({
+      include: [Region],
+      order: [['isPromoted', 'DESC']],
       where: {
         id: {
           [Op.in]: listOfIds
-        },
-        isPromoted: true
+        }
       },
       ...options
     });
 
-    const collectionNotPromoted = await this.dbClient.findAll({
-      where: {
-        id: {
-          [Op.in]: listOfIds
-        },
-        isPromoted: false
-      },
-      ...options
-    });
-
-    const resultPromoted = await Promise.all(collectionPromoted.map(async (entity) => {
-      const service = entity;
-      service.region = await this.regionRepo.getOne(service.regionId, options);
-      return this.buildEntity(service);
-    }));
-
-    const resultNotPromoted = await Promise.all(collectionNotPromoted.map(async (entity) => {
-      const service = entity;
-      service.region = await this.regionRepo.getOne(service.regionId, options);
-      return this.buildEntity(service);
-    }));
-
-    return resultPromoted.concat(resultNotPromoted);
+    return collection.map((entity) => this.buildEntity(entity));
   }
 
   async getAll(page = 1, options = {}, order = [['isPromoted', 'DESC'], 'name'], entitiesPerPage = MAX_PER_PAGE) {
