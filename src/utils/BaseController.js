@@ -12,8 +12,12 @@ export class BaseController {
   async getMany(req, res) {
     const { page } = req.query;
 
-    const collection = await this.service.getAll(page);
-    res.status(200).json(collection.map((entity) => this.serializeEntity(entity)));
+    const {
+      total, data, limit, offset
+    } = await this.service.getAll(page);
+    res.status(200).json({
+      total, data: data.map((entity) => this.serializeEntity(entity)), limit, offset
+    });
   }
 
   async getOne(req, res) {

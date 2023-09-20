@@ -14,7 +14,7 @@ export class CarSupportServiceRepository extends BaseRepo {
 
   buildEntity(model) {
     return new CarSupportService(
-      parseInt(model.id, 10),
+      model.id,
       model.name,
       model.image,
       model.region,
@@ -27,7 +27,7 @@ export class CarSupportServiceRepository extends BaseRepo {
   async getAllByIds(listOfIds, options = {}) {
     const collection = await this.dbClient.findAll({
       include: [Region],
-      order: [['isPromoted', 'DESC']],
+      order: [['isPromoted', 'DESC'], 'name'],
       where: {
         id: {
           [Op.in]: listOfIds

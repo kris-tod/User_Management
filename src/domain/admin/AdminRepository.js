@@ -14,7 +14,7 @@ export class AdminRepository extends BaseRepo {
 
   buildEntity(model) {
     return new Admin(
-      parseInt(model.id, 10),
+      model.id,
       model.username,
       model.password,
       model.role,

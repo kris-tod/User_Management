@@ -12,7 +12,7 @@ export class OrganizationRepository extends BaseRepo {
 
   buildEntity(model) {
     return new Organization(
-      parseInt(model.id, 10),
+      model.id,
       model.name,
       model.description,
       model.partners

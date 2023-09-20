@@ -14,7 +14,7 @@ export class CarRepository extends BaseRepo {
 
   buildEntity(model) {
     return new Car(
-      parseInt(model.id, 10),
+      model.id,
       model.idNumber,
       model.image,
       model.brand,

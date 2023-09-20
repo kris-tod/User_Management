@@ -32,7 +32,7 @@ export class UserService {
 
     const collection = await this.userRepo.getAll(
       page,
-      reqUser.role === roles.admin ? reqUser.region : ''
+      (reqUser.role === roles.admin ? reqUser.region : '')
     );
     return collection;
   }
@@ -251,7 +251,7 @@ export class UserService {
       id: user.id,
       role: roles.endUser,
       app: apps.mobile,
-      region: parseInt(user.region.id, 10)
+      region: user.region.id
     });
 
     return {

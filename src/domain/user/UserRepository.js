@@ -30,7 +30,7 @@ export class UserRepository extends BaseRepo {
     friendsList = []
   }) {
     return new User(
-      parseInt(id, 10),
+      id,
       username,
       password,
       region,
@@ -56,7 +56,8 @@ export class UserRepository extends BaseRepo {
       include: [Region],
       limit: entitiesPerPage,
       offset: entitiesPerPage * (page - 1),
-      order
+      order,
+      ...options
     });
     const listOfIds = users.map((user) => user.id);
 
@@ -122,7 +123,8 @@ export class UserRepository extends BaseRepo {
           await UserPartner.findAll({
             where: {
               userId: user.id
-            }
+            },
+            ...options
           })
         ).map((entity) => entity.partnerId);
 

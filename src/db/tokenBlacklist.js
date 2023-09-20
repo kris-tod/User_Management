@@ -6,7 +6,7 @@ export default (sequelize) => {
   TokenBlacklist.init(
     {
       id: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
       },

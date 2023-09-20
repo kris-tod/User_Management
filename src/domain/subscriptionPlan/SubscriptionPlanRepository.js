@@ -11,7 +11,7 @@ export class SubscriptionPlanRepository extends BaseRepo {
 
   buildEntity(model) {
     return new SubscriptionPlan(
-      parseInt(model.id, 10),
+      model.id,
       model.name,
       model.price,
       model.commissionPerRequest,

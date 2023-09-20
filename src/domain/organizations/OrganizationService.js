@@ -94,13 +94,13 @@ export class OrganizationService {
     if (reqUser.role === roles.superadmin) {
       return this.partnerRepo.getAll(page);
     }
-    return this.partnerRepo.getAllByAdmin(page, reqUser.id);
+    return this.partnerRepo.getAllByAdmin(page || 1, reqUser.id);
   }
 
   async getOnePartner(id, reqUser) {
     const entity = await this.partnerRepo.getOne(id);
 
-    if (reqUser.role === roles.admin && !entity.partnerAdmins
+    if (reqUser.role === roles.admin && !entity.admins
       .find((admin) => admin.id === reqUser.id)) {
       throw new ForbiddenError(ADMIN_NOT_PARTNER_ADMIN);
     }
@@ -121,7 +121,7 @@ export class OrganizationService {
     const services = await this.servicesRepo.getAllByIds(data.services);
 
     services.forEach((service) => {
-      if (parseInt(service.region.id, 10) !== data.region) {
+      if (service.region.id !== data.region) {
         throw new ApiError(INVALID_REGION);
       }
     });
@@ -131,6 +131,12 @@ export class OrganizationService {
     if (partnerAdmins.length !== data.admins.length) {
       throw new ApiError('Invalid partner admins!');
     }
+
+    partnerAdmins.forEach((admin) => {
+      if (admin.region.id !== data.region) {
+        throw new ApiError('Invalid region!');
+      }
+    });
 
     const subscriptionPlan = await this.subscriptionPlanRepo.getOne(data.subscriptionPlanId);
 
@@ -169,6 +175,10 @@ export class OrganizationService {
 
     if (updatedData.services) {
       const services = await this.servicesRepo.getAllByIds(updatedData.services);
+
+      if (services.length !== updatedData.services.length) {
+        throw new ApiError('Invalid services!');
+      }
 
       services.forEach((service) => {
         if (service.region.id !== partner.region.id) {

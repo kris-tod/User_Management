@@ -21,14 +21,14 @@ export class TireRepository extends BaseRepo {
     tiresHotel = ''
   }) {
     return new Tire(
-      parseInt(id, 10),
+      id,
       brand,
       count,
       width,
       ratio,
       type,
       used,
-      parseInt(carId, 10),
+      carId,
       comment,
       tiresHotel
     );

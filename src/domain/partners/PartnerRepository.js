@@ -28,7 +28,7 @@ export class PartnerRepository extends BaseRepo {
 
   buildEntity(model) {
     return new Partner(
-      parseInt(model.id, 10),
+      model.id,
       model.name,
       model.logo,
       model.address,
@@ -86,7 +86,7 @@ export class PartnerRepository extends BaseRepo {
     };
 
     const {
-      total, data, limit, offset
+      count, rows
     } = await this.dbClient.findAndCountAll({
       order,
       include: [Region],
@@ -96,11 +96,11 @@ export class PartnerRepository extends BaseRepo {
     });
 
     const result = await Promise.all(
-      data.map(async (entity) => this.constructPartnerProps(entity))
+      rows.map(async (entity) => this.constructPartnerProps(entity))
     );
 
     return {
-      total, data: result, limit, offset
+      total: count, data: result, limit: entitiesPerPage, offset: entitiesPerPage * (page - 1)
     };
   }
 
