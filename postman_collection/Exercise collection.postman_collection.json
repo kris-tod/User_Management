@@ -79,11 +79,11 @@
 											"variable": [
 												{
 													"key": "carId",
-													"value": "3"
+													"value": "1"
 												},
 												{
 													"key": "tireId",
-													"value": "8"
+													"value": "1"
 												}
 											]
 										}
@@ -97,7 +97,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"comment\": \"Very nice tires.\",\n    \"tiresHotel\": \"I do not know what it is!\"\n}",
+											"raw": "{\n    \"type\": \"summer\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -120,11 +120,11 @@
 											"variable": [
 												{
 													"key": "carId",
-													"value": "7"
+													"value": "1"
 												},
 												{
 													"key": "tireId",
-													"value": "4"
+													"value": "1"
 												}
 											]
 										}
@@ -172,7 +172,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"idNumber\": \"CB3723MK\",\n    \"brand\": \"Volkswagen Caddy Life\",\n    \"kilometers\": 285000,\n    \"engineType\": \"gasoline\",\n    \"yearOfProduction\": 2008\n}",
+									"raw": "{\n    \"idNumber\": \"CB3130HH\",\n    \"brand\": \"Citroen Xcara Picasso\",\n    \"kilometers\": 350000,\n    \"engineType\": \"gasoline\",\n    \"yearOfProduction\": 2001\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -767,7 +767,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"shefa\",\n    \"password\": \"shefa123\",\n    \"email\": \"shefa@gmail.com\"\n}",
+									"raw": "{\n    \"username\": \"shefa\",\n    \"password\": \"shefa123\",\n    \"email\": \"shefa@gmail.com\",\n    \"region\": 1\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -786,7 +786,70 @@
 									]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"username\": \"shefa\",\n    \"password\": \"shefa123\",\n    \"email\": \"shefa@gmail.com\",\n    \"region\": 1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/auth/register",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"register"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "188"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"bc-nWGvmGVRytQzJqL0rGyS2o41FH0\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 20 Sep 2023 08:17:33 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"id\": 7,\n    \"username\": \"shefa\",\n    \"email\": \"shefa@gmail.com\",\n    \"avatar\": \"http://localhost:4000/default_avatar.jpg\",\n    \"friendsList\": [],\n    \"region\": {\n        \"id\": 1,\n        \"name\": \"Sofia\"\n    },\n    \"cars\": [],\n    \"favouritePartners\": []\n}"
+								}
+							]
 						}
 					]
 				},
@@ -800,7 +863,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"favouritePartners\": [7]\n}",
+									"raw": "{\n    \"friendsList\": [2, 3]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1261,7 +1324,7 @@
 									"variable": [
 										{
 											"key": "organizationId",
-											"value": "2"
+											"value": "1"
 										}
 									]
 								}
@@ -1426,7 +1489,7 @@
 									"variable": [
 										{
 											"key": "organizationId",
-											"value": "2"
+											"value": "1"
 										}
 									]
 								}
@@ -1701,7 +1764,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"georgi\",\n    \"password\": \"georgi123\",\n    \"region\": \"Plovdiv\"\n}",
+									"raw": "{\n    \"username\": \"stefan\",\n    \"password\": \"enduser123\",\n    \"region\": 1\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1728,7 +1791,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"username\": \"pichaga1\",\n    \"email\": \"pich1@gmail.com\",\n    \"password\": \"pichaga123\",\n    \"role\": \"endUser\"\n}",
+											"raw": "{\n    \"username\": \"stefan\",\n    \"password\": \"enduser123\",\n    \"region\": 1\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1736,20 +1799,19 @@
 											}
 										},
 										"url": {
-											"raw": "localhost:4000/api/users/",
+											"raw": "{{baseUrl}}/admin/users/",
 											"host": [
-												"localhost"
+												"{{baseUrl}}"
 											],
-											"port": "4000",
 											"path": [
-												"api",
+												"admin",
 												"users",
 												""
 											]
 										}
 									},
-									"status": "OK",
-									"code": 200,
+									"status": "Created",
+									"code": 201,
 									"_postman_previewlanguage": "json",
 									"header": [
 										{
@@ -1762,15 +1824,15 @@
 										},
 										{
 											"key": "Content-Length",
-											"value": "40"
+											"value": "176"
 										},
 										{
 											"key": "ETag",
-											"value": "W/\"28-b6TjKXW/Q/AamTmBmZrpDm8Tmaw\""
+											"value": "W/\"b0-TccJDdJmMAxbFQCB9Xo/6j1Y47E\""
 										},
 										{
 											"key": "Date",
-											"value": "Mon, 04 Sep 2023 07:58:10 GMT"
+											"value": "Wed, 20 Sep 2023 08:11:13 GMT"
 										},
 										{
 											"key": "Connection",
@@ -1782,7 +1844,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"message\": \"Successfully created user!\"\n}"
+									"body": "{\n    \"id\": 6,\n    \"username\": \"stefan\",\n    \"email\": null,\n    \"avatar\": \"http://localhost:4000/default_avatar.jpg\",\n    \"friendsList\": [],\n    \"region\": {\n        \"id\": 1,\n        \"name\": \"Sofia\"\n    },\n    \"cars\": [],\n    \"favouritePartners\": []\n}"
 								}
 							]
 						},
@@ -2286,7 +2348,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"sofiaAdmin\"\n}",
+									"raw": "{\n    \"username\": \"sofiaAdmin\",\n    \"password\": \"admin123\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2342,7 +2404,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"plevenAdmin\",\n    \"password\": \"admin123\",\n    \"email\": \"plevenAdmin@gmail.com\",\n    \"region\": 1\n}",
+									"raw": "{\n    \"username\": \"lovechAdmin\",\n    \"password\": \"admin123\",\n    \"email\": \"lovechAdmin@gmail.com\",\n    \"region\": 5\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2516,7 +2578,7 @@
 									"variable": [
 										{
 											"key": "partnerId",
-											"value": "8"
+											"value": "4"
 										}
 									]
 								}
@@ -2581,7 +2643,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Kriskata\",\n    \"description\": \"Nice partner!\",\n    \"address\": \"Vrajdebna\",\n    \"coordinates\": \"1.5,2.5\",\n    \"phone\": \"0895209415\",\n    \"contactPerson\": \"Milen\",\n    \"region\": 1,\n    \"subscriptionPlanId\": 1,\n    \"organizationId\": 2,\n    \"admins\": [2],\n    \"services\": [2, 3, 4]\n    // name, logo, description, address, coordinates, phone, contactPerson,\n    // region, subscriptionPlanId, organizationId, partnersAdminsIds,\n    // carSupportServices\n}",
+									"raw": "{\n    \"name\": \"Jorkata\",\n    \"description\": \"Nice partner!\",\n    \"address\": \"Somewhere in Plovdiv\",\n    \"coordinates\": \"1.5,2.5\",\n    \"phone\": \"0895209415\",\n    \"contactPerson\": \"Milen\",\n    \"region\": 2,\n    \"subscriptionPlanId\": 1,\n    \"organizationId\": 1,\n    \"admins\": [3],\n    \"services\": [5, 6]\n    // name, logo, description, address, coordinates, phone, contactPerson,\n    // region, subscriptionPlanId, organizationId, partnersAdminsIds,\n    // carSupportServices\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2681,7 +2743,7 @@
 									"variable": [
 										{
 											"key": "partnerId",
-											"value": "7"
+											"value": "2"
 										}
 									]
 								}
@@ -2750,7 +2812,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"cars\": [7]\n}",
+									"raw": "{\n    \"cars\": [1, 2],\n    \"address\": \"Somewhere in Sofia\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2770,7 +2832,7 @@
 									"variable": [
 										{
 											"key": "partnerId",
-											"value": "7"
+											"value": "2"
 										}
 									]
 								}
@@ -3265,7 +3327,7 @@
 									"variable": [
 										{
 											"key": "serviceId",
-											"value": "2"
+											"value": "4"
 										}
 									]
 								}
@@ -3335,7 +3397,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Premium\",\n    \"price\":80,\n    \"commissionPerRequest\": 0.05,\n    \"carsLimit\": 20,\n    \"isDefault\": false,\n    \"description\": \"Some description\"\n}",
+									"raw": "{\n    \"name\": \"Ultra\",\n    \"price\": 200,\n    \"commissionPerRequest\": 0.03,\n    \"carsLimit\": 20,\n    \"isDefault\": false,\n    \"description\": \"Some description\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3436,7 +3498,7 @@
 									"variable": [
 										{
 											"key": "subscriptionId",
-											"value": "1"
+											"value": "2"
 										}
 									]
 								}
@@ -3685,7 +3747,7 @@
 									"variable": [
 										{
 											"key": "subscriptionId",
-											"value": "5"
+											"value": "3"
 										}
 									]
 								}
@@ -3803,6 +3865,65 @@
 									],
 									"cookie": [],
 									"body": "<!DOCTYPE html>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error</title>\n    </head>\n    <body>\n        <pre>Error: Subscription plan not found\n            <br> &nbsp; &nbsp;at SubscriptionPlanRepository.getOne (file:///Users/appstreams/Documents/User_Management/src/domain/organizations/partners/subscriptionPlan/SubscriptionPlanRepository.js:31:13)\n            <br> &nbsp; &nbsp;at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n            <br> &nbsp; &nbsp;at async OrganizationService.destroySubscriptionPlan (file:///Users/appstreams/Documents/User_Management/src/domain/organizations/OrganizationService.js:305:30)\n            <br> &nbsp; &nbsp;at async SubscriptionPlansController.destroy (file:///Users/appstreams/Documents/User_Management/src/server/endpoints/admin/subscriptionPlans/SubscriptionPlansController.js:46:22)\n        </pre>\n    </body>\n</html>"
+								},
+								{
+									"name": "fail",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/admin/subscriptionPlans/:subscriptionId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"admin",
+												"subscriptionPlans",
+												":subscriptionId"
+											],
+											"variable": [
+												{
+													"key": "subscriptionId",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "43"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"2b-E1nnERUgCS1NShn+ncXInFW7b9Y\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 20 Sep 2023 08:33:51 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"message\": \"Plan is default!\",\n    \"status\": 400\n}"
 								}
 							]
 						}
@@ -3968,6 +4089,67 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"id\": \"5\",\n    \"name\": \"Lovech\"\n}"
+								},
+								{
+									"name": "fail",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Lovech\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/admin/regions",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"admin",
+												"regions"
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "51"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"33-OQYbMY9MAjyB1A8ytHSvoAouo8E\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 20 Sep 2023 08:14:04 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"message\": \"User is not super admin!\",\n    \"status\": 403\n}"
 								}
 							]
 						},
@@ -3977,14 +4159,20 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseUrl}}/admin/regions/1",
+									"raw": "{{baseUrl}}/admin/regions/:regionId",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"admin",
 										"regions",
-										"1"
+										":regionId"
+									],
+									"variable": [
+										{
+											"key": "regionId",
+											"value": "1"
+										}
 									]
 								}
 							},
@@ -4005,14 +4193,20 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/admin/regions/1",
+									"raw": "{{baseUrl}}/admin/regions/:regionId",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"admin",
 										"regions",
-										"1"
+										":regionId"
+									],
+									"variable": [
+										{
+											"key": "regionId",
+											"value": "1"
+										}
 									]
 								}
 							},
@@ -4024,18 +4218,84 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{baseUrl}}/admin/regions/5",
+									"raw": "{{baseUrl}}/admin/regions/:regionId",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"admin",
 										"regions",
-										"5"
+										":regionId"
+									],
+									"variable": [
+										{
+											"key": "regionId",
+											"value": "4"
+										}
 									]
 								}
 							},
-							"response": []
+							"response": [
+								{
+									"name": "fail",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/admin/regions/:regionId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"admin",
+												"regions",
+												":regionId"
+											],
+											"variable": [
+												{
+													"key": "regionId",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "51"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"33-OQYbMY9MAjyB1A8ytHSvoAouo8E\""
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 20 Sep 2023 08:14:19 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"message\": \"User is not super admin!\",\n    \"status\": 403\n}"
+								}
+							]
 						}
 					]
 				}

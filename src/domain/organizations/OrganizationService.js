@@ -369,6 +369,10 @@ export class OrganizationService {
       throw new NotFoundError(SUBSCRIPTION_PLAN_NOT_FOUND);
     }
 
+    if (subscriptionPlan.isDefault) {
+      throw new ApiError('Plan is default!');
+    }
+
     const { data } = await this.partnerRepo.getAll(1, {
       where: { subscriptionPlanId: subscriptionPlan.id }
     });

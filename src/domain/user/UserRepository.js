@@ -50,7 +50,7 @@ export class UserRepository extends BaseRepo {
     }
 
     const {
-      total,
+      count,
       rows: users
     } = await this.dbClient.findAndCountAll({
       include: [Region],
@@ -89,7 +89,7 @@ export class UserRepository extends BaseRepo {
     );
 
     return {
-      total,
+      total: count,
       data: collection,
       limit: entitiesPerPage,
       offset: entitiesPerPage * (page - 1)

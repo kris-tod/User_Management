@@ -1,5 +1,5 @@
 import { Op } from 'sequelize';
-import { MAX_PER_PAGE, BaseRepo } from '../../utils/BaseRepo.js';
+import { BaseRepo } from '../../utils/BaseRepo.js';
 import { Car } from './Car.js';
 import { Car as CarModel, UserCar } from '../../db/index.js';
 import { TireRepository } from './tire/TireRepository.js';
@@ -31,26 +31,6 @@ export class CarRepository extends BaseRepo {
       model.comment,
       model.vehicleType
     );
-  }
-
-  async getAll(
-    page = 1,
-    order = ['id'],
-    options = {},
-    entitiesPerPage = MAX_PER_PAGE
-  ) {
-    const {
-      total, data, limit, offset
-    } = await super.getAll(
-      page,
-      order,
-      options,
-      entitiesPerPage
-    );
-
-    return {
-      total, limit, offset, data: data.map((entity) => this.buildEntity(entity))
-    };
   }
 
   async getByIdNumber(idNumber) {
