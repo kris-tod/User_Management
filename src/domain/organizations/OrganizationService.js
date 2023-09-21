@@ -19,6 +19,10 @@ import { PartnerRepository } from '../partners/PartnerRepository.js';
 import { CarSupportServiceRepository } from '../carSupportService/CarSupportServiceRepository.js';
 import { SubscriptionPlanRepository } from '../subscriptionPlan/SubscriptionPlanRepository.js';
 import { sequelize } from '../../db/index.js';
+import { SubscriptionPlan } from '../subscriptionPlan/SubscriptionPlan.js';
+import { CarSupportService } from '../carSupportService/CarSupportService.js';
+import { Partner } from '../partners/Partner.js';
+import { Organization } from './Organization.js';
 
 export class OrganizationService {
   constructor(logger) {
@@ -52,11 +56,22 @@ export class OrganizationService {
     return entity;
   }
 
+  async organizationFactory({
+    name, description
+  }) {
+    return new Organization(
+      undefined,
+      name,
+      description
+    );
+  }
+
   async createOrganization(data, reqUser) {
     if (reqUser.role !== roles.superadmin) {
       throw new ForbiddenError(USER_NOT_SUPER_ADMIN);
     }
-    return this.organizationRepo.create(data);
+    const organization = await this.organizationFactory(data);
+    return this.organizationRepo.create(organization);
   }
 
   async updateOrganization(id, data, reqUser) {
@@ -108,6 +123,43 @@ export class OrganizationService {
     return entity;
   }
 
+  async partnerFactory({
+    name,
+    description,
+    address,
+    coordinates,
+    phone,
+    contactPerson,
+    regionId,
+    subscriptionPlanId,
+    admins,
+    services,
+    organizationId
+  }) {
+    console.log(regionId);
+    const subscriptionPlan = await this.subscriptionPlanRepo.getOne(subscriptionPlanId);
+    const partnerAdmins = await this.adminsRepo.getAllByIds(admins);
+    const partnerServices = await this.servicesRepo.getAllByIds(services);
+    const partnerRegion = await this.regionRepo.getOne(regionId);
+
+    return new Partner(
+      undefined,
+      name,
+      undefined,
+      address,
+      phone,
+      contactPerson,
+      partnerRegion,
+      subscriptionPlan,
+      organizationId,
+      description,
+      coordinates,
+      partnerServices,
+      partnerAdmins,
+      []
+    );
+  }
+
   async createPartner(data, reqUser) {
     if (reqUser.role === roles.admin && reqUser.region !== data.region) {
       throw new ForbiddenError(INVALID_REGION);
@@ -120,7 +172,7 @@ export class OrganizationService {
 
     const services = await this.servicesRepo.getAllByIds(data.services);
 
-    if (services.some((service) => service.region.id !== data.region)) {
+    if (services.some((service) => service.region.id !== data.regionId)) {
       throw new ApiError(INVALID_REGION);
     }
 
@@ -130,7 +182,7 @@ export class OrganizationService {
       throw new ApiError('Invalid partner admins!');
     }
 
-    if (partnerAdmins.some((admin) => admin.region.id !== data.region)) {
+    if (partnerAdmins.some((admin) => admin.region.id !== data.regionId)) {
       throw new ApiError('Invalid region!');
     }
 
@@ -145,11 +197,8 @@ export class OrganizationService {
         transaction: t
       };
 
-      const result = await this.partnerRepo.create({
-        ...data,
-        regionId: data.region
-      }, options);
-
+      const partner = await this.partnerFactory(data);
+      const result = await this.partnerRepo.create(partner, options);
       return result;
     });
   }
@@ -278,15 +327,29 @@ export class OrganizationService {
     return service;
   }
 
+  async serviceFactory({
+    name, image, regionId, isRegionDefault, isPromoted, description
+  }) {
+    const serviceRegion = await this.regionRepo.getOne(regionId);
+
+    return new CarSupportService(
+      undefined,
+      name,
+      image,
+      serviceRegion,
+      isRegionDefault,
+      isPromoted,
+      description
+    );
+  }
+
   async createService(data, reqUser) {
     if (reqUser.role === roles.admin && reqUser.region !== data.region) {
       throw new ForbiddenError(INVALID_REGION);
     }
 
-    return this.servicesRepo.create({
-      ...data,
-      regionId: data.region
-    });
+    const carService = await this.serviceFactory(data);
+    return this.servicesRepo.create(carService);
   }
 
   async updateService(id, updatedData, reqUser) {
@@ -324,12 +387,32 @@ export class OrganizationService {
     return subscriptionPlan;
   }
 
+  async subscriptionPlanFactory({
+    name,
+    price,
+    commissionPerRequest,
+    carsLimit,
+    isDefault,
+    description
+  }) {
+    return new SubscriptionPlan(
+      undefined,
+      name,
+      price,
+      commissionPerRequest,
+      carsLimit,
+      isDefault,
+      description
+    );
+  }
+
   async createSubscriptionPlan(data, reqUser) {
     if (reqUser.role !== roles.superadmin) {
       throw new ForbiddenError(USER_NOT_SUPER_ADMIN);
     }
 
-    return this.subscriptionPlanRepo.create(data);
+    const subscriptionPlan = await this.subscriptionPlanFactory(data);
+    return this.subscriptionPlanRepo.create(subscriptionPlan);
   }
 
   async updateSubscriptionPlan(id, data, reqUser) {

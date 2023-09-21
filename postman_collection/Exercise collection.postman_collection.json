@@ -172,7 +172,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"idNumber\": \"CB3130HH\",\n    \"brand\": \"Citroen Xcara Picasso\",\n    \"kilometers\": 350000,\n    \"engineType\": \"gasoline\",\n    \"yearOfProduction\": 2001\n}",
+									"raw": "{\n    \"idNumber\": \"CB2222HH\",\n    \"brand\": \"BMW i8\",\n    \"kilometers\": 0,\n    \"engineType\": \"gasoline\",\n    \"yearOfProduction\": 2018\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2404,7 +2404,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"plovdivAdmin\",\n    \"password\": \"admin123\",\n    \"email\": \"plovdivAdmin@gmail.com\",\n    \"region\": 2\n}",
+									"raw": "{\n    \"username\": \"plovdivAdmin2\",\n    \"password\": \"admin123\",\n    \"email\": \"plovdivAdmin2@gmail.com\",\n    \"regionId\": 2\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2495,13 +2495,19 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseUrl}}/admin/partners",
+									"raw": "{{baseUrl}}/admin/partners?page=1",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"admin",
 										"partners"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										}
 									]
 								}
 							},
@@ -2643,7 +2649,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Jorkata\",\n    \"description\": \"Nice partner!\",\n    \"address\": \"Somewhere in Plovdiv\",\n    \"coordinates\": \"1.5,2.5\",\n    \"phone\": \"0895209415\",\n    \"contactPerson\": \"Milen\",\n    \"region\": 1,\n    \"subscriptionPlanId\": 1,\n    \"organizationId\": 1,\n    \"admins\": [2],\n    \"services\": [1, 2]\n    // name, logo, description, address, coordinates, phone, contactPerson,\n    // region, subscriptionPlanId, organizationId, partnersAdminsIds,\n    // carSupportServices\n}",
+									"raw": "{\n    \"name\": \"Jorkata\",\n    \"description\": \"Nice partner!\",\n    \"address\": \"Somewhere in Plovdiv\",\n    \"coordinates\": \"1.5,2.5\",\n    \"phone\": \"0895209415\",\n    \"contactPerson\": \"Milen\",\n    \"regionId\": 1,\n    \"subscriptionPlanId\": 1,\n    \"organizationId\": 1,\n    \"admins\": [2],\n    \"services\": [1, 2]\n    // name, logo, description, address, coordinates, phone, contactPerson,\n    // region, subscriptionPlanId, organizationId, partnersAdminsIds,\n    // carSupportServices\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3049,7 +3055,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Car wash\",\n    \"region\": 1,\n    \"isPromoted\": true,\n    \"description\": \"Nothing unusual\"\n}",
+									"raw": "{\n    \"name\": \"Car wash\",\n    \"regionId\": 1,\n    \"isPromoted\": true,\n    \"description\": \"Nothing unusual\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -4171,7 +4177,7 @@
 									"variable": [
 										{
 											"key": "regionId",
-											"value": "1"
+											"value": "2"
 										}
 									]
 								}
@@ -4185,7 +4191,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"driverId\": null\n}",
+									"raw": "{\n    \"driverId\": 2\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -4327,7 +4333,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Sofia driver\",\n    \"password\": \"driver123\",\n    \"description\": \"A student working for a living.\",\n    \"number\": 1,\n    \"pushNotificationsToken\": \"token\",\n    \"signature\": \"signature\",\n    \"regionId\": 1\n}",
+									"raw": "{\n    \"name\": \"Plovdiv driver\",\n    \"password\": \"driver123\",\n    \"description\": \"A student working for a living.\",\n    \"number\": 1,\n    \"pushNotificationsToken\": \"token\",\n    \"signature\": \"signature\",\n    \"regionId\": 2,\n    \"partnerId\": 3\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -4543,13 +4549,19 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseUrl}}/driver/partners",
+									"raw": "{{baseUrl}}/driver/partners?service=2",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"driver",
 										"partners"
+									],
+									"query": [
+										{
+											"key": "service",
+											"value": "2"
+										}
 									]
 								}
 							},

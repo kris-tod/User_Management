@@ -94,10 +94,40 @@ export class CarRepository extends BaseRepo {
     return cars;
   }
 
-  async addCar(userId, carData) {
-    await this.create(carData);
+  async addCar(userId, {
+    idNumber,
+    image,
+    brand,
+    kilometers,
+    engineType,
+    yearOfProduction,
+    frameNumber,
+    technicalReviewExpiration,
+    civilEnsuranceExpiration,
+    vignetteExpiration,
+    autoEnsuranceExpiration,
+    leasingExpiration,
+    comment,
+    vehicleType
+  }) {
+    await this.create({
+      idNumber,
+      image,
+      brand,
+      kilometers,
+      engineType,
+      yearOfProduction,
+      frameNumber,
+      technicalReviewExpiration,
+      civilEnsuranceExpiration,
+      vignetteExpiration,
+      autoEnsuranceExpiration,
+      leasingExpiration,
+      comment,
+      vehicleType
+    });
 
-    const car = await this.getByIdNumber(carData.idNumber);
+    const car = await this.getByIdNumber(idNumber);
     await this.userCar.create({ carId: car.id, userId });
   }
 }

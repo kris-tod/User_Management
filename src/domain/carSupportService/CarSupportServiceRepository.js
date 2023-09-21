@@ -67,4 +67,12 @@ export class CarSupportServiceRepository extends BaseRepo {
 
     return this.buildEntity(entity);
   }
+
+  async create({
+    name, image, region, isRegionDefault, isPromoted, description
+  }, options = {}) {
+    return super.create({
+      name, image, isRegionDefault, isPromoted, description, regionId: region.id
+    }, options);
+  }
 }

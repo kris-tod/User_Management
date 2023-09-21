@@ -7,6 +7,8 @@ import PasswordService from '../../services/passwordService.js';
 import { apps } from '../../constants/apps.js';
 import { createToken } from '../../utils/jwt.js';
 import { TokenBlacklistRepository } from '../user/tokenBlacklist/TokenBlacklistRepository.js';
+import { RegionRepository } from '../region/RegionRepository.js';
+import { Driver } from './Driver.js';
 
 export class DriverService {
   constructor(logger) {
@@ -14,6 +16,7 @@ export class DriverService {
     this.driverRepo = new DriverRepository();
     this.partnerRepo = new PartnerRepository();
     this.tokenBlacklistRepo = new TokenBlacklistRepository();
+    this.regionRepo = new RegionRepository();
   }
 
   async getAll(page, reqUser) {
@@ -37,25 +40,37 @@ export class DriverService {
     return entity;
   }
 
+  async driverFactory({
+    name, password, description, number, pushNotificationsToken, signature, regionId, partnerId
+  }) {
+    const driverRegion = await this.regionRepo.getOne(regionId);
+    const driverPartner = await this.partnerRepo.getOne(partnerId);
+    return new Driver(
+      undefined,
+      name,
+      password,
+      undefined,
+      number,
+      driverRegion,
+      driverPartner,
+      pushNotificationsToken,
+      signature,
+      description
+    );
+  }
+
   async create(data, reqUser) {
     if (reqUser.role === roles.admin && data.region.id !== reqUser.region) {
       throw new ForbiddenError(INVALID_REGION);
     }
 
-    if (data.partnerId) {
-      const partner = await this.partnerRepo.getOne(data.partnerId);
-      if (!partner) {
-        throw new NotFoundError(PARTNER_NOT_FOUND);
-      }
-    }
-
     const hash = await PasswordService.hashPassword(data.password);
-
-    const entity = await this.driverRepo.create({
+    const driver = await this.driverFactory({
       ...data,
       password: hash
     });
 
+    const entity = await this.driverRepo.create(driver);
     return entity;
   }
 

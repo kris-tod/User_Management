@@ -3,6 +3,7 @@ import { UserRepository } from '../user/UserRepository.js';
 import { CarRepository } from './CarRepository.js';
 import { TireRepository } from './tire/TireRepository.js';
 import FileService from '../../services/FileService.js';
+import { Car } from './Car.js';
 
 export class CarService {
   constructor(logger) {
@@ -24,11 +25,46 @@ export class CarService {
     return this.tireRepo.getAllByCar(carId);
   }
 
-  async create(carData, reqUser) {
-    await this.carRepo.addCar(reqUser.id, carData);
+  async carFactory({
+    idNumber,
+    image,
+    brand,
+    kilometers,
+    engineType,
+    yearOfProduction,
+    frameNumber,
+    technicalReviewExpiration,
+    civilEnsuranceExpiration,
+    vignetteExpiration,
+    autoEnsuranceExpiration,
+    leasingExpiration,
+    comment,
+    vehicleType
+  }) {
+    return new Car(
+      undefined,
+      idNumber,
+      image,
+      brand,
+      kilometers,
+      engineType,
+      [],
+      yearOfProduction,
+      frameNumber,
+      technicalReviewExpiration,
+      civilEnsuranceExpiration,
+      vignetteExpiration,
+      autoEnsuranceExpiration,
+      leasingExpiration,
+      comment,
+      vehicleType
+    );
+  }
 
-    const car = await this.carRepo.getByIdNumber(carData.idNumber);
-    return car;
+  async create(carData, reqUser) {
+    const car = await this.carFactory(carData);
+    const result = await this.carRepo.addCar(reqUser.id, car);
+    return result;
   }
 
   async update(carId, updatedData) {

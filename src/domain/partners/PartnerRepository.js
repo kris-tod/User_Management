@@ -8,7 +8,8 @@ import {
   CarSupportService,
   Admin,
   Car,
-  SubscriptionPlan
+  SubscriptionPlan,
+  Tire
 } from '../../db/index.js';
 import { BaseRepo, MAX_PER_PAGE } from '../../utils/BaseRepo.js';
 import { SubscriptionPlanRepository } from '../subscriptionPlan/SubscriptionPlanRepository.js';
@@ -143,7 +144,7 @@ export class PartnerRepository extends BaseRepo {
 
   async getOne(id, options = {}) {
     const entity = await this.dbClient.findByPk(id, {
-      include: [Region, CarSupportService, Car, Admin, SubscriptionPlan],
+      include: [Region, CarSupportService, { model: Car, include: Tire }, Admin, SubscriptionPlan],
       ...options
     });
     if (!entity) {
@@ -186,7 +187,7 @@ export class PartnerRepository extends BaseRepo {
 
   async create({
     name, logo, description, address, coordinates, phone, contactPerson,
-    region, subscriptionPlanId, organizationId, admins,
+    region, subscriptionPlan, organizationId, admins,
     services
   }, options = {}) {
     const partner = await super.create({
@@ -197,18 +198,18 @@ export class PartnerRepository extends BaseRepo {
       coordinates,
       phone,
       contactPerson,
-      regionId: region,
-      subscriptionPlanId,
+      regionId: region.id,
+      subscriptionPlanId: subscriptionPlan.id,
       organizationId
     }, options);
 
-    await AdminPartnerModel.bulkCreate(admins.map((adminId) => ({
-      adminId,
+    await AdminPartnerModel.bulkCreate(admins.map((admin) => ({
+      adminId: admin.id,
       partnerId: partner.id
     })), options);
 
-    await PartnerServiceModel.bulkCreate(services.map((carSupportServiceId) => ({
-      carSupportServiceId,
+    await PartnerServiceModel.bulkCreate(services.map((service) => ({
+      carSupportServiceId: service.id,
       partnerId: partner.id
     })), options);
 

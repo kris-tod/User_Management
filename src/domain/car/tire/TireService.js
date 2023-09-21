@@ -1,4 +1,5 @@
 import { TireRepository } from './TireRepository.js';
+import { Tire } from './Tire.js';
 
 export class TireService {
   constructor(logger) {
@@ -14,14 +15,31 @@ export class TireService {
     return this.tireRepo.getOne(tireId);
   }
 
+  async tireFactory({
+    brand, count, width, ratio, type, used, carId, comment, tireHotel
+  }) {
+    return new Tire(
+      undefined,
+      brand,
+      count,
+      width,
+      ratio,
+      type,
+      used,
+      carId,
+      comment,
+      tireHotel
+    );
+  }
+
   async create(carId, tireData) {
-    await this.tireRepo.create({
+    const tire = await this.tireFactory({
       ...tireData,
       carId
     });
+    const result = await this.tireRepo.create(tire);
 
-    const tires = await this.tireRepo.getAllByCar(carId);
-    return tires;
+    return result;
   }
 
   async update(tireId, updatedData) {

@@ -79,8 +79,19 @@ export class DriverRepository extends BaseRepo {
     return this.buildEntity(entity);
   }
 
-  async create(data, options = {}) {
-    const entity = await super.create(data, options);
+  async create({
+    name, password, description, number, pushNotificationsToken, signature, region, partner
+  }, options = {}) {
+    const entity = await super.create({
+      name,
+      password,
+      description,
+      number,
+      pushNotificationsToken,
+      signature,
+      regionId: region.id,
+      partnerId: partner.id
+    }, options);
     return this.getOne(entity.id, options);
   }
 }

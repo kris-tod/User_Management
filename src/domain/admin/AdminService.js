@@ -13,6 +13,7 @@ import PasswordService from '../../services/passwordService.js';
 import { roles } from '../user/User.js';
 import { TokenBlacklistRepository } from '../user/tokenBlacklist/TokenBlacklistRepository.js';
 import { RegionRepository } from '../region/RegionRepository.js';
+import { Admin } from './Admin.js';
 
 export class AdminService {
   constructor(logger) {
@@ -46,8 +47,22 @@ export class AdminService {
     return user;
   }
 
+  async adminFactory({
+    username, password, email, regionId
+  }) {
+    const region = await this.regionRepo.getOne(regionId);
+    return new Admin(
+      undefined,
+      username,
+      password,
+      roles.admin,
+      region,
+      email
+    );
+  }
+
   async create({
-    username, password, email, region
+    username, password, email, regionId
   }, reqUser = {}) {
     this.logger.log('info', 'create user');
 
@@ -56,13 +71,12 @@ export class AdminService {
     }
 
     const hash = await PasswordService.hashPassword(password);
-    await this.adminRepo.create({
-      username,
-      email,
-      password: hash,
-      regionId: region,
-      role: roles.admin
+
+    const admin = await this.adminFactory({
+      username, password: hash, email, regionId
     });
+
+    await this.adminRepo.create(admin);
 
     const entity = await this.adminRepo.getOneByUsername(username);
 

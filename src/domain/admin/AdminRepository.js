@@ -82,4 +82,12 @@ export class AdminRepository extends BaseRepo {
 
     return this.buildEntity(userData);
   }
+
+  async create({
+    username, password, email, role, region
+  }) {
+    return super.create({
+      username, password, email, role, regionId: region.id
+    });
+  }
 }
