@@ -1,5 +1,6 @@
 import { USER_NOT_SUPER_ADMIN } from '../../constants/messages.js';
 import { ForbiddenError } from '../../utils/errors.js';
+import { DriverRepository } from '../driver/DriverRepository.js';
 import { roles } from '../user/User.js';
 import { RegionRepository } from './RegionRepository.js';
 
@@ -7,6 +8,7 @@ export class RegionService {
   constructor(logger) {
     this.logger = logger;
     this.regionRepo = new RegionRepository();
+    this.driverRepo = new DriverRepository();
   }
 
   async getAll(page) {
@@ -25,6 +27,10 @@ export class RegionService {
   async update(id, updatedData, reqUser) {
     if (reqUser.role !== roles.superadmin) {
       throw new ForbiddenError(USER_NOT_SUPER_ADMIN);
+    }
+
+    if (updatedData.driverId) {
+      await this.driverRepo.getOne(updatedData.driverId);
     }
 
     await this.regionRepo.update(id, updatedData);

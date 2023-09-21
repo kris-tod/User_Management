@@ -4,6 +4,7 @@ import { NotFoundError } from '../../utils/errors.js';
 import { PartnerRepository } from '../partners/PartnerRepository.js';
 import { RegionRepository } from '../region/RegionRepository.js';
 import { Driver } from './Driver.js';
+import { DRIVER_NOT_FOUND } from '../../constants/messages.js';
 
 export class DriverRepository extends BaseRepo {
   constructor() {
@@ -55,6 +56,10 @@ export class DriverRepository extends BaseRepo {
       ...options
     });
 
+    if (!entity) {
+      throw new NotFoundError(DRIVER_NOT_FOUND);
+    }
+
     return this.buildEntity(entity);
   }
 
@@ -68,7 +73,7 @@ export class DriverRepository extends BaseRepo {
     });
 
     if (!entity) {
-      throw new NotFoundError('Driver not found!');
+      throw new NotFoundError(DRIVER_NOT_FOUND);
     }
 
     return this.buildEntity(entity);

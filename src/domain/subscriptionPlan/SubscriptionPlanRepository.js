@@ -21,16 +21,6 @@ export class SubscriptionPlanRepository extends BaseRepo {
     );
   }
 
-  async getAll(page = 1, options = {}) {
-    const {
-      total, data, limit, offset
-    } = await super.getAll(page, ['name'], options);
-
-    return {
-      total, limit, offset, data
-    };
-  }
-
   async getOne(id, options = {}) {
     const entity = await super.getOne(id, options);
     if (!entity) {
