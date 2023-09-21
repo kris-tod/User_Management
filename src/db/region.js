@@ -7,8 +7,8 @@ export default (sequelize) => {
     }) {
       Region.hasMany(User, { onDelete: 'RESTRICT' });
       User.belongsTo(Region);
-      Driver.hasMany(Region);
-      Region.belongsTo(Driver);
+      Region.hasOne(Driver);
+      Driver.belongsTo(Region);
     }
   }
   Region.init(
