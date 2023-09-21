@@ -1,8 +1,11 @@
-import { Organization as OrganizationModel } from '../../db/index.js';
+import {
+  Organization as OrganizationModel, Partner
+} from '../../db/index.js';
 import { Organization } from './Organization.js';
 import { PartnerRepository } from '../partners/PartnerRepository.js';
-import { BaseRepo } from '../../utils/BaseRepo.js';
+import { BaseRepo, MAX_PER_PAGE } from '../../utils/BaseRepo.js';
 import { NotFoundError } from '../../utils/errors.js';
+import { ENTITY_NOT_FOUND } from '../../constants/messages.js';
 
 export class OrganizationRepository extends BaseRepo {
   constructor() {
@@ -19,37 +22,38 @@ export class OrganizationRepository extends BaseRepo {
     );
   }
 
-  async getAll(page = 1) {
+  async getAll(page = 1, order = ['name'], options = {}, entitiesPerPage = MAX_PER_PAGE) {
     const {
-      total, data, limit, offset
-    } = await super.getAll(page);
-
-    const listOfIds = data.map((entity) => entity.id);
-    const partners = await this.partnerRepo.getAllByOrganizationIds(listOfIds);
-
-    const collection = data.map((entity) => {
-      const organization = entity;
-
-      organization.partners = partners.filter(
-        (partner) => partner.organizationId === parseInt(organization.id, 10)
-      );
-
-      return this.buildEntity(organization);
+      count, rows
+    } = await this.dbClient.findAndCountAll({
+      include: [
+        {
+          model: Partner
+        }],
+      order,
+      limit: entitiesPerPage,
+      offset: entitiesPerPage * (page - 1),
+      ...options
     });
 
     return {
-      total, data: collection, limit, offset
+      total: count,
+      data: rows.map((entity) => this.buildEntity(entity)),
+      limit: entitiesPerPage,
+      offset: entitiesPerPage * (page - 1)
     };
   }
 
-  async getOne(id) {
-    const entity = await super.getOne(id);
+  async getOne(id, options = {}) {
+    const entity = await this.dbClient.findByPk(id, {
+      include: [Partner],
+      ...options
+    });
 
     if (!entity) {
-      throw new NotFoundError('Organization not found!');
+      throw new NotFoundError(ENTITY_NOT_FOUND);
     }
 
-    entity.partners = await this.partnerRepo.getAllByOrganizationIds([entity.id]);
     return this.buildEntity(entity);
   }
 }

@@ -1,3 +1,6 @@
+import { NotFoundError } from './errors.js';
+import { ENTITY_NOT_FOUND } from '../constants/messages.js';
+
 export const MAX_PER_PAGE = 5;
 
 export class BaseRepo {
@@ -27,6 +30,9 @@ export class BaseRepo {
 
   async getOne(id, options = {}) {
     const entity = await this.dbClient.findByPk(id, options);
+    if (!entity) {
+      throw new NotFoundError(ENTITY_NOT_FOUND);
+    }
     return this.buildEntity(entity);
   }
 
@@ -38,7 +44,8 @@ export class BaseRepo {
     return this.dbClient.update(updatedData, { where: { id }, ...propObj });
   }
 
-  async destroy(id) {
+  async destroy(id, options = {}) {
+    await this.getOne(id, options);
     await this.dbClient.destroy({ where: { id } });
   }
 }

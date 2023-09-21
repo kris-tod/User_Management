@@ -4,7 +4,11 @@ import {
   PartnerService as PartnerServiceModel,
   AdminPartner as AdminPartnerModel,
   CarPartner as CarPartnerModel,
-  Region
+  Region,
+  CarSupportService,
+  Admin,
+  Car,
+  SubscriptionPlan
 } from '../../db/index.js';
 import { BaseRepo, MAX_PER_PAGE } from '../../utils/BaseRepo.js';
 import { SubscriptionPlanRepository } from '../subscriptionPlan/SubscriptionPlanRepository.js';
@@ -35,14 +39,25 @@ export class PartnerRepository extends BaseRepo {
       model.phone,
       model.contactPerson,
       model.region,
-      model.subscriptionPlan,
-      parseInt(model.organizationId, 10),
+      model.subscription_plan,
+      model.organizationId,
       model.description,
       model.coordinates,
-      model.services,
+      model.car_support_services,
       model.admins,
       model.cars
     );
+  }
+
+  getWithSortedCarServices(entity) {
+    const partner = entity;
+    partner.services.sort((a, b) => {
+      if (b.isPromoted === a.isPromoted) {
+        return a.name.localeCompare(b.name);
+      }
+      return b.isPromoted - a.isPromoted;
+    });
+    return partner;
   }
 
   async getAll(page = 1, optionParam = {}, order = ['name'], entitiesPerPage = MAX_PER_PAGE) {
@@ -50,18 +65,19 @@ export class PartnerRepository extends BaseRepo {
       rows, count
     } = await this.dbClient.findAndCountAll({
       order,
-      include: [Region],
+      include: [Region, CarSupportService, Admin, Car, SubscriptionPlan],
       limit: entitiesPerPage,
       offset: entitiesPerPage * (page - 1),
       ...optionParam
     });
 
-    const collection = await Promise.all(
-      rows.map(async (entity) => this.constructPartnerProps(entity))
-    );
+    const data = rows.map((entity) => this.getWithSortedCarServices(this.buildEntity(entity)));
 
     return {
-      total: count, data: collection, limit: entitiesPerPage, offset: entitiesPerPage * (page - 1)
+      total: count,
+      data,
+      limit: entitiesPerPage,
+      offset: entitiesPerPage * (page - 1)
     };
   }
 
@@ -84,18 +100,19 @@ export class PartnerRepository extends BaseRepo {
       count, rows
     } = await this.dbClient.findAndCountAll({
       order,
-      include: [Region],
+      include: [Region, Admin, Car, CarSupportService, SubscriptionPlan],
       limit: entitiesPerPage,
       offset: entitiesPerPage * (page - 1),
       ...options
     });
 
-    const result = await Promise.all(
-      rows.map(async (entity) => this.constructPartnerProps(entity))
-    );
+    const data = rows.map((entity) => this.getWithSortedCarServices(this.buildEntity(entity)));
 
     return {
-      total: count, data: result, limit: entitiesPerPage, offset: entitiesPerPage * (page - 1)
+      total: count,
+      data,
+      limit: entitiesPerPage,
+      offset: entitiesPerPage * (page - 1)
     };
   }
 
@@ -113,43 +130,39 @@ export class PartnerRepository extends BaseRepo {
       rows
     } = await this.dbClient.findAndCountAll({
       order,
-      include: [Region],
+      include: [Region, CarSupportService, Car, Admin, SubscriptionPlan],
       limit: entitiesPerPage,
       offset: entitiesPerPage * (page - 1),
       ...options
     });
 
-    const result = await Promise.all(
-      rows.map(async (entity) => this.constructPartnerProps(entity))
-    );
+    const data = rows.map((entity) => this.getWithSortedCarServices(this.buildEntity(entity)));
 
-    return result;
+    return data;
   }
 
   async getOne(id, options = {}) {
     const entity = await this.dbClient.findByPk(id, {
-      include: [Region],
+      include: [Region, CarSupportService, Car, Admin, SubscriptionPlan],
       ...options
     });
     if (!entity) {
       throw new NotFoundError(PARTNER_NOT_FOUND);
     }
-    return this.constructPartnerProps(entity, options);
+
+    return this.getWithSortedCarServices(this.buildEntity(entity));
   }
 
   async getAllByOrganizationIds(listOfIds) {
     const collection = await this.dbClient.findAll({
+      include: [Region, CarSupportService, Car, Admin, SubscriptionPlan],
       where: {
         organizationId: {
           [Op.in]: listOfIds
         }
       }
     });
-
-    const result = await Promise.all(collection.map(
-      async (entity) => this.constructPartnerProps(entity)
-    ));
-    return result;
+    return collection.map((entity) => this.getWithSortedCarServices(this.buildEntity(entity)));
   }
 
   async getAllOfferingServiceByRegion(page, carSupportServiceId, region, order = ['name'], entitiesPerPage = MAX_PER_PAGE) {
@@ -169,57 +182,6 @@ export class PartnerRepository extends BaseRepo {
       limit: entitiesPerPage,
       offset: entitiesPerPage * (page - 1)
     };
-  }
-
-  async constructPartnerProps(entity, options = {}) {
-    const partner = entity;
-
-    if (partner.subscriptionPlanId) {
-      partner.subscriptionPlan = await this.subscriptionPlanRepo.getOne(
-        partner.subscriptionPlanId,
-        options
-      );
-    }
-
-    if (entity.regionId) {
-      partner.region = await this.regionRepo.getOne(partner.regionId, options);
-    }
-    const servicesIds = (
-      await PartnerServiceModel.findAll({
-        where: {
-          partnerId: partner.id
-        },
-        ...options
-      })
-    ).map((serviceEntity) => serviceEntity.carSupportServiceId);
-
-    partner.services = await this.servicesRepo.getAllByIds(
-      servicesIds,
-      options
-    );
-    const adminsIds = (
-      await AdminPartnerModel.findAll({
-        where: {
-          partnerId: partner.id
-        },
-        ...options
-      })
-    ).map((serviceEntity) => serviceEntity.adminId);
-
-    partner.admins = await this.adminRepo.getAllByIds(adminsIds, options);
-
-    const carsIds = (
-      await CarPartnerModel.findAll({
-        where: {
-          partnerId: partner.id
-        },
-        ...options
-      })
-    ).map((carEntity) => carEntity.carId);
-
-    partner.cars = await this.carRepo.getAllByIds(carsIds, options);
-
-    return this.buildEntity(partner);
   }
 
   async create({

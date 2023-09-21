@@ -1,9 +1,10 @@
 import { Op } from 'sequelize';
 import { BaseRepo } from '../../utils/BaseRepo.js';
 import { Car } from './Car.js';
-import { Car as CarModel, UserCar } from '../../db/index.js';
+import { Car as CarModel, UserCar, Tire } from '../../db/index.js';
 import { TireRepository } from './tire/TireRepository.js';
 import { NotFoundError } from '../../utils/errors.js';
+import { ENTITY_NOT_FOUND } from '../../constants/messages.js';
 
 export class CarRepository extends BaseRepo {
   constructor() {
@@ -67,15 +68,15 @@ export class CarRepository extends BaseRepo {
     });
   }
 
-  async getOne(carId) {
-    const entity = await super.getOne(carId);
+  async getOne(carId, options = {}) {
+    const entity = await this.dbClient.findByPk(carId, {
+      include: [Tire],
+      ...options
+    });
 
     if (!entity) {
-      throw new NotFoundError('Car not found!');
+      throw new NotFoundError(ENTITY_NOT_FOUND);
     }
-
-    const tires = await this.tireRepo.getAllByCar(carId);
-    entity.tires = tires;
 
     return entity;
   }

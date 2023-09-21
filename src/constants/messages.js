@@ -42,3 +42,4 @@ export const SUBSCRIPTION_PLAN_NOT_FOUND = 'Subscription plan not found!';
 export const SERVICE_NOT_FOUND = 'Car service plan not found!';
 export const USER_NOT_DRIVER = 'User not driver!';
 export const DRIVER_NOT_FOUND = 'Driver not found!';
+export const ENTITY_NOT_FOUND = 'Entity not found!';
