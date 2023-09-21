@@ -1,7 +1,7 @@
 import { DriverRepository } from './DriverRepository.js';
 import { roles } from '../user/User.js';
-import { AuthError, ForbiddenError } from '../../utils/errors.js';
-import { INVALID_REGION, LOGIN_FAILED } from '../../constants/messages.js';
+import { AuthError, ForbiddenError, NotFoundError } from '../../utils/errors.js';
+import { INVALID_REGION, LOGIN_FAILED, PARTNER_NOT_FOUND } from '../../constants/messages.js';
 import { PartnerRepository } from '../partners/PartnerRepository.js';
 import PasswordService from '../../services/passwordService.js';
 import { apps } from '../../constants/apps.js';
@@ -40,6 +40,13 @@ export class DriverService {
   async create(data, reqUser) {
     if (reqUser.role === roles.admin && data.region.id !== reqUser.region) {
       throw new ForbiddenError(INVALID_REGION);
+    }
+
+    if (data.partnerId) {
+      const partner = await this.partnerRepo.getOne(data.partnerId);
+      if (!partner) {
+        throw new NotFoundError(PARTNER_NOT_FOUND);
+      }
     }
 
     const hash = await PasswordService.hashPassword(data.password);
@@ -83,6 +90,13 @@ export class DriverService {
       throw new ForbiddenError(INVALID_REGION);
     }
 
+    if (updatedData.partnerId) {
+      const partner = await this.partnerRepo.getOne(updatedData.partnerId);
+      if (!partner) {
+        throw new NotFoundError(PARTNER_NOT_FOUND);
+      }
+    }
+
     await this.driverRepo.update(id, updatedData);
     const entity = await this.driverRepo.getOne(id);
 
@@ -115,10 +129,6 @@ export class DriverService {
       return partners;
     }
 
-    return this.partnerRepo.getAllOfferingService(page || 1, serviceId, {
-      where: {
-        regionId: reqUser.region
-      }
-    });
+    return this.partnerRepo.getAllOfferingServiceByRegion(page || 1, serviceId, reqUser.region);
   }
 }

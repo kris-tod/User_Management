@@ -66,12 +66,13 @@ export class DriverRepository extends BaseRepo {
 
   async getByName(name, options = {}) {
     const entity = await this.dbClient.findOne({
-      include: [Region],
       where: {
         name
       },
       ...options
     });
+
+    entity.region = await this.regionRepo.getOne(entity.regionId, options);
 
     if (!entity) {
       throw new NotFoundError('Driver not found!');

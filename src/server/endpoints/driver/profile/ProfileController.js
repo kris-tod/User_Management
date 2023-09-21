@@ -13,7 +13,7 @@ export class ProfileController extends BaseController {
     avatar,
     number,
     region,
-    partner,
+    partner = null,
     pushNotificationsToken,
     signature,
     description
@@ -24,10 +24,10 @@ export class ProfileController extends BaseController {
       avatar,
       number,
       region,
-      partner: {
+      partner: (partner ? {
         ...partner,
         admins: undefined
-      },
+      } : null),
       pushNotificationsToken,
       signature,
       description

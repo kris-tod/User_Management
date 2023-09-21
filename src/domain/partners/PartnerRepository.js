@@ -46,11 +46,6 @@ export class PartnerRepository extends BaseRepo {
   }
 
   async getAll(page = 1, optionParam = {}, order = ['name'], entitiesPerPage = MAX_PER_PAGE) {
-    const options = optionParam;
-    if (optionParam.region) {
-      options.where = { region: optionParam.region };
-    }
-
     const {
       rows, count
     } = await this.dbClient.findAndCountAll({
@@ -58,7 +53,7 @@ export class PartnerRepository extends BaseRepo {
       include: [Region],
       limit: entitiesPerPage,
       offset: entitiesPerPage * (page - 1),
-      ...options
+      ...optionParam
     });
 
     const collection = await Promise.all(
@@ -104,12 +99,13 @@ export class PartnerRepository extends BaseRepo {
     };
   }
 
-  async getAllByIds(page, listOfIds, order = ['name'], entitiesPerPage = MAX_PER_PAGE) {
+  async getAllByIds(page, listOfIds, order = ['name'], entitiesPerPage = MAX_PER_PAGE, filter = {}) {
     const options = {
       where: {
         id: {
           [Op.in]: listOfIds
-        }
+        },
+        ...filter
       }
     };
 
@@ -156,14 +152,16 @@ export class PartnerRepository extends BaseRepo {
     return result;
   }
 
-  async getAllOfferingService(page, carSupportServiceId, options = {}, order = ['name'], entitiesPerPage = MAX_PER_PAGE) {
+  async getAllOfferingServiceByRegion(page, carSupportServiceId, region, order = ['name'], entitiesPerPage = MAX_PER_PAGE) {
     const partnersIds = (await PartnerServiceModel.findAll({
       where: {
         carSupportServiceId
       }
-    }, options)).map((entity) => entity.partnerId);
+    })).map((entity) => entity.partnerId);
 
-    const partners = await this.getAllByIds(page, partnersIds, order, entitiesPerPage);
+    const partners = await this.getAllByIds(page, partnersIds, order, entitiesPerPage, {
+      regionId: region
+    });
 
     return {
       total: partners.length,
