@@ -82,20 +82,12 @@ export class PartnerRepository extends BaseRepo {
     };
   }
 
-  async getAllByAdmin(page, id, order = ['name'], entitiesPerPage = MAX_PER_PAGE) {
+  async getAllByAdmin(page, id, order = ['name'], options = {}, entitiesPerPage = MAX_PER_PAGE) {
     const listOfPartnerIds = (await AdminPartnerModel.findAll({
       where: {
         adminId: id
       }
     })).map((entity) => entity.partnerId);
-
-    const options = {
-      where: {
-        id: {
-          [Op.in]: listOfPartnerIds
-        }
-      }
-    };
 
     const {
       count, rows
@@ -104,6 +96,11 @@ export class PartnerRepository extends BaseRepo {
       include: [Region, Admin, Car, CarSupportService, SubscriptionPlan],
       limit: entitiesPerPage,
       offset: entitiesPerPage * (page - 1),
+      where: {
+        id: {
+          [Op.in]: listOfPartnerIds
+        }
+      },
       ...options
     });
 

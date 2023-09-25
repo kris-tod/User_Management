@@ -1,6 +1,8 @@
 import { DriverRepository } from './DriverRepository.js';
 import { roles } from '../user/User.js';
-import { AuthError, ForbiddenError, NotFoundError } from '../../utils/errors.js';
+import {
+  ApiError, AuthError, ForbiddenError, NotFoundError
+} from '../../utils/errors.js';
 import { INVALID_REGION, LOGIN_FAILED, PARTNER_NOT_FOUND } from '../../constants/messages.js';
 import { PartnerRepository } from '../partners/PartnerRepository.js';
 import PasswordService from '../../services/passwordService.js';
@@ -9,6 +11,7 @@ import { createToken } from '../../utils/jwt.js';
 import { TokenBlacklistRepository } from '../user/tokenBlacklist/TokenBlacklistRepository.js';
 import { RegionRepository } from '../region/RegionRepository.js';
 import { Driver } from './Driver.js';
+import { AdminRepository } from '../admin/AdminRepository.js';
 
 export class DriverService {
   constructor(logger) {
@@ -17,24 +20,38 @@ export class DriverService {
     this.partnerRepo = new PartnerRepository();
     this.tokenBlacklistRepo = new TokenBlacklistRepository();
     this.regionRepo = new RegionRepository();
+    this.adminRepo = new AdminRepository();
   }
 
   async getAll(page, reqUser) {
-    const options = {};
     if (reqUser.role === roles.admin) {
+      const options = {};
       options.where = { regionId: reqUser.region };
+      return this.driverRepo.getAll(
+        page,
+        ['name'],
+        options
+      );
     }
-    return this.driverRepo.getAll(
-      page,
-      ['name'],
-      options
-    );
+    if (reqUser.role === roles.organizationAdmin) {
+      return this.driverRepo.getAllByOrganizationAdmin(page || 1, reqUser.id);
+    }
+    if (reqUser.role === roles.partnerAdmin) {
+      return this.driverRepo.getAllByPartnerAdmin(page || 1, reqUser.id);
+    }
+    return this.driverRepo.getAll(page || 1);
   }
 
   async getOne(id, reqUser = {}) {
     const entity = await this.driverRepo.getOne(id);
     if (reqUser.role === roles.admin && entity.region.id !== reqUser.region) {
       throw new ForbiddenError(INVALID_REGION);
+    }
+
+    const loggedUser = await this.adminRepo.getOne(reqUser.id);
+    if (reqUser.role === roles.organizationAdmin
+      && entity.partner.id !== loggedUser.organization.id) {
+      throw new ApiError('Admin not from organization!');
     }
 
     return entity;

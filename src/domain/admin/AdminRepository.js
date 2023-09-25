@@ -1,6 +1,6 @@
 import { Op } from 'sequelize';
 import { BaseRepo, MAX_PER_PAGE } from '../../utils/BaseRepo.js';
-import { Admin as AdminModel, Region } from '../../db/index.js';
+import { Admin as AdminModel, Region, Organization } from '../../db/index.js';
 import { Admin } from './Admin.js';
 import { RegionRepository } from '../region/RegionRepository.js';
 import { NotFoundError } from '../../utils/errors.js';
@@ -19,7 +19,8 @@ export class AdminRepository extends BaseRepo {
       model.password,
       model.role,
       model.region,
-      model.email
+      model.email,
+      model.organization
     );
   }
 
@@ -31,7 +32,7 @@ export class AdminRepository extends BaseRepo {
     }
 
     const { count, rows } = await this.dbClient.findAndCountAll({
-      include: [Region]
+      include: [Region, Organization]
     });
 
     const result = {
@@ -46,7 +47,7 @@ export class AdminRepository extends BaseRepo {
 
   async getOne(id) {
     const entity = await this.dbClient.findByPk(id, {
-      include: [Region]
+      include: [Region, Organization]
     });
 
     if (!entity) {
@@ -58,7 +59,7 @@ export class AdminRepository extends BaseRepo {
 
   async getAllByIds(listOfIds, options = {}) {
     const collection = await this.dbClient.findAll({
-      include: [Region],
+      include: [Region, Organization],
       where: {
         id: {
           [Op.in]: listOfIds
@@ -84,10 +85,15 @@ export class AdminRepository extends BaseRepo {
   }
 
   async create({
-    username, password, email, role, region
+    username, password, email, role, region, organization
   }) {
     return super.create({
-      username, password, email, role, regionId: region.id
+      username,
+      password,
+      email,
+      role,
+      regionId: region.id,
+      organizationId: (organization ? organization.id : null)
     });
   }
 }

@@ -1,5 +1,5 @@
 import {
-  Organization as OrganizationModel, Partner
+  Organization as OrganizationModel, Partner, Admin
 } from '../../db/index.js';
 import { Organization } from './Organization.js';
 import { PartnerRepository } from '../partners/PartnerRepository.js';
@@ -18,7 +18,8 @@ export class OrganizationRepository extends BaseRepo {
       model.id,
       model.name,
       model.description,
-      model.partners
+      model.partners,
+      model.admins
     );
   }
 
@@ -26,10 +27,7 @@ export class OrganizationRepository extends BaseRepo {
     const {
       count, rows
     } = await this.dbClient.findAndCountAll({
-      include: [
-        {
-          model: Partner
-        }],
+      include: [Partner, Admin],
       order,
       limit: entitiesPerPage,
       offset: entitiesPerPage * (page - 1),
@@ -46,7 +44,7 @@ export class OrganizationRepository extends BaseRepo {
 
   async getOne(id, options = {}) {
     const entity = await this.dbClient.findByPk(id, {
-      include: [Partner],
+      include: [Partner, Admin],
       ...options
     });
 

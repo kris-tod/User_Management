@@ -7,10 +7,10 @@ export class AdminsController extends BaseController {
   }
 
   serializeEntity({
-    id, username, email, region, role
+    id, username, email, region, role, organization
   }) {
     return {
-      id, username, email, region, role
+      id, username, email, region, role, organization
     };
   }
 

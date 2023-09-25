@@ -2,21 +2,21 @@ import validator from 'validator';
 import {
   EMAIL_NOT_VALID,
   FRIENDS_LIMIT_REACHED,
-  INVALID_ROLE,
   USERNAME_NOT_VALID,
   USERS_NOT_FRIENDS
 } from '../../constants/messages.js';
 
 export const MAX_FRIENDS_COUNT = 1000;
 
-export const rolesList = ['admin', 'endUser', 'superadmin', 'driver', 'partneradmin'];
+export const rolesList = ['admin', 'endUser', 'superadmin', 'driver', 'partneradmin', 'organizationadmin'];
 
 export const roles = {
   admin: 'admin',
   endUser: 'endUser',
   superadmin: 'superadmin',
   partnerAdmin: 'partneradmin',
-  driver: 'driver'
+  driver: 'driver',
+  organizationAdmin: 'organizationadmin'
 };
 
 export class User {
@@ -48,14 +48,6 @@ export class User {
     }
 
     this.username = username;
-  }
-
-  setRole(role) {
-    if (!rolesList.includes(role)) {
-      throw new Error(INVALID_ROLE);
-    }
-
-    this.role = role;
   }
 
   setAvatar(avatar) {

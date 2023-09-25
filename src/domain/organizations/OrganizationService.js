@@ -116,6 +116,14 @@ export class OrganizationService {
         }
       });
     }
+    if (reqUser.role === roles.organizationAdmin) {
+      const loggedUser = await this.adminsRepo.getOne(reqUser.id);
+      return this.partnerRepo.getAll(page || 1, {
+        where: {
+          organizationId: loggedUser.organization.id
+        }
+      });
+    }
     return this.partnerRepo.getAllByAdmin(page || 1, reqUser.id);
   }
 
@@ -129,6 +137,11 @@ export class OrganizationService {
 
     if (reqUser.role === roles.admin && reqUser.region !== entity.region.id) {
       throw new ForbiddenError(INVALID_REGION);
+    }
+    const loggedUser = await this.adminsRepo.getOne(reqUser.id);
+    if (reqUser.role === roles.organizationAdmin
+      && loggedUser.organization.id !== entity.organizationId) {
+      throw new ApiError('Admin not from organization!');
     }
 
     return entity;

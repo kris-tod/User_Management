@@ -3,10 +3,12 @@ import { DataTypes, Model } from 'sequelize';
 export default (sequelize) => {
   class Organization extends Model {
     static associate({
-      Partner
+      Partner, Admin
     }) {
       Organization.hasMany(Partner);
       Partner.belongsTo(Organization);
+      Organization.hasMany(Admin);
+      Admin.belongsTo(Organization);
     }
   }
 

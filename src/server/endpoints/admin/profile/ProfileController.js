@@ -8,10 +8,10 @@ export class ProfileController extends BaseController {
   }
 
   serializeEntity({
-    id, username, email, region
+    id, username, email, region, organization
   }) {
     return {
-      id, username, email, region
+      id, username, email, region, organization
     };
   }
 

@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import { Driver as DriverModel, Region, Partner } from '../../db/index.js';
 import { BaseRepo, MAX_PER_PAGE } from '../../utils/BaseRepo.js';
 import { NotFoundError } from '../../utils/errors.js';
@@ -5,11 +6,13 @@ import { PartnerRepository } from '../partners/PartnerRepository.js';
 import { RegionRepository } from '../region/RegionRepository.js';
 import { Driver } from './Driver.js';
 import { DRIVER_NOT_FOUND } from '../../constants/messages.js';
+import { AdminRepository } from '../admin/AdminRepository.js';
 
 export class DriverRepository extends BaseRepo {
   constructor() {
     super(DriverModel);
     this.regionRepo = new RegionRepository();
+    this.adminRepo = new AdminRepository();
     this.partnerRepo = new PartnerRepository();
   }
 
@@ -37,7 +40,7 @@ export class DriverRepository extends BaseRepo {
       offset: entitiesPerPage * (page - 1),
       include: [
         { model: Region, required: false },
-        { model: Partner, required: false }
+        { model: Partner, as: 'partner', required: false }
       ],
       ...options
     });
@@ -48,6 +51,31 @@ export class DriverRepository extends BaseRepo {
       limit: entitiesPerPage,
       offset: entitiesPerPage * (page - 1)
     };
+  }
+
+  async getAllByOrganizationAdmin(page, adminId, order = ['name'], options = {}, entitiesPerPage = MAX_PER_PAGE) {
+    const admin = await this.adminRepo.getOne(adminId);
+    return this.getAll(page, order, {
+      where: {
+        '$partner.organizationId$': admin.organization.id
+      },
+      ...options
+    }, entitiesPerPage);
+  }
+
+  async getAllByPartnerAdmin(page, adminId, order = ['name'], options = {}, entitiesPerPage = MAX_PER_PAGE) {
+    const partnersIds = (await this.partnerRepo
+      .getAllByAdmin(page, adminId, order, options, entitiesPerPage))
+      .data
+      .map((partner) => partner.id);
+
+    return this.getAll(page, order, {
+      where: {
+        partnerId: {
+          [Op.in]: partnersIds
+        }
+      }
+    }, entitiesPerPage);
   }
 
   async getOne(id, options = {}) {

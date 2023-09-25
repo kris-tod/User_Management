@@ -13,6 +13,7 @@ import PasswordService from '../../services/passwordService.js';
 import { roles } from '../user/User.js';
 import { TokenBlacklistRepository } from '../user/tokenBlacklist/TokenBlacklistRepository.js';
 import { RegionRepository } from '../region/RegionRepository.js';
+import { OrganizationRepository } from '../organizations/OrganizationRepository.js';
 import { Admin } from './Admin.js';
 
 export class AdminService {
@@ -21,6 +22,7 @@ export class AdminService {
     this.adminRepo = new AdminRepository();
     this.tokenBlacklistRepo = new TokenBlacklistRepository();
     this.regionRepo = new RegionRepository();
+    this.organizationRepo = new OrganizationRepository();
   }
 
   async getAll(pageParam) {
@@ -48,21 +50,26 @@ export class AdminService {
   }
 
   async adminFactory({
-    username, password, email, regionId, role
+    username, password, email, regionId, role, organizationId
   }) {
     const region = await this.regionRepo.getOne(regionId);
+    let organization = null;
+    if (organizationId) {
+      organization = await this.organizationRepo.getOne(organizationId);
+    }
     return new Admin(
       undefined,
       username,
       password,
       role,
       region,
-      email
+      email,
+      organization
     );
   }
 
   async create({
-    username, password, email, regionId, role
+    username, password, email, regionId, role, organizationId
   }, reqUser = {}) {
     this.logger.log('info', 'create user');
 
@@ -70,10 +77,14 @@ export class AdminService {
       throw new ApiError(ADMIN_NOT_SUPERADMIN);
     }
 
+    if (organizationId && role !== roles.organizationAdmin) {
+      throw new ApiError('Role not organizationadmin!');
+    }
+
     const hash = await PasswordService.hashPassword(password);
 
     const admin = await this.adminFactory({
-      username, password: hash, email, regionId, role
+      username, password: hash, email, regionId, role, organizationId
     });
 
     await this.adminRepo.create(admin);

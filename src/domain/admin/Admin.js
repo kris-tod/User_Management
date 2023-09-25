@@ -1,4 +1,4 @@
-export const adminRoles = ['admin', 'superadmin', 'partneradmin'];
+export const adminRoles = ['admin', 'superadmin', 'partneradmin', 'organizationadmin'];
 
 export class Admin {
   constructor(
@@ -7,7 +7,8 @@ export class Admin {
     password,
     role = 'admin',
     region = null,
-    email = ''
+    email = '',
+    organization = null
   ) {
     this.id = id;
     this.username = username;
@@ -15,6 +16,7 @@ export class Admin {
     this.setRole(role);
     this.region = region;
     this.email = email;
+    this.organization = organization;
   }
 
   setRole(role) {

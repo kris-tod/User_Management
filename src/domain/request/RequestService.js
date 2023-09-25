@@ -10,6 +10,7 @@ import {
   ADMIN_NOT_PARTNER_ADMIN, INVALID_REGION, USER_NOT_ADMIN, USER_NOT_END_USER
 } from '../../constants/messages.js';
 import { UserRepository } from '../user/UserRepository.js';
+import { AdminRepository } from '../admin/AdminRepository.js';
 
 export class RequestService {
   constructor(logger) {
@@ -20,6 +21,7 @@ export class RequestService {
     this.driverRepo = new DriverRepository();
     this.carRepo = new CarRepository();
     this.userRepo = new UserRepository();
+    this.adminRepo = new AdminRepository();
   }
 
   async requestFactory({
@@ -67,6 +69,9 @@ export class RequestService {
     if (reqUser.role === roles.endUser) {
       return this.requestRepo.getAllByUser(page || 1, reqUser.id);
     }
+    if (reqUser.role === roles.organizationAdmin) {
+      return this.requestRepo.getAllByOrganizationAdmin(page || 1, reqUser.id);
+    }
     return this.requestRepo.getAllByDriver(page || 1, reqUser.id);
   }
 
@@ -95,6 +100,13 @@ export class RequestService {
     if (reqUser.role === roles.driver) {
       if (entity.driver.id !== reqUser.id) {
         throw new ApiError('Request does not belong to driver!');
+      }
+    }
+
+    if (reqUser.role === roles.organizationAdmin) {
+      const loggedUser = await this.adminRepo.getOne(reqUser.id);
+      if (loggedUser.organization.id !== entity.partner.organizationId) {
+        throw new ApiError('Request does not belong to organization!');
       }
     }
 

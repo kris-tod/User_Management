@@ -8,10 +8,12 @@ import {
 import { Request } from './Request.js';
 import { ENTITY_NOT_FOUND } from '../../constants/messages.js';
 import { NotFoundError } from '../../utils/errors.js';
+import { AdminRepository } from '../admin/AdminRepository.js';
 
 export class RequestRepository extends BaseRepo {
   constructor() {
     super(RequestModel);
+    this.adminRepo = new AdminRepository();
   }
 
   generateId() {
@@ -41,7 +43,7 @@ export class RequestRepository extends BaseRepo {
       order,
       limit: entitiesPerPage,
       offset: entitiesPerPage * (page - 1),
-      include: [Partner, Driver, Car, CarSupportService],
+      include: [{ model: Partner, as: 'partner' }, Driver, Car, CarSupportService],
       ...options
     });
 
@@ -108,6 +110,16 @@ export class RequestRepository extends BaseRepo {
         carId: {
           [Op.in]: carsIds
         }
+      },
+      ...options
+    }, entitiesPerPage);
+  }
+
+  async getAllByOrganizationAdmin(page, adminId, order = ['id'], options = {}, entitiesPerPage = MAX_PER_PAGE) {
+    const admin = await this.adminRepo.getOne(adminId);
+    return this.getAll(page, order, {
+      where: {
+        '$partner.organizationId$': admin.organization.id
       },
       ...options
     }, entitiesPerPage);
