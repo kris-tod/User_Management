@@ -64,7 +64,10 @@ export class RequestService {
     if (reqUser.role === roles.partnerAdmin) {
       return this.requestRepo.getAllByAdmin(page || 1, reqUser.id);
     }
-    return this.requestRepo.getAllByUser(page || 1, reqUser.id);
+    if (reqUser.role === roles.endUser) {
+      return this.requestRepo.getAllByUser(page || 1, reqUser.id);
+    }
+    return this.requestRepo.getAllByDriver(page || 1, reqUser.id);
   }
 
   async getOne(id, reqUser) {
@@ -86,6 +89,12 @@ export class RequestService {
       const user = await this.userRepo.getOne(reqUser.id);
       if (!user.cars.find((car) => car.id === entity.car.id)) {
         throw new ApiError('Request does not belong to user!');
+      }
+    }
+
+    if (reqUser.role === roles.driver) {
+      if (entity.driver.id !== reqUser.id) {
+        throw new ApiError('Request does not belong to driver!');
       }
     }
 
@@ -146,6 +155,9 @@ export class RequestService {
     }
 
     if (reqUser.role === roles.endUser) {
+      if (updatedData.status) {
+        throw new ApiError('Users cannot update status!');
+      }
       const user = await this.userRepo.getOne(reqUser.id);
       if (!user.cars.find((car) => car.id === request.car.id)) {
         throw new ApiError('Request does not belong to user!');
@@ -156,6 +168,12 @@ export class RequestService {
       const partner = await this.partnerRepo.getOne(request.partner.id);
       if (!partner.admins.find((admin) => admin.id === reqUser.id)) {
         throw new ApiError(ADMIN_NOT_PARTNER_ADMIN);
+      }
+    }
+
+    if (reqUser.role === roles.driver) {
+      if (!updatedData.status || Object.keys(updatedData).length > 1) {
+        throw new ApiError('Drivers only can update request status!');
       }
     }
 

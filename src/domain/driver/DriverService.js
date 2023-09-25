@@ -85,7 +85,8 @@ export class DriverService {
     const token = createToken({
       id: entity.id,
       app: apps.driver,
-      region: (entity.region ? entity.region.id : null)
+      region: (entity.region ? entity.region.id : null),
+      role: roles.driver
     });
 
     return {

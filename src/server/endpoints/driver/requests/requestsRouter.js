@@ -4,20 +4,20 @@ import {
   isAuth,
   isTokenNew,
   isFromApp
-} from '../../../../middlewares/index.js';
-import { apps } from '../../../../../constants/apps.js';
+} from '../../../middlewares/index.js';
+import { apps } from '../../../../constants/apps.js';
 
 export const createRequestsRouter = (logger) => {
   const router = express.Router();
   const requestsController = new RequestsController(logger);
   const {
-    getMany, getOne, create, update, destroy
+    getMany, getOne, update
   } = requestsController.createRouterHandlers();
 
   router.get(
     '/',
     isAuth,
-    isFromApp(apps.mobile),
+    isFromApp(apps.driver),
     isTokenNew(logger),
     getMany
   );
@@ -25,33 +25,17 @@ export const createRequestsRouter = (logger) => {
   router.get(
     '/:id',
     isAuth,
-    isFromApp(apps.mobile),
+    isFromApp(apps.driver),
     isTokenNew(logger),
     getOne
-  );
-
-  router.post(
-    '/',
-    isAuth,
-    isFromApp(apps.mobile),
-    isTokenNew(logger),
-    create
   );
 
   router.patch(
     '/:id',
     isAuth,
-    isFromApp(apps.mobile),
+    isFromApp(apps.driver),
     isTokenNew(logger),
     update
-  );
-
-  router.delete(
-    '/:id',
-    isAuth,
-    isFromApp(apps.mobile),
-    isTokenNew(logger),
-    destroy
   );
 
   return router;

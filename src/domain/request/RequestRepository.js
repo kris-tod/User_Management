@@ -113,6 +113,15 @@ export class RequestRepository extends BaseRepo {
     }, entitiesPerPage);
   }
 
+  async getAllByDriver(page, driverId, order = ['id'], options = {}, entitiesPerPage = MAX_PER_PAGE) {
+    return this.getAll(page, order, {
+      where: {
+        driverId
+      },
+      ...options
+    }, entitiesPerPage);
+  }
+
   async getOne(id, options = {}) {
     const entity = await this.dbClient.findByPk(id, {
       include: [{ model: Partner, include: [Region] }, Driver, Car, CarSupportService],
