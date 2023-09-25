@@ -5006,7 +5006,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"SofiaDriver\",\n    \"password\": \"driver123\"\n}",
+									"raw": "{\n    \"username\": \"Sofia driver\",\n    \"password\": \"driver123\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -5122,6 +5122,243 @@
 										}
 									]
 								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "requests",
+					"item": [
+						{
+							"name": "requests",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/driver/requests",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"driver",
+										"requests"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/driver/requests",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"driver",
+												"requests"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "2805"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"af5-2otHawb2T2zsE5r3EpSSMaMZf4o\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 25 Sep 2023 12:47:00 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"total\": 2,\n    \"data\": [\n        {\n            \"id\": \"9b674d5b-3e4c-4499-96e8-71e5a1c8f349\",\n            \"address\": \"Somewhere\",\n            \"carCoordinates\": \"1,2\",\n            \"partner\": {\n                \"id\": 3,\n                \"name\": \"Kriskata\",\n                \"logo\": \"http://localhost:4000/default_partner_image.jpg\",\n                \"description\": \"Nice partner!\",\n                \"address\": \"Somewhere in Plovdiv\",\n                \"coordinates\": \"1.5,2.5\",\n                \"phone\": \"0895209415\",\n                \"contactPerson\": \"Milen\",\n                \"organizationId\": 1,\n                \"regionId\": 1,\n                \"subscriptionPlanId\": 1\n            },\n            \"service\": {\n                \"id\": 2,\n                \"name\": \"Car wash\",\n                \"description\": \"Nothing unusual\",\n                \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n                \"isRegionDefault\": false,\n                \"isPromoted\": true,\n                \"regionId\": 1\n            },\n            \"car\": {\n                \"id\": 1,\n                \"idNumber\": \"CB3723MK\",\n                \"image\": \"http://localhost:4000/default_car_image.jpg\",\n                \"brand\": \"Volkswagen Caddy Life\",\n                \"kilometers\": 285000,\n                \"engineType\": \"gasoline\",\n                \"yearOfProduction\": 2008,\n                \"frameNumber\": \"1\",\n                \"technicalReviewExpiration\": null,\n                \"civilEnsuranceExpiration\": null,\n                \"vignetteExpiration\": null,\n                \"autoEnsuranceExpiration\": null,\n                \"leasingExpiration\": null,\n                \"comment\": \"This is a very cool car!!!\",\n                \"vehicleType\": null\n            },\n            \"driver\": {\n                \"id\": 1,\n                \"name\": \"Sofia driver\",\n                \"password\": \"$2b$10$ML7MMjQd2/nsT2j9DlkELeZYnWIwm7kBoTCRom8PM4Y1LxnncYsWq\",\n                \"avatar\": \"http://localhost:4000/default_driver_image.jpg\",\n                \"description\": \"A student working for a living.\",\n                \"number\": 1,\n                \"pushNotificationsToken\": \"token\",\n                \"signature\": \"signature\",\n                \"partnerId\": 3,\n                \"regionId\": 1\n            },\n            \"driveAlone\": true,\n            \"status\": \"pending\",\n            \"serialNumber\": 7,\n            \"notes\": \"\"\n        },\n        {\n            \"id\": \"b8139513-e067-48c7-98b4-7261cd02f7c3\",\n            \"address\": \"Somewhere\",\n            \"carCoordinates\": \"1,2\",\n            \"partner\": {\n                \"id\": 3,\n                \"name\": \"Kriskata\",\n                \"logo\": \"http://localhost:4000/default_partner_image.jpg\",\n                \"description\": \"Nice partner!\",\n                \"address\": \"Somewhere in Plovdiv\",\n                \"coordinates\": \"1.5,2.5\",\n                \"phone\": \"0895209415\",\n                \"contactPerson\": \"Milen\",\n                \"organizationId\": 1,\n                \"regionId\": 1,\n                \"subscriptionPlanId\": 1\n            },\n            \"service\": {\n                \"id\": 1,\n                \"name\": \"Technical review\",\n                \"description\": \"Nothing unusual\",\n                \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n                \"isRegionDefault\": false,\n                \"isPromoted\": true,\n                \"regionId\": 1\n            },\n            \"car\": {\n                \"id\": 1,\n                \"idNumber\": \"CB3723MK\",\n                \"image\": \"http://localhost:4000/default_car_image.jpg\",\n                \"brand\": \"Volkswagen Caddy Life\",\n                \"kilometers\": 285000,\n                \"engineType\": \"gasoline\",\n                \"yearOfProduction\": 2008,\n                \"frameNumber\": \"1\",\n                \"technicalReviewExpiration\": null,\n                \"civilEnsuranceExpiration\": null,\n                \"vignetteExpiration\": null,\n                \"autoEnsuranceExpiration\": null,\n                \"leasingExpiration\": null,\n                \"comment\": \"This is a very cool car!!!\",\n                \"vehicleType\": null\n            },\n            \"driver\": {\n                \"id\": 1,\n                \"name\": \"Sofia driver\",\n                \"password\": \"$2b$10$ML7MMjQd2/nsT2j9DlkELeZYnWIwm7kBoTCRom8PM4Y1LxnncYsWq\",\n                \"avatar\": \"http://localhost:4000/default_driver_image.jpg\",\n                \"description\": \"A student working for a living.\",\n                \"number\": 1,\n                \"pushNotificationsToken\": \"token\",\n                \"signature\": \"signature\",\n                \"partnerId\": 3,\n                \"regionId\": 1\n            },\n            \"driveAlone\": true,\n            \"status\": \"accepted\",\n            \"serialNumber\": 5,\n            \"notes\": \"The car is in front of the flat enterance\"\n        }\n    ],\n    \"limit\": 5,\n    \"offset\": 0\n}"
+								}
+							]
+						},
+						{
+							"name": "edit request",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"car_at_service\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/driver/requests/9b674d5b-3e4c-4499-96e8-71e5a1c8f349",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"driver",
+										"requests",
+										"9b674d5b-3e4c-4499-96e8-71e5a1c8f349"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"status\": \"car_at_service\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/driver/requests/9b674d5b-3e4c-4499-96e8-71e5a1c8f349",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"driver",
+												"requests",
+												"9b674d5b-3e4c-4499-96e8-71e5a1c8f349"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "27"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"1b-kjTtNdY14Wqn4K0pTCh3ETJNqc0\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 25 Sep 2023 12:48:06 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"status\": \"car_at_service\"\n}"
+								},
+								{
+									"name": "fail",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"status\": \"car_at_service\",\n    \"driver\": 2\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/driver/requests/9b674d5b-3e4c-4499-96e8-71e5a1c8f349",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"driver",
+												"requests",
+												"9b674d5b-3e4c-4499-96e8-71e5a1c8f349"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "66"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"42-04RmlpVzJBqYAikTaoDjVXJa9fQ\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 25 Sep 2023 12:48:35 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"message\": \"Drivers only can update request status!\",\n    \"status\": 400\n}"
+								}
+							]
+						},
+						{
+							"name": "get request",
+							"request": {
+								"method": "GET",
+								"header": []
 							},
 							"response": []
 						}
