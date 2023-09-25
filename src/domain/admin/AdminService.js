@@ -48,21 +48,21 @@ export class AdminService {
   }
 
   async adminFactory({
-    username, password, email, regionId
+    username, password, email, regionId, role
   }) {
     const region = await this.regionRepo.getOne(regionId);
     return new Admin(
       undefined,
       username,
       password,
-      roles.admin,
+      role,
       region,
       email
     );
   }
 
   async create({
-    username, password, email, regionId
+    username, password, email, regionId, role
   }, reqUser = {}) {
     this.logger.log('info', 'create user');
 
@@ -73,7 +73,7 @@ export class AdminService {
     const hash = await PasswordService.hashPassword(password);
 
     const admin = await this.adminFactory({
-      username, password: hash, email, regionId
+      username, password: hash, email, regionId, role
     });
 
     await this.adminRepo.create(admin);

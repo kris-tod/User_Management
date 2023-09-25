@@ -109,15 +109,26 @@ export class OrganizationService {
     if (reqUser.role === roles.superadmin) {
       return this.partnerRepo.getAll(page);
     }
+    if (reqUser.role === roles.admin) {
+      return this.partnerRepo.getAll(page || 1, {
+        where: {
+          regionId: reqUser.region
+        }
+      });
+    }
     return this.partnerRepo.getAllByAdmin(page || 1, reqUser.id);
   }
 
   async getOnePartner(id, reqUser) {
     const entity = await this.partnerRepo.getOne(id);
 
-    if (reqUser.role === roles.admin && !entity.admins
+    if (reqUser.role === roles.partnerAdmin && !entity.admins
       .find((admin) => admin.id === reqUser.id)) {
       throw new ForbiddenError(ADMIN_NOT_PARTNER_ADMIN);
+    }
+
+    if (reqUser.role === roles.admin && reqUser.region !== entity.region.id) {
+      throw new ForbiddenError(INVALID_REGION);
     }
 
     return entity;
@@ -136,7 +147,6 @@ export class OrganizationService {
     services,
     organizationId
   }) {
-    console.log(regionId);
     const subscriptionPlan = await this.subscriptionPlanRepo.getOne(subscriptionPlanId);
     const partnerAdmins = await this.adminsRepo.getAllByIds(admins);
     const partnerServices = await this.servicesRepo.getAllByIds(services);
@@ -184,6 +194,10 @@ export class OrganizationService {
 
     if (partnerAdmins.some((admin) => admin.region.id !== data.regionId)) {
       throw new ApiError('Invalid region!');
+    }
+
+    if (partnerAdmins.some((admin) => admin.role !== roles.partnerAdmin)) {
+      throw new ApiError('Invalid partner admins!');
     }
 
     const subscriptionPlan = await this.subscriptionPlanRepo.getOne(data.subscriptionPlanId);
@@ -258,6 +272,14 @@ export class OrganizationService {
       if (partnerAdmins.length !== updatedData.admins.length) {
         throw new ApiError('Invalid partner admins!');
       }
+
+      if (partnerAdmins.some((admin) => admin.region.id !== partner.region.id)) {
+        throw new ApiError('Invalid region!');
+      }
+
+      if (partnerAdmins.some((admin) => admin.role !== roles.partnerAdmin)) {
+        throw new ApiError('Invalid partner admins!');
+      }
     }
 
     return sequelize.transaction(async (t) => {
@@ -280,9 +302,13 @@ export class OrganizationService {
   async destroyPartner(id, reqUser) {
     const partner = await this.partnerRepo.getOne(id);
 
-    if (reqUser.role === roles.admin && !partner.partnerAdmins
+    if (reqUser.role === roles.partnerAdmin && !partner.partnerAdmins
       .find((admin) => admin.id === reqUser.id)) {
       throw new ForbiddenError(ADMIN_NOT_PARTNER_ADMIN);
+    }
+
+    if (reqUser.role === roles.admin && reqUser.region !== partner.region.id) {
+      throw new ForbiddenError(INVALID_REGION);
     }
 
     return this.partnerRepo.destroy(id);
@@ -291,9 +317,13 @@ export class OrganizationService {
   async updatePartnerLogo(id, file, reqUser) {
     const partner = await this.partnerRepo.getOne(id);
 
-    if (reqUser.role === roles.admin && !partner.partnerAdmins
+    if (reqUser.role === roles.partnerAdmin && !partner.partnerAdmins
       .find((admin) => admin.id === reqUser.id)) {
       throw new ForbiddenError(ADMIN_NOT_PARTNER_ADMIN);
+    }
+
+    if (reqUser.role === roles.admin && reqUser.region !== partner.region.id) {
+      throw new ForbiddenError(INVALID_REGION);
     }
 
     const t = await sequelize.transaction();

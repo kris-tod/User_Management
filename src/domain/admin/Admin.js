@@ -1,4 +1,4 @@
-export const adminRoles = ['admin', 'superadmin'];
+export const adminRoles = ['admin', 'superadmin', 'partneradmin'];
 
 export class Admin {
   constructor(
