@@ -857,6 +857,300 @@
 					"name": "Profile info",
 					"item": [
 						{
+							"name": "requests",
+							"item": [
+								{
+									"name": "user requests",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/profile/requests",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"profile",
+												"requests"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "success",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/profile/requests",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"profile",
+														"requests"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "X-Powered-By",
+													"value": "Express"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json; charset=utf-8"
+												},
+												{
+													"key": "Content-Length",
+													"value": "1407"
+												},
+												{
+													"key": "ETag",
+													"value": "W/\"57f-y3B4pVEqC6XgQO/3jfhBbk0/RM4\""
+												},
+												{
+													"key": "Date",
+													"value": "Mon, 25 Sep 2023 12:09:08 GMT"
+												},
+												{
+													"key": "Connection",
+													"value": "keep-alive"
+												},
+												{
+													"key": "Keep-Alive",
+													"value": "timeout=5"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"total\": 1,\n    \"data\": [\n        {\n            \"id\": \"b8139513-e067-48c7-98b4-7261cd02f7c3\",\n            \"address\": \"Somewhere\",\n            \"carCoordinates\": \"1,2\",\n            \"partner\": {\n                \"id\": 3,\n                \"name\": \"Kriskata\",\n                \"logo\": \"http://localhost:4000/default_partner_image.jpg\",\n                \"description\": \"Nice partner!\",\n                \"address\": \"Somewhere in Plovdiv\",\n                \"coordinates\": \"1.5,2.5\",\n                \"phone\": \"0895209415\",\n                \"contactPerson\": \"Milen\",\n                \"organizationId\": 1,\n                \"regionId\": 1,\n                \"subscriptionPlanId\": 1\n            },\n            \"service\": {\n                \"id\": 1,\n                \"name\": \"Technical review\",\n                \"description\": \"Nothing unusual\",\n                \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n                \"isRegionDefault\": false,\n                \"isPromoted\": true,\n                \"regionId\": 1\n            },\n            \"car\": {\n                \"id\": 1,\n                \"idNumber\": \"CB3723MK\",\n                \"image\": \"http://localhost:4000/default_car_image.jpg\",\n                \"brand\": \"Volkswagen Caddy Life\",\n                \"kilometers\": 285000,\n                \"engineType\": \"gasoline\",\n                \"yearOfProduction\": 2008,\n                \"frameNumber\": \"1\",\n                \"technicalReviewExpiration\": null,\n                \"civilEnsuranceExpiration\": null,\n                \"vignetteExpiration\": null,\n                \"autoEnsuranceExpiration\": null,\n                \"leasingExpiration\": null,\n                \"comment\": \"This is a very cool car!!!\",\n                \"vehicleType\": null\n            },\n            \"driver\": {\n                \"id\": 1,\n                \"name\": \"Sofia driver\",\n                \"password\": \"$2b$10$ML7MMjQd2/nsT2j9DlkELeZYnWIwm7kBoTCRom8PM4Y1LxnncYsWq\",\n                \"avatar\": \"http://localhost:4000/default_driver_image.jpg\",\n                \"description\": \"A student working for a living.\",\n                \"number\": 1,\n                \"pushNotificationsToken\": \"token\",\n                \"signature\": \"signature\",\n                \"partnerId\": 3,\n                \"regionId\": 1\n            },\n            \"driveAlone\": true,\n            \"status\": \"accepted\",\n            \"serialNumber\": 5,\n            \"notes\": \"\"\n        }\n    ],\n    \"limit\": 5,\n    \"offset\": 0\n}"
+										}
+									]
+								},
+								{
+									"name": "get user request",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/profile/requests/b8139513-e067-48c7-98b4-7261cd02f7c3",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"profile",
+												"requests",
+												"b8139513-e067-48c7-98b4-7261cd02f7c3"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "success",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/profile/requests/b8139513-e067-48c7-98b4-7261cd02f7c3",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"profile",
+														"requests",
+														"b8139513-e067-48c7-98b4-7261cd02f7c3"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "X-Powered-By",
+													"value": "Express"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json; charset=utf-8"
+												},
+												{
+													"key": "Content-Length",
+													"value": "1398"
+												},
+												{
+													"key": "ETag",
+													"value": "W/\"576-qRuN2bKy6XKDVc+LqOlEmP8chF8\""
+												},
+												{
+													"key": "Date",
+													"value": "Mon, 25 Sep 2023 12:10:57 GMT"
+												},
+												{
+													"key": "Connection",
+													"value": "keep-alive"
+												},
+												{
+													"key": "Keep-Alive",
+													"value": "timeout=5"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"id\": \"b8139513-e067-48c7-98b4-7261cd02f7c3\",\n    \"address\": \"Somewhere\",\n    \"carCoordinates\": \"1,2\",\n    \"partner\": {\n        \"id\": 3,\n        \"name\": \"Kriskata\",\n        \"logo\": \"http://localhost:4000/default_partner_image.jpg\",\n        \"description\": \"Nice partner!\",\n        \"address\": \"Somewhere in Plovdiv\",\n        \"coordinates\": \"1.5,2.5\",\n        \"phone\": \"0895209415\",\n        \"contactPerson\": \"Milen\",\n        \"organizationId\": 1,\n        \"regionId\": 1,\n        \"subscriptionPlanId\": 1,\n        \"region\": {\n            \"id\": 1,\n            \"name\": \"Sofia\"\n        }\n    },\n    \"service\": {\n        \"id\": 1,\n        \"name\": \"Technical review\",\n        \"description\": \"Nothing unusual\",\n        \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n        \"isRegionDefault\": false,\n        \"isPromoted\": true,\n        \"regionId\": 1\n    },\n    \"car\": {\n        \"id\": 1,\n        \"idNumber\": \"CB3723MK\",\n        \"image\": \"http://localhost:4000/default_car_image.jpg\",\n        \"brand\": \"Volkswagen Caddy Life\",\n        \"kilometers\": 285000,\n        \"engineType\": \"gasoline\",\n        \"yearOfProduction\": 2008,\n        \"frameNumber\": \"1\",\n        \"technicalReviewExpiration\": null,\n        \"civilEnsuranceExpiration\": null,\n        \"vignetteExpiration\": null,\n        \"autoEnsuranceExpiration\": null,\n        \"leasingExpiration\": null,\n        \"comment\": \"This is a very cool car!!!\",\n        \"vehicleType\": null\n    },\n    \"driver\": {\n        \"id\": 1,\n        \"name\": \"Sofia driver\",\n        \"password\": \"$2b$10$ML7MMjQd2/nsT2j9DlkELeZYnWIwm7kBoTCRom8PM4Y1LxnncYsWq\",\n        \"avatar\": \"http://localhost:4000/default_driver_image.jpg\",\n        \"description\": \"A student working for a living.\",\n        \"number\": 1,\n        \"pushNotificationsToken\": \"token\",\n        \"signature\": \"signature\",\n        \"partnerId\": 3,\n        \"regionId\": 1\n    },\n    \"driveAlone\": true,\n    \"status\": \"accepted\",\n    \"serialNumber\": 5,\n    \"notes\": \"\"\n}"
+										}
+									]
+								},
+								{
+									"name": "edit user request",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"notes\": \"The car is in front of the flat enterance\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/profile/requests/8c3be483-2d67-4a61-9b0d-8672b98d61c6",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"profile",
+												"requests",
+												"8c3be483-2d67-4a61-9b0d-8672b98d61c6"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "success",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"notes\": \"The car is in front of the flat enterance\",\n    \"partner\": 3\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/profile/requests/b8139513-e067-48c7-98b4-7261cd02f7c3",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"profile",
+														"requests",
+														"b8139513-e067-48c7-98b4-7261cd02f7c3"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "X-Powered-By",
+													"value": "Express"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json; charset=utf-8"
+												},
+												{
+													"key": "Content-Length",
+													"value": "367"
+												},
+												{
+													"key": "ETag",
+													"value": "W/\"16f-8M3naBpK8xYZgbsQ12OaBEyaxw4\""
+												},
+												{
+													"key": "Date",
+													"value": "Mon, 25 Sep 2023 12:13:46 GMT"
+												},
+												{
+													"key": "Connection",
+													"value": "keep-alive"
+												},
+												{
+													"key": "Keep-Alive",
+													"value": "timeout=5"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"notes\": \"The car is in front of the flat enterance\",\n    \"partner\": {\n        \"id\": 3,\n        \"name\": \"Kriskata\",\n        \"logo\": \"http://localhost:4000/default_partner_image.jpg\",\n        \"description\": \"Nice partner!\",\n        \"address\": \"Somewhere in Plovdiv\",\n        \"coordinates\": \"1.5,2.5\",\n        \"phone\": \"0895209415\",\n        \"contactPerson\": \"Milen\",\n        \"organizationId\": 1,\n        \"regionId\": 1,\n        \"subscriptionPlanId\": 1,\n        \"region\": {\n            \"id\": 1,\n            \"name\": \"Sofia\"\n        }\n    }\n}"
+										}
+									]
+								},
+								{
+									"name": "add user request",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"address\": \"Somewhere\",\n    \"carCoordinates\": \"1,2\",\n    \"driveAlone\": true,\n    \"partner\": 8,\n    \"service\": 1,\n    \"car\": 1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/profile/requests",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"profile",
+												"requests"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete user request",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/profile/requests/8c3be483-2d67-4a61-9b0d-8672b98d61c6",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"profile",
+												"requests",
+												"8c3be483-2d67-4a61-9b0d-8672b98d61c6"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
 							"name": "Edit user",
 							"request": {
 								"method": "PATCH",
@@ -1764,7 +2058,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"stefan\",\n    \"password\": \"enduser123\",\n    \"region\": 1\n}",
+									"raw": "{\n    \"username\": \"deni\",\n    \"password\": \"enduser123\",\n    \"region\": 1\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2404,7 +2698,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"plovdivAdmin2\",\n    \"password\": \"admin123\",\n    \"email\": \"plovdivAdmin2@gmail.com\",\n    \"regionId\": 2\n}",
+									"raw": "{\n    \"username\": \"partnerAdmin\",\n    \"password\": \"admin123\",\n    \"email\": \"partnerAdmin@gmail.com\",\n    \"regionId\": 1,\n    \"role\": \"partneradmin\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2649,7 +2943,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Jorkata\",\n    \"description\": \"Nice partner!\",\n    \"address\": \"Somewhere in Plovdiv\",\n    \"coordinates\": \"1.5,2.5\",\n    \"phone\": \"0895209415\",\n    \"contactPerson\": \"Milen\",\n    \"regionId\": 1,\n    \"subscriptionPlanId\": 1,\n    \"organizationId\": 1,\n    \"admins\": [2],\n    \"services\": [1, 2]\n    // name, logo, description, address, coordinates, phone, contactPerson,\n    // region, subscriptionPlanId, organizationId, partnersAdminsIds,\n    // carSupportServices\n}",
+									"raw": "{\n    \"name\": \"Jorkata\",\n    \"description\": \"Nice partner!\",\n    \"address\": \"Somewhere in Plovdiv\",\n    \"coordinates\": \"1.5,2.5\",\n    \"phone\": \"0895209415\",\n    \"contactPerson\": \"Milen\",\n    \"regionId\": 1,\n    \"subscriptionPlanId\": 1,\n    \"organizationId\": 1,\n    \"admins\": [6],\n    \"services\": [1, 2]\n    // name, logo, description, address, coordinates, phone, contactPerson,\n    // region, subscriptionPlanId, organizationId, partnersAdminsIds,\n    // carSupportServices\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2749,7 +3043,7 @@
 									"variable": [
 										{
 											"key": "partnerId",
-											"value": "2"
+											"value": "9"
 										}
 									]
 								}
@@ -3045,6 +3339,58 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"total\": 2,\n    \"limit\": 5,\n    \"offset\": 0,\n    \"data\": [\n        {\n            \"id\": 4,\n            \"name\": \"Something\",\n            \"description\": \"Nothing unusual\",\n            \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n            \"region\": \"Sofia\",\n            \"isRegionDefault\": false,\n            \"isPromoted\": false\n        },\n        {\n            \"id\": 1,\n            \"name\": \"Car repair\",\n            \"description\": \"Nothing unusual\",\n            \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n            \"region\": \"Sofia\",\n            \"isRegionDefault\": true,\n            \"isPromoted\": false\n        }\n    ]\n}"
+								},
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/admin/services",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"admin",
+												"services"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1060"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"424-oLZCN9O5gViKPXfAt2W4KisI+NE\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 25 Sep 2023 11:03:10 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"total\": 5,\n    \"data\": [\n        {\n            \"id\": 2,\n            \"name\": \"Car wash\",\n            \"description\": \"Nothing unusual\",\n            \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n            \"region\": {\n                \"id\": 1,\n                \"name\": \"Sofia\"\n            },\n            \"isRegionDefault\": false,\n            \"isPromoted\": true\n        },\n        {\n            \"id\": 5,\n            \"name\": \"Car wash\",\n            \"description\": \"Nothing unusual\",\n            \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n            \"region\": {\n                \"id\": 1,\n                \"name\": \"Sofia\"\n            },\n            \"isRegionDefault\": false,\n            \"isPromoted\": true\n        },\n        {\n            \"id\": 1,\n            \"name\": \"Technical review\",\n            \"description\": \"Nothing unusual\",\n            \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n            \"region\": {\n                \"id\": 1,\n                \"name\": \"Sofia\"\n            },\n            \"isRegionDefault\": false,\n            \"isPromoted\": true\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Car clean\",\n            \"description\": \"Nothing unusual\",\n            \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n            \"region\": {\n                \"id\": 1,\n                \"name\": \"Sofia\"\n            },\n            \"isRegionDefault\": false,\n            \"isPromoted\": false\n        },\n        {\n            \"id\": 4,\n            \"name\": \"Car clean 2\",\n            \"description\": \"Nothing unusual\",\n            \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n            \"region\": {\n                \"id\": 1,\n                \"name\": \"Sofia\"\n            },\n            \"isRegionDefault\": false,\n            \"isPromoted\": false\n        }\n    ],\n    \"limit\": 5,\n    \"offset\": 0\n}"
 								}
 							]
 						},
@@ -4428,6 +4774,218 @@
 										"1"
 									]
 								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "requests",
+					"item": [
+						{
+							"name": "requests",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/requests",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"requests"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"address\": \"Somewhere\",\n    \"carCoordinates\": \"1,2\",\n    \"driveAlone\": true,\n    \"partner\": 3,\n    \"service\": 2,\n    \"car\": 1,\n    \"driver\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/requests",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"requests"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"address\": \"Somewhere\",\n    \"carCoordinates\": \"1,2\",\n    \"driveAlone\": true,\n    \"partner\": 3,\n    \"service\": 2,\n    \"car\": 1,\n    \"driver\": 1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/admin/requests",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"admin",
+												"requests"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "218"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"da-OKZvIzbhQ2uKD4FsGr8vGE+KeXc\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 25 Sep 2023 12:28:37 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"id\": \"9b674d5b-3e4c-4499-96e8-71e5a1c8f349\",\n    \"address\": \"Somewhere\",\n    \"carCoordinates\": \"1,2\",\n    \"partnerId\": 3,\n    \"carId\": 1,\n    \"driverId\": 1,\n    \"carSupportServiceId\": 2,\n    \"driveAlone\": true,\n    \"serialNumber\": 7,\n    \"status\": \"pending\",\n    \"notes\": null\n}"
+								}
+							]
+						},
+						{
+							"name": "get request",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/requests/b8139513-e067-48c7-98b4-7261cd02f7c3",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"requests",
+										"b8139513-e067-48c7-98b4-7261cd02f7c3"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/admin/requests/b8139513-e067-48c7-98b4-7261cd02f7c3",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"admin",
+												"requests",
+												"b8139513-e067-48c7-98b4-7261cd02f7c3"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "1398"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"576-qRuN2bKy6XKDVc+LqOlEmP8chF8\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 25 Sep 2023 11:44:24 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"id\": \"b8139513-e067-48c7-98b4-7261cd02f7c3\",\n    \"address\": \"Somewhere\",\n    \"carCoordinates\": \"1,2\",\n    \"partner\": {\n        \"id\": 3,\n        \"name\": \"Kriskata\",\n        \"logo\": \"http://localhost:4000/default_partner_image.jpg\",\n        \"description\": \"Nice partner!\",\n        \"address\": \"Somewhere in Plovdiv\",\n        \"coordinates\": \"1.5,2.5\",\n        \"phone\": \"0895209415\",\n        \"contactPerson\": \"Milen\",\n        \"organizationId\": 1,\n        \"regionId\": 1,\n        \"subscriptionPlanId\": 1,\n        \"region\": {\n            \"id\": 1,\n            \"name\": \"Sofia\"\n        }\n    },\n    \"service\": {\n        \"id\": 1,\n        \"name\": \"Technical review\",\n        \"description\": \"Nothing unusual\",\n        \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n        \"isRegionDefault\": false,\n        \"isPromoted\": true,\n        \"regionId\": 1\n    },\n    \"car\": {\n        \"id\": 1,\n        \"idNumber\": \"CB3723MK\",\n        \"image\": \"http://localhost:4000/default_car_image.jpg\",\n        \"brand\": \"Volkswagen Caddy Life\",\n        \"kilometers\": 285000,\n        \"engineType\": \"gasoline\",\n        \"yearOfProduction\": 2008,\n        \"frameNumber\": \"1\",\n        \"technicalReviewExpiration\": null,\n        \"civilEnsuranceExpiration\": null,\n        \"vignetteExpiration\": null,\n        \"autoEnsuranceExpiration\": null,\n        \"leasingExpiration\": null,\n        \"comment\": \"This is a very cool car!!!\",\n        \"vehicleType\": null\n    },\n    \"driver\": {\n        \"id\": 1,\n        \"name\": \"Sofia driver\",\n        \"password\": \"$2b$10$ML7MMjQd2/nsT2j9DlkELeZYnWIwm7kBoTCRom8PM4Y1LxnncYsWq\",\n        \"avatar\": \"http://localhost:4000/default_driver_image.jpg\",\n        \"description\": \"A student working for a living.\",\n        \"number\": 1,\n        \"pushNotificationsToken\": \"token\",\n        \"signature\": \"signature\",\n        \"partnerId\": 3,\n        \"regionId\": 1\n    },\n    \"driveAlone\": true,\n    \"status\": \"accepted\",\n    \"serialNumber\": 5,\n    \"notes\": \"\"\n}"
+								}
+							]
+						},
+						{
+							"name": "delete request",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/requests/b860f7f4-3097-452c-92b6-c3c212c59197",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"requests",
+										"b860f7f4-3097-452c-92b6-c3c212c59197"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit request",
+							"request": {
+								"method": "GET",
+								"header": []
 							},
 							"response": []
 						}
