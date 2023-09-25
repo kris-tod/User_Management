@@ -1,7 +1,9 @@
+import { Op } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { BaseRepo, MAX_PER_PAGE } from '../../utils/BaseRepo.js';
 import {
-  Request as RequestModel, Partner, Driver, Car, CarSupportService, Admin, Region
+  Request as RequestModel, Partner, Driver, Car, CarSupportService, Admin, Region,
+  UserCar
 } from '../../db/index.js';
 import { Request } from './Request.js';
 import { ENTITY_NOT_FOUND } from '../../constants/messages.js';
@@ -94,6 +96,23 @@ export class RequestRepository extends BaseRepo {
     };
   }
 
+  async getAllByUser(page, userId, order = ['id'], options = {}, entitiesPerPage = MAX_PER_PAGE) {
+    const carsIds = (await UserCar.findAll({
+      where: {
+        userId
+      }
+    })).map((entity) => entity.carId);
+
+    return this.getAll(page, order, {
+      where: {
+        carId: {
+          [Op.in]: carsIds
+        }
+      },
+      ...options
+    }, entitiesPerPage);
+  }
+
   async getOne(id, options = {}) {
     const entity = await this.dbClient.findByPk(id, {
       include: [{ model: Partner, include: [Region] }, Driver, Car, CarSupportService],
@@ -114,7 +133,7 @@ export class RequestRepository extends BaseRepo {
       carCoordinates: entity.carCoordinates,
       partnerId: entity.partner.id,
       carId: entity.car.id,
-      driverId: entity.driver.id,
+      driverId: (entity.driver ? entity.driver.id : null),
       carSupportServiceId: entity.service.id,
       driveAlone: entity.driveAlone,
       serialNumber: entity.serialNumber,

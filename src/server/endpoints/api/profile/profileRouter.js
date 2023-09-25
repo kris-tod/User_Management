@@ -1,6 +1,7 @@
 import express from 'express';
 import { ProfileController } from './ProfileController.js';
 import { createCarsRouter } from './cars/carsRouter.js';
+import { createRequestsRouter } from './requests/requestsRouter.js';
 
 import {
   isAuth,
@@ -44,6 +45,7 @@ export const createProfileRouter = (logger) => {
   );
 
   router.use('/cars', createCarsRouter(logger));
+  router.use('/requests', createRequestsRouter(logger));
 
   return router;
 };

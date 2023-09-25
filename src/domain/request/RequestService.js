@@ -9,6 +9,7 @@ import { ApiError, ForbiddenError } from '../../utils/errors.js';
 import {
   ADMIN_NOT_PARTNER_ADMIN, INVALID_REGION, USER_NOT_ADMIN, USER_NOT_END_USER
 } from '../../constants/messages.js';
+import { UserRepository } from '../user/UserRepository.js';
 
 export class RequestService {
   constructor(logger) {
@@ -18,6 +19,7 @@ export class RequestService {
     this.serviceRepo = new CarSupportServiceRepository();
     this.driverRepo = new DriverRepository();
     this.carRepo = new CarRepository();
+    this.userRepo = new UserRepository();
   }
 
   async requestFactory({
@@ -32,11 +34,10 @@ export class RequestService {
     serialNumber = null,
     notes
   }) {
-    console.log(partnerId);
     const partner = await this.partnerRepo.getOne(partnerId);
     const service = await this.serviceRepo.getOne(carSupportServiceId);
     const car = await this.carRepo.getOne(carId);
-    const driver = await this.driverRepo.getOne(driverId);
+    const driver = (driverId ? await this.driverRepo.getOne(driverId) : null);
 
     return new Request(
       this.requestRepo.generateId(),
@@ -60,7 +61,10 @@ export class RequestService {
     if (reqUser.role === roles.admin) {
       return this.requestRepo.getAllByRegion(page || 1, reqUser.region);
     }
-    return this.requestRepo.getAllByAdmin(page || 1, reqUser.id);
+    if (reqUser.role === roles.partnerAdmin) {
+      return this.requestRepo.getAllByAdmin(page || 1, reqUser.id);
+    }
+    return this.requestRepo.getAllByUser(page || 1, reqUser.id);
   }
 
   async getOne(id, reqUser) {
@@ -78,6 +82,13 @@ export class RequestService {
       }
     }
 
+    if (reqUser.role === roles.endUser) {
+      const user = await this.userRepo.getOne(reqUser.id);
+      if (!user.cars.find((car) => car.id === entity.car.id)) {
+        throw new ApiError('Request does not belong to user!');
+      }
+    }
+
     return entity;
   }
 
@@ -91,10 +102,22 @@ export class RequestService {
       throw new ApiError(ADMIN_NOT_PARTNER_ADMIN);
     }
 
-    const driver = await this.driverRepo.getOne(data.driver);
+    if (reqUser.role === roles.endUser) {
+      if (data.driver) {
+        throw new ApiError('User cannot set request driver!');
+      }
+      const user = await this.userRepo.getOne(reqUser.id);
+      if (!user.cars.find((car) => car.id === data.car)) {
+        throw new ApiError('Car does not belong to user!');
+      }
+    }
 
-    if (driver.partner.id !== partner.id) {
-      throw new ApiError('Driver is not from the partner\'s drivers!');
+    if (reqUser.role !== roles.endUser) {
+      const driver = await this.driverRepo.getOne(data.driver);
+
+      if (driver.partner.id !== partner.id) {
+        throw new ApiError('Driver is not from the partner\'s drivers!');
+      }
     }
 
     if (!partner.services.find((partnerService) => partnerService.id === data.service)) {
@@ -112,13 +135,20 @@ export class RequestService {
         throw new ForbiddenError(USER_NOT_END_USER);
       }
     }
-    else if (updatedData.driverId) {
+    else if (updatedData.driver) {
       throw new ForbiddenError(USER_NOT_ADMIN);
     }
 
     if (reqUser.role === roles.admin) {
       if (request.partner.region.id !== reqUser.region) {
         throw new ApiError(INVALID_REGION);
+      }
+    }
+
+    if (reqUser.role === roles.endUser) {
+      const user = await this.userRepo.getOne(reqUser.id);
+      if (!user.cars.find((car) => car.id === request.car.id)) {
+        throw new ApiError('Request does not belong to user!');
       }
     }
 
@@ -149,6 +179,13 @@ export class RequestService {
       const partner = await this.partnerRepo.getOne(request.partner.id);
       if (!partner.admins.find((admin) => admin.id === reqUser.id)) {
         throw new ApiError(ADMIN_NOT_PARTNER_ADMIN);
+      }
+    }
+
+    if (reqUser.role === roles.endUser) {
+      const user = await this.userRepo.getOne(reqUser.id);
+      if (!user.cars.find((car) => car.id === request.car.id)) {
+        throw new ApiError('Request does not belong to user!');
       }
     }
 
