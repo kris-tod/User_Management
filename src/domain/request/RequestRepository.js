@@ -85,7 +85,7 @@ export class RequestRepository extends BaseRepo {
       limit: entitiesPerPage,
       offset: entitiesPerPage * (page - 1),
       include: [ // TODO
-        { model: Partner, include: [{ model: Admin, as: 'admin' }] },
+        { model: Partner, include: [{ model: Admin, as: 'admins' }] },
         Driver, Car, CarSupportService],
       ...options
     });

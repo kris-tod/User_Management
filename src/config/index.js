@@ -1,17 +1,9 @@
+export const env = process.env.ENV || 'development';
 export const port = process.env.PORT;
 export const domain = `http://localhost:${process.env.PORT}`;
 export const staticDirPath = '/Users/appstreams/Documents/User_Management/src/uploads';
 export const staticDirname = 'uploads';
 export const dirname = '/Users/appstreams/Documents/User_Management';
-export const dbConfig = {
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DATABASE,
-  options: {
-    host: process.env.DB_HOST,
-    dialect: 'postgres'
-  }
-};
 export const errorLogPath = process.env.ERROR_LOG_PATH;
 export const infoLogPath = process.env.INFO_LOG_PATH;
 export const secret = process.env.SECRET;

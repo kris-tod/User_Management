@@ -1,6 +1,7 @@
 import { genSalt, hash as _hash } from 'bcrypt';
 import { Sequelize } from 'sequelize';
-import { dbConfig, saltRounds } from '../config/index.js';
+import { saltRounds, env } from '../config/index.js';
+import dbConfig from '../config/config.sequelize.js';
 
 import UserModel from './user.js';
 import FriendshipModel from './friendships.js';
@@ -22,10 +23,13 @@ import DriverModel from './driver.js';
 import RequestModel from './request.js';
 
 export const sequelize = new Sequelize(
-  dbConfig.database,
-  dbConfig.username,
-  dbConfig.password,
-  dbConfig.options
+  dbConfig[env].database,
+  dbConfig[env].username,
+  dbConfig[env].password,
+  {
+    host: dbConfig[env].host,
+    dialect: dbConfig[env].dialect
+  }
 );
 
 sequelize.authenticate().then(() => {
