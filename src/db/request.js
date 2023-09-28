@@ -3,7 +3,7 @@ import { DataTypes, Model } from 'sequelize';
 export default (sequelize) => {
   class Request extends Model {
     static associate({
-      Partner, CarSupportService, Car, Driver
+      Partner, CarSupportService, Car, Driver, Offer
     }) {
       Partner.hasMany(Request);
       Request.belongsTo(Partner);
@@ -13,6 +13,7 @@ export default (sequelize) => {
       Request.belongsTo(Car);
       Driver.hasMany(Request);
       Request.belongsTo(Driver);
+      Request.hasMany(Offer);
     }
   }
 

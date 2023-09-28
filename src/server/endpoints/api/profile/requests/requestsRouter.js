@@ -11,7 +11,7 @@ export const createRequestsRouter = (logger) => {
   const router = express.Router();
   const requestsController = new RequestsController(logger);
   const {
-    getMany, getOne, create, update, destroy
+    getMany, getOne, create, update, destroy, updateOffer
   } = requestsController.createRouterHandlers();
 
   router.get(
@@ -52,6 +52,14 @@ export const createRequestsRouter = (logger) => {
     isFromApp(apps.mobile),
     isTokenNew(logger),
     destroy
+  );
+
+  router.patch(
+    '/offers/:offerId',
+    isAuth,
+    isFromApp(apps.mobile),
+    isTokenNew(logger),
+    updateOffer
   );
 
   return router;

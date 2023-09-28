@@ -21,7 +21,8 @@ export class Request {
     driveAlone,
     status,
     serialNumber = null,
-    notes = ''
+    notes = '',
+    offers = []
   ) {
     this.id = id;
     this.address = address;
@@ -34,6 +35,7 @@ export class Request {
     this.setStatus(status);
     this.serialNumber = serialNumber;
     this.notes = notes;
+    this.setOffers(offers);
   }
 
   setStatus(status) {
@@ -41,5 +43,12 @@ export class Request {
       throw new Error('Invalid status!');
     }
     this.status = status;
+  }
+
+  setOffers(offers) {
+    if (offers.some((offer) => offer.requestId !== this.id)) {
+      throw new Error('Invalid offers for request');
+    }
+    this.offers = offers;
   }
 }

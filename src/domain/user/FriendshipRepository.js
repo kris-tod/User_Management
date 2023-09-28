@@ -7,16 +7,6 @@ export class FriendshipRepository extends BaseRepo {
     super(Friendship);
   }
 
-  async findAllFriendshipsByUsername(username) {
-    const collection = await this.dbClient.findAll({
-      where: {
-        username
-      }
-    });
-
-    return collection;
-  }
-
   async addFriendships(friendships, options = {}) {
     return this.dbClient.bulkCreate(friendships, options);
   }
@@ -44,14 +34,6 @@ export class FriendshipRepository extends BaseRepo {
     return collection;
   }
 
-  async deleteAllUserFriendships(username) {
-    await this.dbClient.destroy({
-      where: {
-        [Op.or]: [{ username }, { friend_username: username }]
-      }
-    });
-  }
-
   async deleteUserFriendshipsById(id) {
     await this.dbClient.destroy({
       where: { user_id: id }
@@ -66,18 +48,6 @@ export class FriendshipRepository extends BaseRepo {
     });
   }
 
-  async findAllFriendshipsForUsers(listOfUsernames) {
-    const collection = await this.dbClient.findAll({
-      where: {
-        username: {
-          [Op.in]: listOfUsernames
-        }
-      }
-    });
-
-    return collection;
-  }
-
   async findAllFriendshipsForUsersById(listOfIds, options = {}) {
     const collection = await this.dbClient.findAll({
       where: {
@@ -90,15 +60,6 @@ export class FriendshipRepository extends BaseRepo {
     return collection;
   }
 
-  async destroyByUsernames(username, friendUsername) {
-    await this.dbClient.destroy({
-      where: {
-        username,
-        friend_username: friendUsername
-      }
-    });
-  }
-
   async destroyByIds(userId, friendId) {
     await this.dbClient.destroy({
       where: {
@@ -106,17 +67,6 @@ export class FriendshipRepository extends BaseRepo {
         friend_id: friendId
       }
     });
-  }
-
-  async getByUsernames(username, friendUsername) {
-    const entity = await this.dbClient.findOne({
-      where: {
-        username,
-        friend_username: friendUsername
-      }
-    });
-
-    return entity;
   }
 
   async getByIds(userId, friendId) {
@@ -128,22 +78,6 @@ export class FriendshipRepository extends BaseRepo {
     });
 
     return entity;
-  }
-
-  async updateUsername(oldUsername, username) {
-    await this.dbClient.update({ username }, { where: { username: oldUsername } });
-    await this.dbClient.update(
-      { friend_username: username },
-      { where: { friend_username: oldUsername } }
-    );
-  }
-
-  async destroyFriendshipsWithUsername(username) {
-    await this.dbClient.destroy({
-      where: {
-        [Op.or]: [{ username }, { friend_username: username }]
-      }
-    });
   }
 
   async destroyFriendshipsWithId(id) {

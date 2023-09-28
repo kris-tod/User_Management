@@ -10,6 +10,8 @@ import { createSubscriptionPlansRouter } from './subscriptionPlans/subscriptionP
 import { createRegionsRouter } from './regions/regionsRouter.js';
 import { createDriversRouter } from './drivers/driversRouter.js';
 import { createRequestsRouter } from './requests/requestsRouter.js';
+import { createOffersRouter } from './offers/offersRouter.js';
+import { createWorkCardsRouter } from './workCards/workCardsRouter.js';
 
 export const createAdminRouter = (logger) => {
   const router = Router();
@@ -24,6 +26,8 @@ export const createAdminRouter = (logger) => {
   router.use('/regions', createRegionsRouter(logger));
   router.use('/drivers', createDriversRouter(logger));
   router.use('/requests', createRequestsRouter(logger));
+  router.use('/offers', createOffersRouter(logger));
+  router.use('/work-cards', createWorkCardsRouter(logger));
 
   return router;
 };

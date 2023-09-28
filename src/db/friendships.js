@@ -14,12 +14,6 @@ export default (sequelize) => {
         type: DataTypes.BIGINT,
         allowNull: false
       },
-      username: {
-        type: DataTypes.STRING
-      },
-      friend_username: {
-        type: DataTypes.STRING
-      },
       friend_id: {
         type: DataTypes.BIGINT,
         allowNull: false

@@ -48,10 +48,11 @@ export class DriverService {
       throw new ForbiddenError(INVALID_REGION);
     }
 
-    const loggedUser = await this.adminRepo.getOne(reqUser.id);
-    if (reqUser.role === roles.organizationAdmin
-      && entity.partner.id !== loggedUser.organization.id) {
-      throw new ApiError('Admin not from organization!');
+    if (reqUser.role === roles.organizationAdmin) {
+      const loggedUser = await this.adminRepo.getOne(reqUser.id);
+      if (entity.partner.organizationId !== loggedUser.organization.id) {
+        throw new ApiError('Admin not from organization!');
+      }
     }
 
     return entity;

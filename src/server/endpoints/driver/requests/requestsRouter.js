@@ -6,12 +6,13 @@ import {
   isFromApp
 } from '../../../middlewares/index.js';
 import { apps } from '../../../../constants/apps.js';
+import { createWorkCardsRouter } from './workCards/workCardsRouter.js';
 
 export const createRequestsRouter = (logger) => {
   const router = express.Router();
   const requestsController = new RequestsController(logger);
   const {
-    getMany, getOne, update
+    getMany, getOne, update, finishRequest
   } = requestsController.createRouterHandlers();
 
   router.get(
@@ -21,6 +22,8 @@ export const createRequestsRouter = (logger) => {
     isTokenNew(logger),
     getMany
   );
+
+  router.use('/work-cards', createWorkCardsRouter(logger));
 
   router.get(
     '/:id',
@@ -36,6 +39,14 @@ export const createRequestsRouter = (logger) => {
     isFromApp(apps.driver),
     isTokenNew(logger),
     update
+  );
+
+  router.post(
+    '/:id/work-card',
+    isAuth,
+    isFromApp(apps.driver),
+    isTokenNew(logger),
+    finishRequest
   );
 
   return router;

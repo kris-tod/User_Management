@@ -6,7 +6,16 @@ export class RequestsController extends BaseController {
     super(new RequestService(logger), logger);
   }
 
+  async updateOffer(req, res) {
+    const { isAccepted } = req.body;
+    const { user } = req;
+    const { offerId } = req.params;
+
+    const response = await this.service.updateOffer(offerId, { isAccepted }, user);
+    res.status(200).json(response);
+  }
+
   createRouterHandlers() {
-    return super.createRouterHandlers(['getMany', 'getOne', 'create', 'update', 'destroy']);
+    return super.createRouterHandlers(['getMany', 'getOne', 'create', 'update', 'destroy', 'updateOffer']);
   }
 }

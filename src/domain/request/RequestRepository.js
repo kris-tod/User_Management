@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { BaseRepo, MAX_PER_PAGE } from '../../utils/BaseRepo.js';
 import {
   Request as RequestModel, Partner, Driver, Car, CarSupportService, Admin, Region,
-  UserCar
+  UserCar, Offer, OfferItem
 } from '../../db/index.js';
 import { Request } from './Request.js';
 import { ENTITY_NOT_FOUND } from '../../constants/messages.js';
@@ -32,7 +32,8 @@ export class RequestRepository extends BaseRepo {
       model.driveAlone,
       model.status,
       model.serialNumber || -1,
-      model.notes || ''
+      model.notes || '',
+      model.offers
     );
   }
 
@@ -43,7 +44,13 @@ export class RequestRepository extends BaseRepo {
       order,
       limit: entitiesPerPage,
       offset: entitiesPerPage * (page - 1),
-      include: [{ model: Partner, as: 'partner' }, Driver, Car, CarSupportService],
+      include: [
+        { model: Partner, as: 'partner' },
+        Driver,
+        Car,
+        CarSupportService,
+        { model: Offer, include: OfferItem }
+      ],
       ...options
     });
 
@@ -62,7 +69,13 @@ export class RequestRepository extends BaseRepo {
       order,
       limit: entitiesPerPage,
       offset: entitiesPerPage * (page - 1),
-      include: [{ model: Partner, as: 'partner' }, Driver, Car, CarSupportService],
+      include: [
+        { model: Partner, as: 'partner' },
+        Driver,
+        Car,
+        CarSupportService,
+        { model: Offer, include: OfferItem }
+      ],
       where: {
         '$partner.regionId$': region
       },
@@ -85,8 +98,17 @@ export class RequestRepository extends BaseRepo {
       limit: entitiesPerPage,
       offset: entitiesPerPage * (page - 1),
       include: [ // TODO
-        { model: Partner, include: [{ model: Admin, as: 'admins' }] },
-        Driver, Car, CarSupportService],
+        {
+          model: Partner,
+          include: [
+            { model: Admin, as: 'admins' }
+          ]
+        },
+        Driver,
+        Car,
+        CarSupportService,
+        { model: Offer, include: OfferItem }
+      ],
       ...options
     });
 
@@ -136,7 +158,13 @@ export class RequestRepository extends BaseRepo {
 
   async getOne(id, options = {}) {
     const entity = await this.dbClient.findByPk(id, {
-      include: [{ model: Partner, include: [Region] }, Driver, Car, CarSupportService],
+      include: [
+        { model: Partner, include: [Region, Admin] },
+        Driver,
+        Car,
+        CarSupportService,
+        { model: Offer, include: OfferItem }
+      ],
       ...options
     });
 

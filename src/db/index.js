@@ -21,6 +21,10 @@ import PartnerServiceModel from './partnerService.js';
 import RegionModel from './region.js';
 import DriverModel from './driver.js';
 import RequestModel from './request.js';
+import OfferModel from './offer.js';
+import OfferItemModel from './offerItem.js';
+import WorkCardModel from './workCard.js';
+import WorkCardItemModel from './workCardItem.js';
 
 export const sequelize = new Sequelize(
   dbConfig[env].database,
@@ -54,7 +58,11 @@ const db = {
   PartnerService: PartnerServiceModel(sequelize),
   Region: RegionModel(sequelize),
   Driver: DriverModel(sequelize),
-  Request: RequestModel(sequelize)
+  Request: RequestModel(sequelize),
+  Offer: OfferModel(sequelize),
+  OfferItem: OfferItemModel(sequelize),
+  WorkCard: WorkCardModel(sequelize),
+  WorkCardItem: WorkCardItemModel(sequelize)
 };
 
 db.Admin.associate(db);
@@ -65,6 +73,10 @@ db.Partner.associate(db);
 db.Region.associate(db);
 db.Driver.associate(db);
 db.Request.associate(db);
+db.Offer.associate(db);
+db.OfferItem.associate(db);
+db.WorkCard.associate(db);
+db.WorkCardItem.associate(db);
 
 sequelize
   .sync({ force: false, alter: false })
@@ -108,5 +120,9 @@ export const {
   PartnerService,
   Region,
   Driver,
-  Request
+  Request,
+  Offer,
+  OfferItem,
+  WorkCard,
+  WorkCardItem
 } = db;
