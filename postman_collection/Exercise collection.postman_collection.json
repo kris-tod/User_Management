@@ -1147,6 +1147,183 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "edit offer",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"isAccepted\": true\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/profile/requests/offers/:offerUUID",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"profile",
+												"requests",
+												"offers",
+												":offerUUID"
+											],
+											"variable": [
+												{
+													"key": "offerUUID",
+													"value": "ccc2d61d-aebe-41bd-a3ca-5e7efc162163"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "fail",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"isAccepted\": false\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/profile/requests/offers/:offerUUID",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"profile",
+														"requests",
+														"offers",
+														":offerUUID"
+													],
+													"variable": [
+														{
+															"key": "offerUUID",
+															"value": "ccc2d61d-aebe-41bd-a3ca-5e7efc162163"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "X-Powered-By",
+													"value": "Express"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json; charset=utf-8"
+												},
+												{
+													"key": "Content-Length",
+													"value": "67"
+												},
+												{
+													"key": "ETag",
+													"value": "W/\"43-Tc6TG0u7dhsmwmERMRf+4+bP/O4\""
+												},
+												{
+													"key": "Date",
+													"value": "Thu, 28 Sep 2023 09:26:50 GMT"
+												},
+												{
+													"key": "Connection",
+													"value": "keep-alive"
+												},
+												{
+													"key": "Keep-Alive",
+													"value": "timeout=5"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"message\": \"End user cannot set isAccepted to false!\",\n    \"status\": 400\n}"
+										},
+										{
+											"name": "success",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"isAccepted\": true\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/profile/requests/offers/:offerUUID",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"profile",
+														"requests",
+														"offers",
+														":offerUUID"
+													],
+													"variable": [
+														{
+															"key": "offerUUID",
+															"value": "ccc2d61d-aebe-41bd-a3ca-5e7efc162163"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "X-Powered-By",
+													"value": "Express"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json; charset=utf-8"
+												},
+												{
+													"key": "Content-Length",
+													"value": "19"
+												},
+												{
+													"key": "ETag",
+													"value": "W/\"13-dQVk9IWXpVaRPcdg5WSeZfuqB5g\""
+												},
+												{
+													"key": "Date",
+													"value": "Thu, 28 Sep 2023 09:27:08 GMT"
+												},
+												{
+													"key": "Connection",
+													"value": "keep-alive"
+												},
+												{
+													"key": "Keep-Alive",
+													"value": "timeout=5"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"isAccepted\": true\n}"
+										}
+									]
 								}
 							]
 						},
@@ -2943,7 +3120,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Jorkata\",\n    \"description\": \"Nice partner!\",\n    \"address\": \"Somewhere in Plovdiv\",\n    \"coordinates\": \"1.5,2.5\",\n    \"phone\": \"0895209415\",\n    \"contactPerson\": \"Milen\",\n    \"regionId\": 1,\n    \"subscriptionPlanId\": 1,\n    \"organizationId\": 1,\n    \"admins\": [6],\n    \"services\": [1, 2]\n    // name, logo, description, address, coordinates, phone, contactPerson,\n    // region, subscriptionPlanId, organizationId, partnersAdminsIds,\n    // carSupportServices\n}",
+									"raw": "{\n    \"name\": \"Jorkata\",\n    \"description\": \"Nice partner!\",\n    \"address\": \"Somewhere in Plovdiv\",\n    \"coordinates\": \"1.5,2.5\",\n    \"phone\": \"0895209415\",\n    \"contactPerson\": \"Milen\",\n    \"regionId\": 1,\n    \"subscriptionPlanId\": 1,\n    \"organizationId\": 4,\n    \"admins\": [7],\n    \"services\": [1, 2]\n    // name, logo, description, address, coordinates, phone, contactPerson,\n    // region, subscriptionPlanId, organizationId, partnersAdminsIds,\n    // carSupportServices\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -4895,14 +5072,20 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{baseUrl}}/admin/requests/b8139513-e067-48c7-98b4-7261cd02f7c3",
+									"raw": "{{baseUrl}}/admin/requests/:requestId",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"admin",
 										"requests",
-										"b8139513-e067-48c7-98b4-7261cd02f7c3"
+										":requestId"
+									],
+									"variable": [
+										{
+											"key": "requestId",
+											"value": "9b674d5b-3e4c-4499-96e8-71e5a1c8f349"
+										}
 									]
 								}
 							},
@@ -4986,6 +5169,285 @@
 							"request": {
 								"method": "GET",
 								"header": []
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "offers",
+					"item": [
+						{
+							"name": "offers",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/offers",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"offers"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/admin/offers",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"admin",
+												"offers"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "195"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"c3-hmfgu28dxoLNb9lyEG+EolhFcSM\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 28 Sep 2023 08:25:48 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"total\": 1,\n    \"data\": [\n        {\n            \"id\": \"0e3b65a2-6504-4c18-a82c-eb1ab8a0b3f0\",\n            \"title\": \"Some offer title\",\n            \"isAccepted\": false,\n            \"requestId\": \"9b674d5b-3e4c-4499-96e8-71e5a1c8f349\",\n            \"items\": []\n        }\n    ],\n    \"limit\": 5,\n    \"offset\": 0\n}"
+								}
+							]
+						},
+						{
+							"name": "add offer",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Some another offer title\",\n    \"requestId\": \"9b674d5b-3e4c-4499-96e8-71e5a1c8f349\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/offers",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"offers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit offer",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"items\": [\n        { \"name\": \"Item 3\", \"value\": 10 }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/admin/offers/:offerUUID",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"offers",
+										":offerUUID"
+									],
+									"variable": [
+										{
+											"key": "offerUUID",
+											"value": "0e3b65a2-6504-4c18-a82c-eb1ab8a0b3f0"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"items\": [\n        { \"name\": \"Item 1\", \"value\": 10 },\n        { \"name\": \"Item 2\", \"value\": 10 },\n        { \"name\": \"Item 3\", \"value\": 10 }\n    ],\n    \"title\": \"Changed title\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/admin/offers/:offerUUID",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"admin",
+												"offers",
+												":offerUUID"
+											],
+											"variable": [
+												{
+													"key": "offerUUID",
+													"value": "ccc2d61d-aebe-41bd-a3ca-5e7efc162163"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "401"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"191-mgIFvi/cpO5ZVRLRbFJUWQQVp2Y\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 28 Sep 2023 08:27:59 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"items\": [\n        {\n            \"id\": \"feb00536-65f4-4364-b684-91f614ab65d9\",\n            \"name\": \"Item 1\",\n            \"value\": 10,\n            \"offerId\": \"ccc2d61d-aebe-41bd-a3ca-5e7efc162163\"\n        },\n        {\n            \"id\": \"da952f4c-a6f3-4ce6-8422-9e3bb1160f43\",\n            \"name\": \"Item 2\",\n            \"value\": 10,\n            \"offerId\": \"ccc2d61d-aebe-41bd-a3ca-5e7efc162163\"\n        },\n        {\n            \"id\": \"36ada170-a1ba-4a97-98c2-fd48c6344c9e\",\n            \"name\": \"Item 3\",\n            \"value\": 10,\n            \"offerId\": \"ccc2d61d-aebe-41bd-a3ca-5e7efc162163\"\n        }\n    ],\n    \"title\": \"Changed title\"\n}"
+								}
+							]
+						},
+						{
+							"name": "delete offer",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/offers/:offerUUID",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"offers",
+										":offerUUID"
+									],
+									"variable": [
+										{
+											"key": "offerUUID",
+											"value": "0e3b65a2-6504-4c18-a82c-eb1ab8a0b3f0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get offer",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/offers/:offerUUID",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"offers",
+										":offerUUID"
+									],
+									"variable": [
+										{
+											"key": "offerUUID",
+											"value": "ccc2d61d-aebe-41bd-a3ca-5e7efc162163"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "work-tables",
+					"item": [
+						{
+							"name": "work tables",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/work-cards",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"work-cards"
+									]
+								}
 							},
 							"response": []
 						}
@@ -5356,6 +5818,119 @@
 						},
 						{
 							"name": "get request",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "finish request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"items\": [\n        { \"name\": \"item 3\", \"value\": 10 },\n        { \"name\": \"item 4\", \"value\": 20 }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/driver/requests/:requestId/work-card",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"driver",
+										"requests",
+										":requestId",
+										"work-card"
+									],
+									"variable": [
+										{
+											"key": "requestId",
+											"value": "9b674d5b-3e4c-4499-96e8-71e5a1c8f349"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"items\": [\n        { \"name\": \"item 3\", \"value\": 10 },\n        { \"name\": \"item 4\", \"value\": 20 }\n    ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/driver/requests/:requestId/work-card",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"driver",
+												"requests",
+												":requestId",
+												"work-card"
+											],
+											"variable": [
+												{
+													"key": "requestId",
+													"value": "9b674d5b-3e4c-4499-96e8-71e5a1c8f349"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "555"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"22b-DIxdSZ9J/U8lgnHaeGTg4rSIGXA\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 28 Sep 2023 11:19:39 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"id\": \"c9fe24e2-3e4d-4c58-a139-4cbbcc7e9ade\",\n    \"items\": [\n        {\n            \"id\": \"635a32e7-8da2-4bc4-a3d3-d66760759fb2\",\n            \"name\": \"Item 1\",\n            \"value\": 10,\n            \"workCardId\": \"c9fe24e2-3e4d-4c58-a139-4cbbcc7e9ade\"\n        },\n        {\n            \"id\": \"e00fb7b6-60c4-4619-af65-38b081653b20\",\n            \"name\": \"Item 2\",\n            \"value\": 10,\n            \"workCardId\": \"c9fe24e2-3e4d-4c58-a139-4cbbcc7e9ade\"\n        },\n        {\n            \"id\": \"207465d9-a350-48a1-9b3e-520258d8adc3\",\n            \"name\": \"item 3\",\n            \"value\": 10,\n            \"workCardId\": \"c9fe24e2-3e4d-4c58-a139-4cbbcc7e9ade\"\n        },\n        {\n            \"id\": \"24d2edf7-a739-45fc-8630-6080bd335d87\",\n            \"name\": \"item 4\",\n            \"value\": 20,\n            \"workCardId\": \"c9fe24e2-3e4d-4c58-a139-4cbbcc7e9ade\"\n        }\n    ]\n}"
+								}
+							]
+						},
+						{
+							"name": "get work cards",
 							"request": {
 								"method": "GET",
 								"header": []
