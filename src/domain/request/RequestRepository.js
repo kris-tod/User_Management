@@ -97,11 +97,11 @@ export class RequestRepository extends BaseRepo {
       order,
       limit: entitiesPerPage,
       offset: entitiesPerPage * (page - 1),
-      include: [ // TODO
+      include: [
         {
           model: Partner,
           include: [
-            { model: Admin, as: 'admins' }
+            { model: Admin, where: { id: adminId } }
           ]
         },
         Driver,
