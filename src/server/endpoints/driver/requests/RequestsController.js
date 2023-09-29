@@ -24,7 +24,15 @@ export class RequestsController extends BaseController {
     res.status(200).json(response);
   }
 
+  async generateProtocolPdf(req, res) {
+    const { id } = req.params;
+    const { user } = req;
+
+    const response = await this.service.generateProtocolPdf(id, user);
+    res.status(200).json(response);
+  }
+
   createRouterHandlers() {
-    return super.createRouterHandlers(['getMany', 'getOne', 'update', 'finishRequest', 'addProtocol']);
+    return super.createRouterHandlers(['getMany', 'getOne', 'update', 'finishRequest', 'addProtocol', 'generateProtocolPdf']);
   }
 }

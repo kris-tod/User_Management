@@ -6,15 +6,18 @@ export const protocolTypes = {
 export class Protocol {
   constructor(
     id,
+    requestId,
     fuelAvailable,
     kilometersTravelled,
     clientName,
     clientNumber,
     clientSignature = '',
     driverSignature = '',
-    checks = {}
+    checks = {},
+    type = ''
   ) {
     this.id = id;
+    this.requestId = requestId;
     this.setFuelAvailable(fuelAvailable);
     this.kilometersTravelled = kilometersTravelled;
     this.clientName = clientName;
@@ -22,6 +25,7 @@ export class Protocol {
     this.clientSignature = clientSignature;
     this.driverSignature = driverSignature;
     this.checks = checks;
+    this.type = type;
   }
 
   setFuelAvailable(fuelAvailable) {

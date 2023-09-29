@@ -22,6 +22,7 @@ import { WorkCardItem } from './workCard/workCardItem/WorkCardItem.js';
 import { sequelize } from '../../db/index.js';
 import { ProtocolRepository } from './protocol/ProtocolRepository.js';
 import { Protocol, protocolTypes } from './protocol/Protocol.js';
+import { PdfService } from '../../services/PdfService.js';
 
 export class RequestService {
   constructor(logger) {
@@ -269,6 +270,20 @@ export class RequestService {
       return this.requestRepo.addOrReplacePreliminaryProtocol(requestId, protocol);
     }
     return this.requestRepo.addOrReplaceTransmissiveProtocol(requestId, protocol);
+  }
+
+  async generateProtocolPdf(protocolId, reqUser) {
+    const protocol = await this.protocolRepo.getOne(protocolId);
+    protocol.checks = JSON.stringify(protocol.checks);
+    const driver = this.driverRepo.getOne(reqUser.id);
+    const request = await this.requestRepo.getOne(protocol.requestId);
+
+    return PdfService.generatePdfForProtocol({
+      protocolId,
+      driver,
+      car: request.car,
+      ...protocol
+    });
   }
 
   async destroy(id, reqUser) {
