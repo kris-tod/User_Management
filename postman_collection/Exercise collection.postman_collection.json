@@ -938,7 +938,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{baseUrl}}/api/profile/requests/b8139513-e067-48c7-98b4-7261cd02f7c3",
+											"raw": "{{baseUrl}}/api/profile/requests/:requestUUID",
 											"host": [
 												"{{baseUrl}}"
 											],
@@ -946,7 +946,13 @@
 												"api",
 												"profile",
 												"requests",
-												"b8139513-e067-48c7-98b4-7261cd02f7c3"
+												":requestUUID"
+											],
+											"variable": [
+												{
+													"key": "requestUUID",
+													"value": "9b674d5b-3e4c-4499-96e8-71e5a1c8f349"
+												}
 											]
 										}
 									},
@@ -1022,7 +1028,7 @@
 											}
 										},
 										"url": {
-											"raw": "{{baseUrl}}/api/profile/requests/8c3be483-2d67-4a61-9b0d-8672b98d61c6",
+											"raw": "{{baseUrl}}/api/profile/requests/:requestUUID",
 											"host": [
 												"{{baseUrl}}"
 											],
@@ -1030,7 +1036,13 @@
 												"api",
 												"profile",
 												"requests",
-												"8c3be483-2d67-4a61-9b0d-8672b98d61c6"
+												":requestUUID"
+											],
+											"variable": [
+												{
+													"key": "requestUUID",
+													"value": "9b674d5b-3e4c-4499-96e8-71e5a1c8f349"
+												}
 											]
 										}
 									},
@@ -2109,65 +2121,6 @@
 							},
 							"response": [
 								{
-									"name": "success get users",
-									"originalRequest": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "localhost:4000/api/users?page=1",
-											"host": [
-												"localhost"
-											],
-											"port": "4000",
-											"path": [
-												"api",
-												"users"
-											],
-											"query": [
-												{
-													"key": "page",
-													"value": "1"
-												}
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "X-Powered-By",
-											"value": "Express"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json; charset=utf-8"
-										},
-										{
-											"key": "Content-Length",
-											"value": "213"
-										},
-										{
-											"key": "ETag",
-											"value": "W/\"d5-/zCaUeO6sAGKN/Rf4bzpLygpzmM\""
-										},
-										{
-											"key": "Date",
-											"value": "Fri, 01 Sep 2023 09:32:55 GMT"
-										},
-										{
-											"key": "Connection",
-											"value": "keep-alive"
-										},
-										{
-											"key": "Keep-Alive",
-											"value": "timeout=5"
-										}
-									],
-									"cookie": [],
-									"body": "[\n    {\n        \"id\": \"1\",\n        \"username\": \"admin\",\n        \"email\": \"admin@admin.com\",\n        \"password\": \"$2b$10$8tKP.WB6LrI4k9c93R41k.TErNN3r25HD5kxOhl33CMmpUgad5YCC\",\n        \"role\": 0,\n        \"avatar\": \"http://localhost:4000/default_avatar.jpg\",\n        \"list_of_friends\": []\n    }\n]"
-								},
-								{
 									"name": "not admin",
 									"originalRequest": {
 										"method": "GET",
@@ -2225,6 +2178,64 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"message\": \"User is not admin!\"\n}"
+								},
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/admin/users?page=1",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"admin",
+												"users"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "3033"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"bd9-CaisyaNLu/Kqi70gkQ5LjjvXFAU\""
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 29 Sep 2023 07:46:38 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"total\": 6,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"username\": \"kris\",\n            \"email\": null,\n            \"avatar\": \"http://localhost:5000/default_avatar.jpg\",\n            \"friendsList\": [\n                {\n                    \"id\": 2,\n                    \"username\": \"deni\",\n                    \"email\": null,\n                    \"password\": \"$2b$10$ZduJPxV8OsJ3QOZL.9vtsOhwvuRmo7DL2Qod3gJuEnZ.ejBDJA0Re\",\n                    \"avatar\": \"http://localhost:5000/default_avatar.jpg\",\n                    \"regionId\": 1,\n                    \"friendship\": {\n                        \"createdAt\": \"2023-09-29T07:36:17.933Z\",\n                        \"updatedAt\": \"2023-09-29T07:36:17.933Z\",\n                        \"user_id\": 1,\n                        \"friend_id\": 2\n                    }\n                }\n            ],\n            \"region\": {\n                \"id\": 1,\n                \"name\": \"Sofia\"\n            },\n            \"cars\": [\n                {\n                    \"id\": 4,\n                    \"idNumber\": \"CB2222HH\",\n                    \"image\": \"http://localhost:4000/default_car_image.jpg\",\n                    \"brand\": \"BMW i8\",\n                    \"kilometers\": 0,\n                    \"engineType\": \"gasoline\",\n                    \"yearOfProduction\": 2018,\n                    \"frameNumber\": null,\n                    \"technicalReviewExpiration\": \"2023-09-21T13:36:30.000Z\",\n                    \"civilEnsuranceExpiration\": \"2023-09-21T13:36:30.000Z\",\n                    \"vignetteExpiration\": \"2023-09-21T13:36:30.000Z\",\n                    \"autoEnsuranceExpiration\": \"2023-09-21T13:36:30.000Z\",\n                    \"leasingExpiration\": \"2023-09-21T13:36:30.000Z\",\n                    \"comment\": \"\",\n                    \"vehicleType\": \"\",\n                    \"user_car\": {\n                        \"userId\": 1,\n                        \"carId\": 4\n                    },\n                    \"tires\": [\n                        {\n                            \"id\": 2,\n                            \"brand\": \"Mischelline\",\n                            \"count\": 4,\n                            \"width\": 40,\n                            \"ratio\": 2,\n                            \"type\": \"winter\",\n                            \"used\": false,\n                            \"comment\": \"\",\n                            \"tiresHotel\": \"\",\n                            \"carId\": 4\n                        },\n                        {\n                            \"id\": 3,\n                            \"brand\": \"Mischelline\",\n                            \"count\": 4,\n                            \"width\": 40,\n                            \"ratio\": 2,\n                            \"type\": \"winter\",\n                            \"used\": false,\n                            \"comment\": \"\",\n                            \"tiresHotel\": \"\",\n                            \"carId\": 4\n                        },\n                        {\n                            \"id\": 4,\n                            \"brand\": \"Mischelline\",\n                            \"count\": 4,\n                            \"width\": 40,\n                            \"ratio\": 2,\n                            \"type\": \"winter\",\n                            \"used\": false,\n                            \"comment\": \"\",\n                            \"tiresHotel\": \"\",\n                            \"carId\": 4\n                        }\n                    ]\n                },\n                {\n                    \"id\": 2,\n                    \"idNumber\": \"CB3130HH\",\n                    \"image\": \"http://localhost:4000/default_car_image.jpg\",\n                    \"brand\": \"Citroen Xcara Picasso\",\n                    \"kilometers\": 350000,\n                    \"engineType\": \"gasoline\",\n                    \"yearOfProduction\": 2001,\n                    \"frameNumber\": null,\n                    \"technicalReviewExpiration\": null,\n                    \"civilEnsuranceExpiration\": null,\n                    \"vignetteExpiration\": null,\n                    \"autoEnsuranceExpiration\": null,\n                    \"leasingExpiration\": null,\n                    \"comment\": null,\n                    \"vehicleType\": null,\n                    \"user_car\": {\n                        \"userId\": 1,\n                        \"carId\": 2\n                    },\n                    \"tires\": []\n                },\n                {\n                    \"id\": 1,\n                    \"idNumber\": \"CB3723MK\",\n                    \"image\": \"http://localhost:4000/default_car_image.jpg\",\n                    \"brand\": \"Volkswagen Caddy Life\",\n                    \"kilometers\": 285000,\n                    \"engineType\": \"gasoline\",\n                    \"yearOfProduction\": 2008,\n                    \"frameNumber\": \"1\",\n                    \"technicalReviewExpiration\": null,\n                    \"civilEnsuranceExpiration\": null,\n                    \"vignetteExpiration\": null,\n                    \"autoEnsuranceExpiration\": null,\n                    \"leasingExpiration\": null,\n                    \"comment\": \"This is a very cool car!!!\",\n                    \"vehicleType\": null,\n                    \"user_car\": {\n                        \"userId\": 1,\n                        \"carId\": 1\n                    },\n                    \"tires\": [\n                        {\n                            \"id\": 1,\n                            \"brand\": \"Mischelline\",\n                            \"count\": 4,\n                            \"width\": 40,\n                            \"ratio\": 2,\n                            \"type\": \"summer\",\n                            \"used\": false,\n                            \"comment\": null,\n                            \"tiresHotel\": null,\n                            \"carId\": 1\n                        }\n                    ]\n                }\n            ],\n            \"favouritePartners\": []\n        },\n        {\n            \"id\": 2,\n            \"username\": \"deni\",\n            \"email\": null,\n            \"avatar\": \"http://localhost:5000/default_avatar.jpg\",\n            \"friendsList\": [],\n            \"region\": {\n                \"id\": 1,\n                \"name\": \"Sofia\"\n            },\n            \"cars\": [\n                {\n                    \"id\": 3,\n                    \"idNumber\": \"CB1234BH\",\n                    \"image\": \"http://localhost:4000/default_car_image.jpg\",\n                    \"brand\": \"Volkswagen Golf 4\",\n                    \"kilometers\": 400000,\n                    \"engineType\": \"gasoline\",\n                    \"yearOfProduction\": 1998,\n                    \"frameNumber\": null,\n                    \"technicalReviewExpiration\": null,\n                    \"civilEnsuranceExpiration\": null,\n                    \"vignetteExpiration\": null,\n                    \"autoEnsuranceExpiration\": null,\n                    \"leasingExpiration\": null,\n                    \"comment\": null,\n                    \"vehicleType\": null,\n                    \"user_car\": {\n                        \"userId\": 2,\n                        \"carId\": 3\n                    },\n                    \"tires\": []\n                }\n            ],\n            \"favouritePartners\": []\n        }\n    ],\n    \"limit\": 5,\n    \"offset\": 0\n}"
 								}
 							]
 						},
@@ -4960,6 +4971,116 @@
 					"name": "requests",
 					"item": [
 						{
+							"name": "protocols",
+							"item": [
+								{
+									"name": "add protocol",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"fuelAvailable\": 30,\n    \"clientNumber\": 15,\n    \"type\": \"transmissive\",\n    \"clientSignature\": \"signature\",\n    \"checks\": {\n        \"medKit\": true,\n        \"triangle\": true\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/driver/requests/:requestId/protocol",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"driver",
+												"requests",
+												":requestId",
+												"protocol"
+											],
+											"variable": [
+												{
+													"key": "requestId",
+													"value": "9b674d5b-3e4c-4499-96e8-71e5a1c8f349"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "success",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"fuelAvailable\": 70,\n    \"clientNumber\": 15,\n    \"type\": \"preliminary\",\n    \"clientSignature\": \"signature\",\n    \"checks\": {\n        \"medKit\": true,\n        \"triangle\": false\n    }\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/driver/requests/:requestId/protocol",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"driver",
+														"requests",
+														":requestId",
+														"protocol"
+													],
+													"variable": [
+														{
+															"key": "requestId",
+															"value": "9b674d5b-3e4c-4499-96e8-71e5a1c8f349"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "X-Powered-By",
+													"value": "Express"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json; charset=utf-8"
+												},
+												{
+													"key": "Content-Length",
+													"value": "233"
+												},
+												{
+													"key": "ETag",
+													"value": "W/\"e9-CcdEwycIXLuSSeHkNzJyzDCelt8\""
+												},
+												{
+													"key": "Date",
+													"value": "Fri, 29 Sep 2023 10:57:56 GMT"
+												},
+												{
+													"key": "Connection",
+													"value": "keep-alive"
+												},
+												{
+													"key": "Keep-Alive",
+													"value": "timeout=5"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"id\": \"c4c1ff12-b095-4ac2-abd9-ecf0dc634c27\",\n    \"fuelAvailable\": 70,\n    \"kilometersTravelled\": 285000,\n    \"clientName\": \"kris\",\n    \"clientNumber\": 15,\n    \"clientSignature\": \"signature\",\n    \"driverSignature\": \"signature\",\n    \"checks\": {\n        \"medKit\": true,\n        \"triangle\": false\n    }\n}"
+										}
+									]
+								}
+							]
+						},
+						{
 							"name": "requests",
 							"request": {
 								"method": "GET",
@@ -5167,8 +5288,25 @@
 						{
 							"name": "edit request",
 							"request": {
-								"method": "GET",
-								"header": []
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/admin/requests/:requestId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"admin",
+										"requests",
+										":requestId"
+									],
+									"variable": [
+										{
+											"key": "requestId",
+											"value": ""
+										}
+									]
+								}
 							},
 							"response": []
 						}
@@ -5660,6 +5798,58 @@
 									],
 									"cookie": [],
 									"body": "{\n    \"total\": 2,\n    \"data\": [\n        {\n            \"id\": \"9b674d5b-3e4c-4499-96e8-71e5a1c8f349\",\n            \"address\": \"Somewhere\",\n            \"carCoordinates\": \"1,2\",\n            \"partner\": {\n                \"id\": 3,\n                \"name\": \"Kriskata\",\n                \"logo\": \"http://localhost:4000/default_partner_image.jpg\",\n                \"description\": \"Nice partner!\",\n                \"address\": \"Somewhere in Plovdiv\",\n                \"coordinates\": \"1.5,2.5\",\n                \"phone\": \"0895209415\",\n                \"contactPerson\": \"Milen\",\n                \"organizationId\": 1,\n                \"regionId\": 1,\n                \"subscriptionPlanId\": 1\n            },\n            \"service\": {\n                \"id\": 2,\n                \"name\": \"Car wash\",\n                \"description\": \"Nothing unusual\",\n                \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n                \"isRegionDefault\": false,\n                \"isPromoted\": true,\n                \"regionId\": 1\n            },\n            \"car\": {\n                \"id\": 1,\n                \"idNumber\": \"CB3723MK\",\n                \"image\": \"http://localhost:4000/default_car_image.jpg\",\n                \"brand\": \"Volkswagen Caddy Life\",\n                \"kilometers\": 285000,\n                \"engineType\": \"gasoline\",\n                \"yearOfProduction\": 2008,\n                \"frameNumber\": \"1\",\n                \"technicalReviewExpiration\": null,\n                \"civilEnsuranceExpiration\": null,\n                \"vignetteExpiration\": null,\n                \"autoEnsuranceExpiration\": null,\n                \"leasingExpiration\": null,\n                \"comment\": \"This is a very cool car!!!\",\n                \"vehicleType\": null\n            },\n            \"driver\": {\n                \"id\": 1,\n                \"name\": \"Sofia driver\",\n                \"password\": \"$2b$10$ML7MMjQd2/nsT2j9DlkELeZYnWIwm7kBoTCRom8PM4Y1LxnncYsWq\",\n                \"avatar\": \"http://localhost:4000/default_driver_image.jpg\",\n                \"description\": \"A student working for a living.\",\n                \"number\": 1,\n                \"pushNotificationsToken\": \"token\",\n                \"signature\": \"signature\",\n                \"partnerId\": 3,\n                \"regionId\": 1\n            },\n            \"driveAlone\": true,\n            \"status\": \"pending\",\n            \"serialNumber\": 7,\n            \"notes\": \"\"\n        },\n        {\n            \"id\": \"b8139513-e067-48c7-98b4-7261cd02f7c3\",\n            \"address\": \"Somewhere\",\n            \"carCoordinates\": \"1,2\",\n            \"partner\": {\n                \"id\": 3,\n                \"name\": \"Kriskata\",\n                \"logo\": \"http://localhost:4000/default_partner_image.jpg\",\n                \"description\": \"Nice partner!\",\n                \"address\": \"Somewhere in Plovdiv\",\n                \"coordinates\": \"1.5,2.5\",\n                \"phone\": \"0895209415\",\n                \"contactPerson\": \"Milen\",\n                \"organizationId\": 1,\n                \"regionId\": 1,\n                \"subscriptionPlanId\": 1\n            },\n            \"service\": {\n                \"id\": 1,\n                \"name\": \"Technical review\",\n                \"description\": \"Nothing unusual\",\n                \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n                \"isRegionDefault\": false,\n                \"isPromoted\": true,\n                \"regionId\": 1\n            },\n            \"car\": {\n                \"id\": 1,\n                \"idNumber\": \"CB3723MK\",\n                \"image\": \"http://localhost:4000/default_car_image.jpg\",\n                \"brand\": \"Volkswagen Caddy Life\",\n                \"kilometers\": 285000,\n                \"engineType\": \"gasoline\",\n                \"yearOfProduction\": 2008,\n                \"frameNumber\": \"1\",\n                \"technicalReviewExpiration\": null,\n                \"civilEnsuranceExpiration\": null,\n                \"vignetteExpiration\": null,\n                \"autoEnsuranceExpiration\": null,\n                \"leasingExpiration\": null,\n                \"comment\": \"This is a very cool car!!!\",\n                \"vehicleType\": null\n            },\n            \"driver\": {\n                \"id\": 1,\n                \"name\": \"Sofia driver\",\n                \"password\": \"$2b$10$ML7MMjQd2/nsT2j9DlkELeZYnWIwm7kBoTCRom8PM4Y1LxnncYsWq\",\n                \"avatar\": \"http://localhost:4000/default_driver_image.jpg\",\n                \"description\": \"A student working for a living.\",\n                \"number\": 1,\n                \"pushNotificationsToken\": \"token\",\n                \"signature\": \"signature\",\n                \"partnerId\": 3,\n                \"regionId\": 1\n            },\n            \"driveAlone\": true,\n            \"status\": \"accepted\",\n            \"serialNumber\": 5,\n            \"notes\": \"The car is in front of the flat enterance\"\n        }\n    ],\n    \"limit\": 5,\n    \"offset\": 0\n}"
+								},
+								{
+									"name": "success - added both protocols",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/driver/requests",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"driver",
+												"requests"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "2541"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"9ed-PgYoaSpjb3e/HPak0qhVtbud4uM\""
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 29 Sep 2023 11:00:08 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"total\": 2,\n    \"data\": [\n        {\n            \"id\": \"9b674d5b-3e4c-4499-96e8-71e5a1c8f349\",\n            \"address\": \"Somewhere\",\n            \"carCoordinates\": \"1,2\",\n            \"partner\": {\n                \"id\": 3,\n                \"name\": \"Kriskata\",\n                \"logo\": \"http://localhost:4000/default_partner_image.jpg\",\n                \"description\": \"Nice partner!\",\n                \"address\": \"Somewhere in Plovdiv\",\n                \"coordinates\": \"1.5,2.5\",\n                \"phone\": \"0895209415\",\n                \"contactPerson\": \"Milen\",\n                \"organizationId\": 1,\n                \"regionId\": 1,\n                \"subscriptionPlanId\": 1\n            },\n            \"service\": {\n                \"id\": 2,\n                \"name\": \"Car wash\",\n                \"description\": \"Nothing unusual\",\n                \"image\": \"http://localhost:4000/default_support_service_image.webp\",\n                \"isRegionDefault\": false,\n                \"isPromoted\": true,\n                \"regionId\": 1\n            },\n            \"car\": {\n                \"id\": 1,\n                \"idNumber\": \"CB3723MK\",\n                \"image\": \"http://localhost:4000/default_car_image.jpg\",\n                \"brand\": \"Volkswagen Caddy Life\",\n                \"kilometers\": 285000,\n                \"engineType\": \"gasoline\",\n                \"yearOfProduction\": 2008,\n                \"frameNumber\": \"1\",\n                \"technicalReviewExpiration\": null,\n                \"civilEnsuranceExpiration\": null,\n                \"vignetteExpiration\": null,\n                \"autoEnsuranceExpiration\": null,\n                \"leasingExpiration\": null,\n                \"comment\": \"This is a very cool car!!!\",\n                \"vehicleType\": null\n            },\n            \"driver\": {\n                \"id\": 1,\n                \"name\": \"Sofia driver\",\n                \"password\": \"$2b$10$ML7MMjQd2/nsT2j9DlkELeZYnWIwm7kBoTCRom8PM4Y1LxnncYsWq\",\n                \"avatar\": \"http://localhost:4000/default_driver_image.jpg\",\n                \"description\": \"A student working for a living.\",\n                \"number\": 1,\n                \"pushNotificationsToken\": \"token\",\n                \"signature\": \"signature\",\n                \"partnerId\": 3,\n                \"regionId\": 1\n            },\n            \"driveAlone\": true,\n            \"status\": \"done\",\n            \"serialNumber\": 7,\n            \"notes\": \"The car is in front of the flat enterance\",\n            \"offers\": [\n                {\n                    \"id\": \"ccc2d61d-aebe-41bd-a3ca-5e7efc162163\",\n                    \"title\": \"Changed title\",\n                    \"isAccepted\": true,\n                    \"requestId\": \"9b674d5b-3e4c-4499-96e8-71e5a1c8f349\",\n                    \"offer_items\": [\n                        {\n                            \"id\": \"7b6e924c-9f70-4501-85e9-01859973cd5a\",\n                            \"name\": \"Item 2\",\n                            \"value\": 10,\n                            \"offerId\": \"ccc2d61d-aebe-41bd-a3ca-5e7efc162163\"\n                        },\n                        {\n                            \"id\": \"40d25a56-27a8-42c2-858a-1bfbc01b4779\",\n                            \"name\": \"Item 1\",\n                            \"value\": 10,\n                            \"offerId\": \"ccc2d61d-aebe-41bd-a3ca-5e7efc162163\"\n                        }\n                    ]\n                }\n            ],\n            \"protocols\": {\n                \"id\": 1,\n                \"requestId\": \"9b674d5b-3e4c-4499-96e8-71e5a1c8f349\",\n                \"preliminaryId\": \"c4c1ff12-b095-4ac2-abd9-ecf0dc634c27\",\n                \"transmissiveId\": \"5d3d67ba-2d78-4733-b195-f76d55eb1790\",\n                \"preliminaryProtocol\": {\n                    \"id\": \"c4c1ff12-b095-4ac2-abd9-ecf0dc634c27\",\n                    \"fuelAvailable\": 70,\n                    \"kilometersTravelled\": 285000,\n                    \"clientName\": \"kris\",\n                    \"clientNumber\": 15,\n                    \"clientSignature\": \"signature\",\n                    \"driverSignature\": \"signature\",\n                    \"checks\": {\n                        \"medKit\": true,\n                        \"triangle\": false\n                    }\n                },\n                \"transmissiveProtocol\": {\n                    \"id\": \"5d3d67ba-2d78-4733-b195-f76d55eb1790\",\n                    \"fuelAvailable\": 30,\n                    \"kilometersTravelled\": 285000,\n                    \"clientName\": \"kris\",\n                    \"clientNumber\": 15,\n                    \"clientSignature\": \"signature\",\n                    \"driverSignature\": \"signature\",\n                    \"checks\": {\n                        \"medKit\": true,\n                        \"triangle\": true\n                    }\n                }\n            }\n        }\n    ],\n    \"limit\": 5,\n    \"offset\": 0\n}"
 								}
 							]
 						},
@@ -5670,7 +5860,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"status\": \"car_at_service\"\n}",
+									"raw": "{\n    \"status\": \"accepted\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -5678,14 +5868,20 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/driver/requests/9b674d5b-3e4c-4499-96e8-71e5a1c8f349",
+									"raw": "{{baseUrl}}/driver/requests/:requestUUID",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"driver",
 										"requests",
-										"9b674d5b-3e4c-4499-96e8-71e5a1c8f349"
+										":requestUUID"
+									],
+									"variable": [
+										{
+											"key": "requestUUID",
+											"value": "9b674d5b-3e4c-4499-96e8-71e5a1c8f349"
+										}
 									]
 								}
 							},
@@ -5933,7 +6129,18 @@
 							"name": "get work cards",
 							"request": {
 								"method": "GET",
-								"header": []
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/driver/requests/work-cards",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"driver",
+										"requests",
+										"work-cards"
+									]
+								}
 							},
 							"response": []
 						}
@@ -5942,10 +6149,30 @@
 			]
 		}
 	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
 	"variable": [
 		{
 			"key": "baseUrl",
-			"value": "localhost:4000"
+			"value": "localhost:5000"
 		}
 	]
 }

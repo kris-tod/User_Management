@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { BaseRepo, MAX_PER_PAGE } from '../../../utils/BaseRepo.js';
-import { WorkCardItem, WorkCard as WorkCardModel, sequelize } from '../../../db/index.js';
+import { WorkCardItem, WorkCard as WorkCardModel } from '../../../db/index.js';
 import { WorkCard } from './WorkCard.js';
 import { WorkCardItemRepository } from './workCardItem/WorkCardItemRepository.js';
 
