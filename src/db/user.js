@@ -2,7 +2,19 @@ import { DataTypes, Model } from 'sequelize';
 import { domain } from '../config/index.js';
 
 export default (sequelize) => {
-  class User extends Model {}
+  class User extends Model {
+    static associate({
+      Friendship
+    }) {
+      User.belongsToMany(User, {
+        through: Friendship,
+        foreignKey: 'user_id',
+        otherKey: 'friend_id',
+        as: 'friendsList',
+        onDelete: 'CASCADE'
+      });
+    }
+  }
 
   User.init(
     {

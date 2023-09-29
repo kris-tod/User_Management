@@ -66,6 +66,7 @@ const db = {
 };
 
 db.Admin.associate(db);
+db.User.associate(db);
 db.Car.associate(db);
 db.CarSupportService.associate(db);
 db.Organization.associate(db);

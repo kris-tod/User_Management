@@ -59,18 +59,12 @@ export class UserService {
     }
 
     const hash = await PasswordService.hashPassword(password);
-    await this.userRepo.create({
+    const entity = await this.userRepo.create({
       username,
       email,
       password: hash,
       regionId: region
     });
-
-    const entity = await this.userRepo.getOneByUsername(username);
-
-    if (!entity) {
-      throw new InternalError(DEFAULT_ERROR_MESSAGE);
-    }
 
     return entity;
   }

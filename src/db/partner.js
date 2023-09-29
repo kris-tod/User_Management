@@ -12,8 +12,8 @@ export default (sequelize) => {
       SubscriptionPlan.hasMany(Partner, { onDelete: 'RESTRICT' });
       Partner.belongsTo(SubscriptionPlan);
 
-      User.belongsToMany(Partner, { through: UserPartner, onDelete: 'CASCADE' });
-      Partner.belongsToMany(User, { through: UserPartner, onDelete: 'CASCADE' });
+      User.belongsToMany(Partner, { through: UserPartner, onDelete: 'CASCADE', as: 'favouritePartners' });
+      Partner.belongsToMany(User, { through: UserPartner, onDelete: 'CASCADE', as: 'favouritePartners' });
 
       Partner.hasMany(Driver);
       Driver.belongsTo(Partner);
