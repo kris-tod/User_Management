@@ -25,6 +25,8 @@ import OfferModel from './offer.js';
 import OfferItemModel from './offerItem.js';
 import WorkCardModel from './workCard.js';
 import WorkCardItemModel from './workCardItem.js';
+import ProtocolModel from './protocol.js';
+import RequestProtocolModel from './requestProtocol.js';
 
 export const sequelize = new Sequelize(
   dbConfig[env].database,
@@ -62,7 +64,9 @@ const db = {
   Offer: OfferModel(sequelize),
   OfferItem: OfferItemModel(sequelize),
   WorkCard: WorkCardModel(sequelize),
-  WorkCardItem: WorkCardItemModel(sequelize)
+  WorkCardItem: WorkCardItemModel(sequelize),
+  Protocol: ProtocolModel(sequelize),
+  RequestProtocol: RequestProtocolModel(sequelize)
 };
 
 db.Admin.associate(db);
@@ -78,6 +82,7 @@ db.Offer.associate(db);
 db.OfferItem.associate(db);
 db.WorkCard.associate(db);
 db.WorkCardItem.associate(db);
+db.RequestProtocol.associate(db);
 
 sequelize
   .sync({ force: false, alter: false })
@@ -125,5 +130,7 @@ export const {
   Offer,
   OfferItem,
   WorkCard,
-  WorkCardItem
+  WorkCardItem,
+  Protocol,
+  RequestProtocol
 } = db;

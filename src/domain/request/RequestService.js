@@ -19,6 +19,9 @@ import { WorkCard } from './workCard/WorkCard.js';
 import { WorkCardRepository } from './workCard/WorkCardRepository.js';
 import { WorkCardItemRepository } from './workCard/workCardItem/WorkCardItemRepository.js';
 import { WorkCardItem } from './workCard/workCardItem/WorkCardItem.js';
+import { sequelize } from '../../db/index.js';
+import { ProtocolRepository } from './protocol/ProtocolRepository.js';
+import { Protocol, protocolTypes } from './protocol/Protocol.js';
 
 export class RequestService {
   constructor(logger) {
@@ -34,6 +37,7 @@ export class RequestService {
     this.offerItemRepo = new OfferItemRepository();
     this.workCardRepo = new WorkCardRepository();
     this.workCardItemRepo = new WorkCardItemRepository();
+    this.protocolRepo = new ProtocolRepository();
   }
 
   async requestFactory({
@@ -204,16 +208,67 @@ export class RequestService {
     if (updatedData.status && updatedData.status === 'done') {
       throw new ApiError('Status \'done\' cannot be set that way!');
     }
+    return sequelize.transaction(async (t) => {
+      const options = {
+        transaction: t
+      };
 
-    await this.requestRepo.update(id, updatedData);
-    const updatedRequest = await this.requestRepo.getOne(id);
+      await this.requestRepo.update(id, updatedData, options);
+      const updatedRequest = await this.requestRepo.getOne(id, options);
 
-    return Object.keys(updatedData)
-      .reduce((obj, key) => {
-        const propObj = obj;
-        propObj[key] = updatedRequest[key];
-        return propObj;
-      }, {});
+      return Object.keys(updatedData)
+        .reduce((obj, key) => {
+          const propObj = obj;
+          propObj[key] = updatedRequest[key];
+          return propObj;
+        }, {});
+    });
+  }
+
+  async createProtocol(requestId, {
+    fuelAvailable,
+    clientNumber,
+    clientSignature,
+    type,
+    checks
+  }, reqUser) {
+    if (!Object.keys(protocolTypes).includes(type)) {
+      throw new ApiError('Invalid protocol type!');
+    }
+
+    const request = await this.requestRepo.getOne(requestId);
+
+    if (!request) {
+      throw new NotFoundError('Request not found!');
+    }
+
+    if (type === protocolTypes.preliminary && request.status !== 'accepted') {
+      throw new ApiError('Request status is not accepted!');
+    }
+    if (type === protocolTypes.transmissive && request.status !== 'done') {
+      throw new ApiError('Request status is not done!');
+    }
+
+    const driver = await this.driverRepo.getOne(reqUser.id);
+    const client = await this.userRepo.getOneByCar(request.car.id);
+    if (!client) {
+      throw new NotFoundError('Client not found!');
+    }
+    const car = await this.carRepo.getOne(request.car.id);
+    const protocol = new Protocol(
+      this.protocolRepo.generateId(),
+      fuelAvailable,
+      car.kilometers,
+      client.username,
+      clientNumber,
+      clientSignature,
+      driver.signature,
+      checks
+    );
+    if (type === protocolTypes.preliminary) {
+      return this.requestRepo.addOrReplacePreliminaryProtocol(requestId, protocol);
+    }
+    return this.requestRepo.addOrReplaceTransmissiveProtocol(requestId, protocol);
   }
 
   async destroy(id, reqUser) {

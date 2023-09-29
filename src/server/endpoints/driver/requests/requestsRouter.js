@@ -12,7 +12,7 @@ export const createRequestsRouter = (logger) => {
   const router = express.Router();
   const requestsController = new RequestsController(logger);
   const {
-    getMany, getOne, update, finishRequest
+    getMany, getOne, update, finishRequest, addProtocol
   } = requestsController.createRouterHandlers();
 
   router.get(
@@ -47,6 +47,14 @@ export const createRequestsRouter = (logger) => {
     isFromApp(apps.driver),
     isTokenNew(logger),
     finishRequest
+  );
+
+  router.post(
+    '/:id/protocol',
+    isAuth,
+    isFromApp(apps.driver),
+    isTokenNew(logger),
+    addProtocol
   );
 
   return router;

@@ -3,7 +3,7 @@ import { BaseRepo, MAX_PER_PAGE } from '../../utils/BaseRepo.js';
 import { FriendshipRepository } from './FriendshipRepository.js';
 import { CarRepository } from '../car/CarRepository.js';
 import {
-  User as UserModel, UserPartner, Region, Car, Tire, Partner
+  User as UserModel, UserPartner, Region, Car, Tire, Partner, UserCar
 } from '../../db/index.js';
 import { User } from './User.js';
 import { PartnerRepository } from '../partners/PartnerRepository.js';
@@ -107,6 +107,21 @@ export class UserRepository extends BaseRepo {
       return null;
     }
     return this.buildEntity(entity);
+  }
+
+  async getOneByCar(carId, options = {}) {
+    const userCarData = await UserCar.findOne({
+      where: {
+        carId
+      },
+      ...options
+    });
+
+    if (!userCarData) {
+      return null;
+    }
+
+    return this.getOne(userCarData.userId);
   }
 
   async getOneByUsername(username) {

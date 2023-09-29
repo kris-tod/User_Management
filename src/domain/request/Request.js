@@ -22,7 +22,11 @@ export class Request {
     status,
     serialNumber = null,
     notes = '',
-    offers = []
+    offers = [],
+    protocols = {
+      preliminary: null,
+      transmissive: null
+    }
   ) {
     this.id = id;
     this.address = address;
@@ -36,6 +40,7 @@ export class Request {
     this.serialNumber = serialNumber;
     this.notes = notes;
     this.setOffers(offers);
+    this.protocols = protocols;
   }
 
   setStatus(status) {

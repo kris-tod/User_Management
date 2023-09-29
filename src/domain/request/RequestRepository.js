@@ -3,17 +3,19 @@ import { v4 as uuidv4 } from 'uuid';
 import { BaseRepo, MAX_PER_PAGE } from '../../utils/BaseRepo.js';
 import {
   Request as RequestModel, Partner, Driver, Car, CarSupportService, Admin, Region,
-  UserCar, Offer, OfferItem
+  UserCar, Offer, OfferItem, RequestProtocol
 } from '../../db/index.js';
 import { Request } from './Request.js';
 import { ENTITY_NOT_FOUND } from '../../constants/messages.js';
 import { NotFoundError } from '../../utils/errors.js';
 import { AdminRepository } from '../admin/AdminRepository.js';
+import { ProtocolRepository } from './protocol/ProtocolRepository.js';
 
 export class RequestRepository extends BaseRepo {
   constructor() {
     super(RequestModel);
     this.adminRepo = new AdminRepository();
+    this.protocolRepo = new ProtocolRepository();
   }
 
   generateId() {
@@ -33,7 +35,8 @@ export class RequestRepository extends BaseRepo {
       model.status,
       model.serialNumber || -1,
       model.notes || '',
-      model.offers
+      model.offers,
+      model.request_protocol
     );
   }
 
@@ -49,7 +52,14 @@ export class RequestRepository extends BaseRepo {
         Driver,
         Car,
         CarSupportService,
-        { model: Offer, include: OfferItem }
+        { model: Offer, include: OfferItem },
+        {
+          model: RequestProtocol,
+          include: [
+            { association: 'preliminaryProtocol' },
+            { association: 'transmissiveProtocol' }
+          ]
+        }
       ],
       ...options
     });
@@ -74,7 +84,14 @@ export class RequestRepository extends BaseRepo {
         Driver,
         Car,
         CarSupportService,
-        { model: Offer, include: OfferItem }
+        { model: Offer, include: OfferItem },
+        {
+          model: RequestProtocol,
+          include: [
+            { association: 'preliminaryProtocol' },
+            { association: 'transmissiveProtocol' }
+          ]
+        }
       ],
       where: {
         '$partner.regionId$': region
@@ -101,13 +118,20 @@ export class RequestRepository extends BaseRepo {
         {
           model: Partner,
           include: [
-            { model: Admin, where: { id: adminId } }
+            { model: Admin, where: { id: adminId }, require: true }
           ]
         },
         Driver,
         Car,
         CarSupportService,
-        { model: Offer, include: OfferItem }
+        { model: Offer, include: OfferItem },
+        {
+          model: RequestProtocol,
+          include: [
+            { association: 'preliminaryProtocol' },
+            { association: 'transmissiveProtocol' }
+          ]
+        }
       ],
       ...options
     });
@@ -163,7 +187,14 @@ export class RequestRepository extends BaseRepo {
         Driver,
         Car,
         CarSupportService,
-        { model: Offer, include: OfferItem }
+        { model: Offer, include: OfferItem },
+        {
+          model: RequestProtocol,
+          include: [
+            { association: 'preliminaryProtocol' },
+            { association: 'transmissiveProtocol' }
+          ]
+        }
       ],
       ...options
     });
@@ -188,5 +219,47 @@ export class RequestRepository extends BaseRepo {
       serialNumber: entity.serialNumber,
       status: entity.status
     });
+  }
+
+  async addOrReplacePreliminaryProtocol(requestId, protocolData, options = {}) {
+    const protocol = await this.protocolRepo.create(protocolData, options);
+    const requestProtocols = await RequestProtocol.findOne({
+      where: {
+        requestId
+      },
+      ...options
+    });
+
+    if (!requestProtocols) {
+      await RequestProtocol.create({
+        requestId, preliminaryId: protocol.id, transmissiveId: null
+      }, options);
+      return protocol;
+    }
+    requestProtocols.preliminaryId = protocol.id;
+    await requestProtocols.save(options);
+
+    return protocol;
+  }
+
+  async addOrReplaceTransmissiveProtocol(requestId, protocolData, options = {}) {
+    const protocol = await this.protocolRepo.create(protocolData, options);
+    const requestProtocols = await RequestProtocol.findOne({
+      where: {
+        requestId
+      },
+      ...options
+    });
+
+    if (!requestProtocols) {
+      await RequestProtocol.create({
+        requestId, preliminaryId: null, transmissiveId: protocol.id
+      }, options);
+      return protocol;
+    }
+    requestProtocols.transmissiveId = protocol.id;
+    await requestProtocols.save(options);
+
+    return protocol;
   }
 }
